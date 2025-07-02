@@ -141,7 +141,23 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Coordinates.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GlfwRenderer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SceneLoader.cpp" />
+    <ClCompile Include="SfmlRenderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Coordinates.h" />
+    <ClInclude Include="Exceptions.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GlfwRenderer.h" />
+    <ClInclude Include="IRenderer.h" />
+    <ClInclude Include="ISceneLoader.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="SceneLoader.h" />
+    <ClInclude Include="SfmlRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
