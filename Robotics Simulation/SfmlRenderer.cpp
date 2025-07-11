@@ -18,6 +18,11 @@ void SfmlRenderer::Initialize()
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 
+void SfmlRenderer::Clear()
+{
+	window.clear(sf::Color::Black); // Clear the window with a black color
+}
+
 void SfmlRenderer::DrawLine(Vector2 p)
 {
 	throw NotImplementedException();
@@ -60,7 +65,7 @@ void SfmlRenderer::DrawSprite(Vector2 p1, float width, float height, const char*
 
 void SfmlRenderer::Render()
 {
-	throw NotImplementedException();
+	window.display(); // Display the contents of the window
 }
 
 void SfmlRenderer::Shutdown()

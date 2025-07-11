@@ -12,6 +12,7 @@ class SfmlRenderer : public IRenderer
 	SfmlRenderer();
 	~SfmlRenderer() override;
 	void Initialize() override;
+	void Clear() override;
 	void DrawLine(Vector2 p) override;
 	void DrawCircle(Vector2 p, float radius) override;
 	void DrawRectangle(Vector2 p1, float width, float height) override;
@@ -24,5 +25,7 @@ private:
 	sf::RenderWindow window;
 	sf::Clock clock;
 	float deltaTime = 0.0f;
+
+	friend class SfmlInputService; // Allow SfmlInputService to access private members if needed
 };
 

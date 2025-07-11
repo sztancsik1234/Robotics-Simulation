@@ -20,8 +20,6 @@ struct IInputService
 	virtual ~IInputService() = default;
 	// Check if a key is pressed
 	virtual bool IsKeyPressed(KeyCode key) = 0;
-	// Check if a key is released
-	virtual bool IsKeyReleased(KeyCode key) = 0;
 	// Get the current mouse position
 	virtual Vector2 GetMousePosition() = 0;
 	// Check if the application should terminate

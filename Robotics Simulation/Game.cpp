@@ -13,6 +13,7 @@ void Game::Initialize()
 {
 	// initialize the renderer
 	Renderer.Initialize();
+
 	
 	Running = true;
 }
@@ -23,6 +24,19 @@ bool Game::IsRunning() const {
 
 void Game::ProcessInput()
 {
+	if (InputService.ShouldTerminate())
+	{
+		Running = false;
+		return;
+	}
+	// Process input events
+	if (InputService.IsKeyPressed(KeyCode::ESCAPE))
+	{
+		Running = false; // Exit the game if ESCAPE is pressed
+	}
+	// Add more input processing as needed
+	Vector2 mousePosition = InputService.GetMousePosition();
+	// Use mousePosition for game logic if needed
 
 }
 
@@ -32,6 +46,9 @@ void Game::Update()
 
 void Game::Render()
 {
+	Renderer.Clear();
+	Renderer.DrawCircle(Vector2(100, 100), 50.0f);
+	Renderer.Render();
 }
 
 /// <summary>
@@ -39,7 +56,8 @@ void Game::Render()
 /// </summary>
 void Game::RunLoop()
 {
-	Renderer.DrawCircle({ 100, 100 }, 50.0f);
+	ProcessInput();
+	Render();
 }
 
 void Game::Shutdown()

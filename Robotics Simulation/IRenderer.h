@@ -6,6 +6,8 @@ struct IRenderer
 	virtual ~IRenderer() = default;
 	// Initialize the renderer
 	virtual void Initialize() = 0;
+	// clear the screen
+	virtual void Clear() = 0;
 	// draw functions for various primitives
 	virtual void DrawLine(Vector2 p) = 0;
 	virtual void DrawCircle(Vector2 p, float radius) = 0;
