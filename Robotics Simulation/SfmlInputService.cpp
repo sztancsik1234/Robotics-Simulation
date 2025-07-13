@@ -16,7 +16,7 @@ bool SfmlInputService::IsKeyPressed(KeyCode key)
 	return sf::Keyboard::isKeyPressed(KeyToSfmlKeycode(key));
 }
 	
-sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key)
+sf::Keyboard::Key SfmlInputService::KeyToSfmlKeycode(KeyCode key)
 {
 	sf::Keyboard::Key sfmlKey;
 	switch (key)
@@ -50,6 +50,5 @@ bool SfmlInputService::ShouldTerminate()
 
 void SfmlInputService::verifyWindowInitialized()
 {
-	
 
 }

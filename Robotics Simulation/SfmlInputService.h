@@ -4,7 +4,6 @@
 #include "IInputService.h"
 #include "SfmlRenderer.h"
 #include <SFML/Window.hpp>
-#include <SFML/Keyboard.hpp>
 
 /// <summary>
 /// Easy input service to use if an SFML renderer is used.
