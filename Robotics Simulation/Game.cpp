@@ -62,4 +62,6 @@ void Game::RunLoop()
 
 void Game::Shutdown()
 {
+	Renderer.Shutdown();
+	Running = false; // Set running to false to stop the game loop
 }

@@ -70,6 +70,6 @@ void SfmlRenderer::Render()
 
 void SfmlRenderer::Shutdown()
 {
-	throw NotImplementedException();
+	window.close(); // Close the window
 }
 
