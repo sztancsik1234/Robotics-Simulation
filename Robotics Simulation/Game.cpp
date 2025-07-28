@@ -1,6 +1,12 @@
 #include "Game.h"
 
-// constructor with dependencies
+/// <summary>
+/// Constructs a Game object with the required dependencies.
+/// </summary>
+/// <param name="renderer">Reference to the renderer implementation.</param>
+/// <param name="sceneLoader">Reference to the scene loader implementation.</param>
+/// <param name="inputService">Reference to the input service implementation.</param>
+/// <param name="logger">Reference to the logger implementation.</param>
 Game::Game(IRenderer& renderer,
 	ISceneLoader& sceneLoader,
 	IInputService& inputService,
@@ -11,6 +17,10 @@ Game::Game(IRenderer& renderer,
 	Logger(logger),
 	Running(false) {}
 
+/// <summary>
+/// Initializes the game by initializing the renderer and setting the running state.
+/// Logs the result of the initialization.
+/// </summary>
 void Game::Initialize()
 {
 	try
@@ -26,15 +36,26 @@ void Game::Initialize()
 	}
 }
 
+/// <summary>
+/// Returns whether the game is currently running.
+/// </summary>
+/// <returns>True if the game is running, false otherwise.</returns>
 bool Game::IsRunning() const {
 	return Running;
 }
 
+/// <summary>
+/// Handles input events by delegating to the input service.
+/// </summary>
 void Game::HandleEvents()
 {
 	InputService.HandleEvents();
 }
 
+/// <summary>
+/// Handles user input and updates the running state if termination is requested.
+/// Also updates the mouse position.
+/// </summary>
 void Game::HandleInput()
 {
 	if (InputService.ShouldTerminate())
@@ -51,10 +72,16 @@ void Game::HandleInput()
 	mousePosition = InputService.GetMousePosition();
 }
 
+/// <summary>
+/// Updates the game state. (Currently empty.)
+/// </summary>
 void Game::Update()
 {
 }
 
+/// <summary>
+/// Renders the current game state, including drawing a circle at the mouse position.
+/// </summary>
 void Game::Render()
 {
 	Renderer.Clear();
@@ -63,7 +90,7 @@ void Game::Render()
 }
 
 /// <summary>
-/// Called once per game loop. Calls the different stages of the game loop
+/// Called once per game loop. Calls the different stages of the game loop.
 /// </summary>
 void Game::RunMainLoop()
 {
@@ -72,6 +99,9 @@ void Game::RunMainLoop()
 	Render();
 }
 
+/// <summary>
+/// Shuts down the game by shutting down the renderer and logging the shutdown.
+/// </summary>
 void Game::Shutdown()
 {
 	Renderer.Shutdown();

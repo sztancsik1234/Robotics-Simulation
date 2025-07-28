@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Robotics Simulation", "Robotics Simulation\Robotics Simulation.vcxproj", "{646CDB88-FF5A-403E-8ECF-FBE58E25A7AC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RobotSimulation.TEST", "RobotSimulation.TEST\RobotSimulation.TEST.vcxproj", "{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Robotics-Simulation.TEST", "Robotics-Simulation.TEST\Robotics-Simulation.TEST.vcxproj", "{CD88E42A-AE3C-43E6-BE81-2AA18632299D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,14 +23,14 @@ Global
 		{646CDB88-FF5A-403E-8ECF-FBE58E25A7AC}.Release|x64.Build.0 = Release|x64
 		{646CDB88-FF5A-403E-8ECF-FBE58E25A7AC}.Release|x86.ActiveCfg = Release|Win32
 		{646CDB88-FF5A-403E-8ECF-FBE58E25A7AC}.Release|x86.Build.0 = Release|Win32
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Debug|x64.ActiveCfg = Debug|x64
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Debug|x64.Build.0 = Debug|x64
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Debug|x86.ActiveCfg = Debug|Win32
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Debug|x86.Build.0 = Debug|Win32
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Release|x64.ActiveCfg = Release|x64
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Release|x64.Build.0 = Release|x64
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Release|x86.ActiveCfg = Release|Win32
-		{E9F28C68-2A1C-4D77-BF86-6C89C9334CC8}.Release|x86.Build.0 = Release|Win32
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Debug|x64.ActiveCfg = Debug|x64
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Debug|x64.Build.0 = Debug|x64
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Debug|x86.ActiveCfg = Debug|Win32
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Debug|x86.Build.0 = Debug|Win32
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Release|x64.ActiveCfg = Release|x64
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Release|x64.Build.0 = Release|x64
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Release|x86.ActiveCfg = Release|Win32
+		{CD88E42A-AE3C-43E6-BE81-2AA18632299D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 #pragma once
-#include "Coordinates.h"
+#include "Vector2.h"
 
 // enum for keycodes
 enum KeyCode : short

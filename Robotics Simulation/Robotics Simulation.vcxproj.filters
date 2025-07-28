@@ -44,16 +44,13 @@
     <ClInclude Include="ISceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Coordinates.h">
+    <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IInputService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MockInputService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneLoader.h">

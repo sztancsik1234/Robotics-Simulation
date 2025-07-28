@@ -2,15 +2,22 @@
 #include "SfmlRenderer.h"
 #include <SFML/Graphics.hpp>
 
-
-
+/// <summary>
+/// Constructs an SfmlRenderer object, initializing the window, clock, and deltaTime.
+/// </summary>
 SfmlRenderer::SfmlRenderer()
 	: window(), clock(), deltaTime(0.0f)
 {}
 
-
+/// <summary>
+/// Destructor for SfmlRenderer. Default implementation.
+/// </summary>
 SfmlRenderer::~SfmlRenderer() = default;
 
+/// <summary>
+/// Initializes the SFML window with a specific size and title.
+/// Sets the frame rate limit to 60 FPS.
+/// </summary>
 void SfmlRenderer::Initialize()
 {
 	// Create a window with a specific size and title
@@ -18,16 +25,29 @@ void SfmlRenderer::Initialize()
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 
+/// <summary>
+/// Clears the window with a black color.
+/// </summary>
 void SfmlRenderer::Clear()
 {
 	window.clear(sf::Color::Black); // Clear the window with a black color
 }
 
+/// <summary>
+/// Draws a line. Not implemented.
+/// </summary>
+/// <param name="p">The endpoint of the line.</param>
 void SfmlRenderer::DrawLine(Vector2 p)
 {
 	throw NotImplementedException();
 }
 
+/// <summary>
+/// Draws a circle at the specified position with the given radius.
+/// The circle is outlined in white and filled transparent.
+/// </summary>
+/// <param name="p">The center position of the circle.</param>
+/// <param name="radius">The radius of the circle.</param>
 void SfmlRenderer::DrawCircle(Vector2 p, float radius)  
 {  
 	sf::CircleShape circle(radius);  
@@ -38,6 +58,13 @@ void SfmlRenderer::DrawCircle(Vector2 p, float radius)
 	window.draw(circle);  
 }
 
+/// <summary>
+/// Draws a rectangle at the specified position with the given width and height.
+/// The rectangle is outlined in white and filled transparent.
+/// </summary>
+/// <param name="p1">The top-left position of the rectangle.</param>
+/// <param name="width">The width of the rectangle.</param>
+/// <param name="height">The height of the rectangle.</param>
 void SfmlRenderer::DrawRectangle(Vector2 p1, float width, float height)
 {
 	sf::RectangleShape rectangle(sf::Vector2f(width, height));
@@ -48,6 +75,12 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, float width, float height)
 	window.draw(rectangle);
 }
 
+/// <summary>
+/// Draws a rectangle defined by two points (top-left and bottom-right).
+/// The rectangle is outlined in white and filled transparent.
+/// </summary>
+/// <param name="p1">The top-left position of the rectangle.</param>
+/// <param name="p2">The bottom-right position of the rectangle.</param>
 void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 {
 	sf::RectangleShape rectangle(sf::Vector2f(p2.x - p1.x, p2.y - p1.y));
@@ -58,23 +91,39 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 	window.draw(rectangle);
 }
 
+/// <summary>
+/// Draws a sprite at the specified position with the given width and height.
+/// Not implemented.
+/// </summary>
+/// <param name="p1">The position to draw the sprite.</param>
+/// <param name="width">The width of the sprite.</param>
+/// <param name="height">The height of the sprite.</param>
+/// <param name="texturePath">The path to the texture file.</param>
 void SfmlRenderer::DrawSprite(Vector2 p1, float width, float height, const char* texturePath)
 {
 	throw NotImplementedException();
 }
 
+/// <summary>
+/// Displays the contents of the window.
+/// </summary>
 void SfmlRenderer::Render()
 {
 	window.display(); // Display the contents of the window
 }
 
+/// <summary>
+/// Checks if the window should terminate (i.e., if it is closed).
+/// </summary>
+/// <returns>True if the window is not open, otherwise false.</returns>
 bool SfmlRenderer::ShouldTerminate()
 {
 	return !window.isOpen();
 }
 
-
-
+/// <summary>
+/// Shuts down the renderer by closing the window.
+/// </summary>
 void SfmlRenderer::Shutdown()
 {
 	window.close(); // Close the window
