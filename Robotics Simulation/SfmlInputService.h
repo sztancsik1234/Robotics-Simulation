@@ -18,11 +18,13 @@ public:
 	// implementation of IInputService methods
 	bool IsKeyPressed(KeyCode key) override;
 	Vector2 GetMousePosition() override;
+	void HandleEvents() override;
 	bool ShouldTerminate() override;
 
 private:
 	void verifyWindowInitialized();
 	sf::RenderWindow& window; // Reference to the SFML window
 	sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key);
+	bool ShouldClose = false;
 };
 

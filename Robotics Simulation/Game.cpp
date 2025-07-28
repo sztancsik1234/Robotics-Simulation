@@ -22,7 +22,12 @@ bool Game::IsRunning() const {
 	return Running;
 }
 
-void Game::ProcessInput()
+void Game::HandleEvents()
+{
+	InputService.HandleEvents();
+}
+
+void Game::HandleInput()
 {
 	if (InputService.ShouldTerminate())
 	{
@@ -35,7 +40,7 @@ void Game::ProcessInput()
 		Running = false; // Exit the game if ESCAPE is pressed
 	}
 	// Add more input processing as needed
-	Vector2 mousePosition = InputService.GetMousePosition();
+	mousePosition = InputService.GetMousePosition();
 	// Use mousePosition for game logic if needed
 
 }
@@ -47,16 +52,17 @@ void Game::Update()
 void Game::Render()
 {
 	Renderer.Clear();
-	Renderer.DrawCircle(Vector2(100, 100), 50.0f);
+	Renderer.DrawCircle(mousePosition, 50.0f);
 	Renderer.Render();
 }
 
 /// <summary>
 /// Called once per game loop. Calls the different stages of the game loop
 /// </summary>
-void Game::RunLoop()
+void Game::RunMainLoop()
 {
-	ProcessInput();
+	HandleEvents();
+	HandleInput();
 	Render();
 }
 

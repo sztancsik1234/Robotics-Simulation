@@ -24,4 +24,6 @@ struct IInputService
 	virtual Vector2 GetMousePosition() = 0;
 	// Check if the application should terminate
 	virtual bool ShouldTerminate() = 0;
+	// Handle events if needed
+	virtual void HandleEvents() = 0;
 };

@@ -13,7 +13,7 @@ public:
         ISceneLoader& sceneLoader,
         IInputService& inputService);
     void Initialize();
-    void RunLoop();
+    void RunMainLoop();
     void Shutdown();
     bool IsRunning() const;
 
@@ -23,7 +23,10 @@ private:
     ISceneLoader& SceneLoader;
 	IInputService& InputService;
 
-    void ProcessInput();
+    Vector2 mousePosition;
+
+	void HandleEvents();
+    void HandleInput();
     void Update();
     void Render();
 };

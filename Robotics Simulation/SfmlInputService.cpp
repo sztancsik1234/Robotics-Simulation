@@ -43,9 +43,22 @@ Vector2 SfmlInputService::GetMousePosition()
 	return Vector2(static_cast<float>(position.x), static_cast<float>(position.y));
 }
 
+void SfmlInputService::HandleEvents()
+{
+	verifyWindowInitialized();
+	while (const std::optional event = window.pollEvent())
+	{
+		if (event.value().is<sf::Event::Closed>())
+		{
+			ShouldClose = true; // Set the termination flag if the window is closed
+		}
+		// Handle other events as needed
+	}
+}
+
 bool SfmlInputService::ShouldTerminate()
 {
-	return false; // for now.
+	return ShouldClose;
 }
 
 void SfmlInputService::verifyWindowInitialized()

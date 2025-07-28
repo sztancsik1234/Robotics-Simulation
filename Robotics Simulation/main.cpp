@@ -19,7 +19,7 @@ int main()
 	//run the game loop
 	while (game.IsRunning())
 	{
-		game.RunLoop();
+		game.RunMainLoop();
 	}
 	//shutdown the game
 	game.Shutdown();

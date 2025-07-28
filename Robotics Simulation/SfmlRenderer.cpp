@@ -68,6 +68,13 @@ void SfmlRenderer::Render()
 	window.display(); // Display the contents of the window
 }
 
+bool SfmlRenderer::ShouldTerminate()
+{
+	return !window.isOpen();
+}
+
+
+
 void SfmlRenderer::Shutdown()
 {
 	window.close(); // Close the window
