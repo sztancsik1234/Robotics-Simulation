@@ -56,9 +56,6 @@
     <ClInclude Include="MockInputService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IReactionService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ILogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

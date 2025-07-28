@@ -1,21 +1,29 @@
 #include "Game.h"
 
 // constructor with dependencies
-Game::Game(IRenderer& renderer, 
-	ISceneLoader& sceneLoader, 
-	IInputService& inputService) : 
-		Renderer(renderer), 
-		SceneLoader(sceneLoader), 
-		InputService(inputService), 
-		Running(false) {}
+Game::Game(IRenderer& renderer,
+	ISceneLoader& sceneLoader,
+	IInputService& inputService,
+	ILogger& logger) :
+	Renderer(renderer),
+	SceneLoader(sceneLoader),
+	InputService(inputService),
+	Logger(logger),
+	Running(false) {}
 
 void Game::Initialize()
 {
-	// initialize the renderer
-	Renderer.Initialize();
-
-	
-	Running = true;
+	try
+	{
+		Renderer.Initialize();
+		Logger.Log("Renderer initialized.");
+		Running = true;
+	}
+	catch (const std::exception& ex)
+	{
+		Logger.Log(std::string("Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
+		Running = false;
+	}
 }
 
 bool Game::IsRunning() const {
@@ -31,18 +39,16 @@ void Game::HandleInput()
 {
 	if (InputService.ShouldTerminate())
 	{
+		Logger.Log("Termination requested. Exiting game.");
 		Running = false;
 		return;
 	}
-	// Process input events
 	if (InputService.IsKeyPressed(KeyCode::ESCAPE))
 	{
-		Running = false; // Exit the game if ESCAPE is pressed
+		Logger.Log("ESCAPE key pressed. Exiting game.");
+		Running = false;
 	}
-	// Add more input processing as needed
 	mousePosition = InputService.GetMousePosition();
-	// Use mousePosition for game logic if needed
-
 }
 
 void Game::Update()
@@ -69,5 +75,6 @@ void Game::RunMainLoop()
 void Game::Shutdown()
 {
 	Renderer.Shutdown();
-	Running = false; // Set running to false to stop the game loop
+	Logger.Log("Renderer shutdown.");
+	Running = false;
 }
