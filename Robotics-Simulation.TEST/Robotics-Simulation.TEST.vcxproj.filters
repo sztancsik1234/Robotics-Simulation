@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Vector2-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SfmlRendererer-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Unit Test Files">
+      <UniqueIdentifier>{56ebeb35-db43-4e77-9677-6f13f9102b42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

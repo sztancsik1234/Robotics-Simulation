@@ -1,21 +1,28 @@
-#include <SFML/Graphics.hpp>
+#include "Game.h"
+#include "SfmlRenderer.h"
+#include "SceneLoader.h"
+#include "SfmlInputService.h"
+#include "ConsoleLogger.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	//instantiate the renderer and scene loader
+	SfmlRenderer	 renderer;
+	SceneLoader		 sceneLoader;
+	SfmlInputService inputService(renderer);
+	ConsoleLogger	 logger;
 
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
+	//create the game object with dependencies
+	Game game(renderer, sceneLoader, inputService, logger);
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+	//initialize the game
+	game.Initialize();
+
+	//run the game loop
+	while (game.IsRunning())
+	{
+		game.RunMainLoop();
+	}
+	//shutdown the game
+	game.Shutdown();
 }
