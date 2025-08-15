@@ -3,6 +3,8 @@
 #include <concepts>
 #include "Vector2.h"
 #include <forward_list>
+#include <memory>
+
 
 
 class Component
@@ -11,17 +13,22 @@ class Component
 };
 
 template<typename T>
-concept ComponentDerived = std::is_base_of<Component, T>::value;
+concept ComponentDerived = std::is_base_of<Component, T>::value && !std::is_same<Component, T>::value;
 
 class GameObject
 {
 public:
+	virtual ~GameObject() = default;
+
+	Vector2 GetPosition() const { return Position; }
+	void SetPosition(const Vector2& position) { Position = position; }
+	template <ComponentDerived T>
+	std::unique_ptr<T> GetComponent();
+
+private:
 	Vector2 Position;
 	
-	template <ComponentDerived T>
-	Component* GetComponent(T cmp);
-protected:
-	std::forward_list<Component> componentList;
+	std::forward_list<std::unique_ptr<Component>> componentList;
 };
 
 class ComponentNotFoundException : public std::runtime_error
