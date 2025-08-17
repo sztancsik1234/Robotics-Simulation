@@ -19,7 +19,6 @@ class SfmlRenderer : public IRenderer
 	void DrawRectangle(Vector2 p1, Vector2 p2) override;
 	void DrawSprite(Vector2 p1, float width, float height, const char* texturePath) override;
 	void Render() override;
-	bool ShouldTerminate() override;
 	void Shutdown() override;
 
 private:

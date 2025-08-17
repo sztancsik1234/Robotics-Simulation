@@ -5,12 +5,7 @@
 #include <forward_list>
 #include <memory>
 
-
-
-class Component
-{
-	int asd;
-};
+class Component;
 
 template<typename T>
 concept ComponentDerived = std::is_base_of<Component, T>::value && !std::is_same<Component, T>::value;
@@ -18,12 +13,13 @@ concept ComponentDerived = std::is_base_of<Component, T>::value && !std::is_same
 class GameObject
 {
 public:
-	virtual ~GameObject() = default;
+	virtual ~GameObject();
 
 	Vector2 GetPosition() const { return Position; }
 	void SetPosition(const Vector2& position) { Position = position; }
 	template <ComponentDerived T>
 	std::unique_ptr<T> GetComponent();
+	void AddComponent(std::unique_ptr<Component> component);
 
 private:
 	Vector2 Position;

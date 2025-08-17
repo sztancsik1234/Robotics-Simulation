@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Component.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.
