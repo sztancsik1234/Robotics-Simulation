@@ -113,15 +113,6 @@ void SfmlRenderer::Render()
 }
 
 /// <summary>
-/// Checks if the window should terminate (i.e., if it is closed).
-/// </summary>
-/// <returns>True if the window is not open, otherwise false.</returns>
-bool SfmlRenderer::ShouldTerminate()
-{
-	return !window.isOpen();
-}
-
-/// <summary>
 /// Shuts down the renderer by closing the window.
 /// </summary>
 void SfmlRenderer::Shutdown()

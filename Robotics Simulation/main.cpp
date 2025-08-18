@@ -19,10 +19,9 @@ int main()
 	game.Initialize();
 
 	//run the game loop
-	while (game.IsRunning())
-	{
-		game.RunMainLoop();
-	}
+
+	game.RunMainLoop();
+
 	//shutdown the game
 	game.Shutdown();
 }

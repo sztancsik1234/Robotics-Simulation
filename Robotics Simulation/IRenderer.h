@@ -18,8 +18,6 @@ struct IRenderer
 
 	// Render a frame
 	virtual void Render() = 0;
-	// querry shutdown signal 
-	virtual bool ShouldTerminate() = 0;
 	// Shutdown the renderer
 	virtual void Shutdown() = 0;
 };

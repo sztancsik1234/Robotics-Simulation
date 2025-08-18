@@ -11,9 +11,7 @@ protected:
 
 TEST_F(SfmlRendererTest, CanInitializeAndShutdown) {
     EXPECT_NO_THROW(renderer.Initialize());
-    EXPECT_FALSE(renderer.ShouldTerminate()); // Window should be open after init
     EXPECT_NO_THROW(renderer.Shutdown());
-    EXPECT_TRUE(renderer.ShouldTerminate()); // Window should be closed after shutdown
 }
 
 TEST_F(SfmlRendererTest, CanClearAndRender) {

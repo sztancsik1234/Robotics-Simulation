@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Component.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.
@@ -90,13 +91,16 @@ void Game::Render()
 }
 
 /// <summary>
-/// Called once per game loop. Calls the different stages of the game loop.
+/// Starts the main game loop. Returns when the game closes.
 /// </summary>
 void Game::RunMainLoop()
 {
-	HandleEvents();
-	HandleInput();
-	Render();
+	while (Running)
+	{
+		HandleEvents();
+		HandleInput();
+		Render();
+	}
 }
 
 /// <summary>
