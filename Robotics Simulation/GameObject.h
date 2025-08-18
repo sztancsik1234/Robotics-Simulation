@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include <forward_list>
 #include <memory>
+#include "Component.h"
 
 class Component;
 

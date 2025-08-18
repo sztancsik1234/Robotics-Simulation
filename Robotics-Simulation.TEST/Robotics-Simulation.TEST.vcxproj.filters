@@ -8,6 +8,7 @@
     <ClCompile Include="SfmlRendererer-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -16,5 +17,8 @@
     <Filter Include="Unit Test Files">
       <UniqueIdentifier>{56ebeb35-db43-4e77-9677-6f13f9102b42}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
