@@ -11,13 +11,13 @@ class RenderComponent final : public Component
 	/// Constructs a RenderComponent and associates it with a given GameObject.
 	/// </summary>
 	/// <param name="owner">Pointer to the GameObject that owns this Component.</param>
-	RenderComponent(IRenderer* renderer, GameObject* owner) : Component(owner), Renderer(*renderer) {}
+		RenderComponent(IDrawableRenderer* renderer, GameObject* owner) : Component(owner), Renderer(*renderer) {}
 	/// <summary>
 	/// Called when the component is added to a GameObject. Initializes rendering resources.
 	/// </summary>
 	void OnAdd() override;
 	/// <summary>
-	/// Updates the rendering state. This method can be empty if no updates are needed.
+	/// Draws the component's visual representation each frame.
 	/// </summary>
 	void Update() override;
 	/// <summary>
@@ -26,6 +26,9 @@ class RenderComponent final : public Component
 	void OnRemove() override;
 
 private:
-	IRenderer& Renderer; // Reference to the renderer for drawing operations
+	/// <summary>
+	/// stores a reference to the renderer used for drawing operations. Also stores texture and sprite information if needed.
+	/// </summary>
+	IDrawableRenderer& Renderer; // Reference to the renderer for drawing operations
 };
 
