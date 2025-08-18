@@ -71,9 +71,6 @@
     <ClInclude Include="SfmlRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IReactionService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ILogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
