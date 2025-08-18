@@ -13,7 +13,7 @@ class SfmlRenderer : public IRenderer
 	~SfmlRenderer() override;
 	void Initialize() override;
 	void Clear() override;
-	void DrawLine(Vector2 p) override;
+	void DrawLine(Vector2 x, Vector2 y) override;
 	void DrawCircle(Vector2 p, float radius) override;
 	void DrawRectangle(Vector2 p1, float width, float height) override;
 	void DrawRectangle(Vector2 p1, Vector2 p2) override;

@@ -34,12 +34,19 @@ void SfmlRenderer::Clear()
 }
 
 /// <summary>
-/// Draws a line. Not implemented.
+/// Draws a line between two points.
 /// </summary>
-/// <param name="p">The endpoint of the line.</param>
-void SfmlRenderer::DrawLine(Vector2 p)
+/// <param name="start">The starting point of the line.</param>
+/// <param name="end">The endpoint of the line.</param>
+void SfmlRenderer::DrawLine(Vector2 start, Vector2 end)
 {
 	throw NotImplementedException();
+    //sf::Vertex line[] =
+    //{
+    //    sf::Vertex(sf::Vector2f(start.X, start.Y)),
+    //    sf::Vertex(sf::Vector2f(end.X, end.Y))
+    //};
+    //window.draw(line, 2, sf::Lines);
 }
 
 /// <summary>
