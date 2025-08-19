@@ -1,25 +1,39 @@
 #pragma once
-#include "Coordinates.h"
+#include "Vector2.h"
+#include "Color.inl"
 
-struct IRenderer
-{
-	virtual ~IRenderer() = default;
-	// Initialize the renderer
-	virtual void Initialize() = 0;
-	// clear the screen
-	virtual void Clear() = 0;
-	// draw functions for various primitives
-	virtual void DrawLine(Vector2 p) = 0;
-	virtual void DrawCircle(Vector2 p, float radius) = 0;
-	virtual void DrawRectangle(Vector2 p1, float width, float height) = 0;
-	virtual void DrawRectangle(Vector2 p1, Vector2 p2) = 0;
-	// draw a sprite
-	virtual void DrawSprite(Vector2 p1, float width, float height, const char* texturePath) = 0;
+struct IRendererBase { virtual ~IRendererBase() = default; };
 
-	// Render a frame
-	virtual void Render() = 0;
-	// querry shutdown signal 
-	virtual bool ShouldTerminate() = 0;
-	// Shutdown the renderer
-	virtual void Shutdown() = 0;
+/// <summary>
+/// Defines an interface for renderer lifecycle management, including window- and other initialization and shutdown operations.
+/// </summary>
+struct IRendererLifecycle : IRendererBase {
+    virtual void Initialize() = 0;
+    virtual void Shutdown() = 0;
 };
+
+/// <summary>
+/// Interface for managing the lifecycle of one frame.
+/// </summary>
+struct IFrameRenderer : IRendererBase {
+    virtual void Clear(Color color) = 0;
+    virtual void DisplayFrame() = 0;
+};
+
+/// <summary>
+/// Interface for rendering drawable shapes and sprites. Stores its own reference to textures and sprites if needed.
+/// </summary>
+struct IDrawableRenderer : IRendererBase {
+    virtual void DrawLine(Vector2 start, Vector2 end) = 0;
+    virtual void DrawCircle(Vector2 center, float radius) = 0;
+    virtual void DrawRectangle(Vector2 topLeft, float width, float height) = 0;
+    virtual void DrawRectangle(Vector2 p1, Vector2 p2) = 0;
+    virtual void DrawSprite(Vector2 position, float width, float height, const char* texturePath) = 0;
+};
+
+// Convenient full interface
+struct IRenderer :
+    IRendererLifecycle,
+    IFrameRenderer,
+    IDrawableRenderer
+{};

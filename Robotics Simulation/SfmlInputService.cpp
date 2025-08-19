@@ -43,6 +43,7 @@ Vector2 SfmlInputService::GetMousePosition()
 	return Vector2(static_cast<float>(position.x), static_cast<float>(position.y));
 }
 
+// querry the window for events and handle them. Window close event is the only one handled for now
 void SfmlInputService::HandleEvents()
 {
 	verifyWindowInitialized();
@@ -61,6 +62,7 @@ bool SfmlInputService::ShouldTerminate()
 	return ShouldClose;
 }
 
+// not implemented, empty for now
 void SfmlInputService::verifyWindowInitialized()
 {
 

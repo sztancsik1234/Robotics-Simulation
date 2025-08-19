@@ -33,6 +33,18 @@
     <ClCompile Include="SfmlRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -44,19 +56,13 @@
     <ClInclude Include="ISceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Coordinates.h">
+    <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IInputService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MockInputService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
@@ -68,8 +74,28 @@
     <ClInclude Include="SfmlRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IReactionService.h">
+    <ClInclude Include="ILogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ConsoleLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Color.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

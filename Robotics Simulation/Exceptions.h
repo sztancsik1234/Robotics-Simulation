@@ -14,6 +14,6 @@ class NotImplementedException : public std::runtime_error {
 class WrongKeyCodeException : public std::invalid_argument {
 	public:
 	WrongKeyCodeException() : std::invalid_argument("Unsupported KeyCode") {}
-	WrongKeyCodeException(std::string key) 
+	explicit WrongKeyCodeException(std::string const& key) 
 		: std::invalid_argument("Unsupported KeyCode: " + key) {}
 };

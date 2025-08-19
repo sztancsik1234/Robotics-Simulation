@@ -1,0 +1,28 @@
+@startuml
+class GameObject
+class Component
+GameObject *-- Component
+CircleRenderer <|-- RenderComponent
+RenderComponent --|> Component
+interface IDrawableRenderer
+RenderComponent --> IDrawableRenderer
+interface IRendererBase
+interface IRendererLifecycle
+interface IFrameRenderer
+interface IRenderer
+IDrawableRenderer <|-- IRendererBase
+IRenderer <|-- IRendererLifecycle
+IRenderer <|-- IFrameRenderer
+IRenderer <|-- IDrawableRenderer
+SfmlRenderer ..|> IRenderer
+IRendererLifecycle <|-- IRendererBase
+IFrameRenderer<|-- IRendererBase
+Interface ISceneLoader
+interface IInputService
+SfmlInputService ..|> IInputService
+class Game
+Game --> IInputService
+Game --> ISceneLoader
+Game --> IRenderer
+Game *-- GameObject
+@enduml

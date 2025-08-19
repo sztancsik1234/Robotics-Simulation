@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Coordinates.h"
+#include "Vector2.h"
 #include "IInputService.h"
 #include "SfmlRenderer.h"
 #include <SFML/Window.hpp>
