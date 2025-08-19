@@ -2,14 +2,10 @@
 #include "GameObject.h"
 #include <memory>
 #include <string>
-
-// Mock logger for testing
-class MockLogger : public ILogger {
-public:
-    void Log(const std::string&, LogLevel) override {}
-};
+#include "MockLogger.h"
 
 // Static counter to track component destructions
+// This is intentionally non-const to allow modification during tests
 static int destructorCallCount = 0;
 
 // Mock component for testing
@@ -31,45 +27,53 @@ public:
         // No specific action needed for this mock
     }
     
-    ~MockComponent() {
+    ~MockComponent() override {
         destructorCallCount++;
     }
+
+    // Copy operations are deleted since Component should not be copyable
+    // due to ownership semantics with GameObject
+    MockComponent(const MockComponent&) = delete;
+    MockComponent& operator=(const MockComponent&) = delete;
+    
+    // Move operations are deleted for the same reason
+    MockComponent(MockComponent&&) = delete;
+    MockComponent& operator=(MockComponent&&) = delete;
 };
 
 TEST(GameObjectTest, Creation)
 {
-	// Arrange
+    // Arrange
     MockLogger logger;
     std::string name = "TestObject";
     int id = 1;
-    // Act
-    //GameObject gameObject(logger, id, name);
-    //// Assert
 
+    // Act
     GameObject gameObject(logger, id, name);
 
-    //EXPECT_EQ(gameObject.GetId(), id);
-    //EXPECT_EQ(gameObject.GetName(), name);
+    // Assert
+    EXPECT_EQ(gameObject.GetId(), id);
+    EXPECT_EQ(gameObject.GetName(), name);
 }
 
 TEST(GameObjectTest, ResourceCleanup) {
-    //// Reset the counter before test
-    //destructorCallCount = 0;
-    //
-    //{
-    //    // Create a scope for GameObject
-    //    MockLogger logger;
-    //    GameObject gameObject(logger);
-    //    
-    //    // Add components that should be cleaned up when gameObject goes out of scope
-    //    gameObject.EmplaceComponent<MockComponent>();
-    //    gameObject.EmplaceComponent<MockComponent>();
-    //    gameObject.EmplaceComponent<MockComponent>();
-    //    
-    //    // At this point, no components should be destroyed yet
-    //    EXPECT_EQ(destructorCallCount, 0);
-    //} // GameObject goes out of scope here
-    //
-    //// After GameObject goes out of scope, all components should be destroyed
-    //EXPECT_EQ(destructorCallCount, 3);
+    // Reset the counter before test
+    destructorCallCount = 0;
+    
+    {
+        // Create a scope for GameObject
+        MockLogger logger;
+        auto gameObject = std::make_unique<GameObject>(logger);
+        
+        // Add components that should be cleaned up when gameObject goes out of scope
+        gameObject->EmplaceComponent<MockComponent>();
+        gameObject->EmplaceComponent<MockComponent>();
+        gameObject->EmplaceComponent<MockComponent>();
+        
+        // At this point, no components should be destroyed yet
+        EXPECT_EQ(destructorCallCount, 0);
+    } // GameObject goes out of scope here
+    
+    // After GameObject goes out of scope, all components should be destroyed
+    EXPECT_EQ(destructorCallCount, 3);
 }

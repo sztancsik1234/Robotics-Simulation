@@ -5,7 +5,7 @@
 
 
 
-// thoughts on implementing aan EntityComponentSystem (ECS) pattern
+// thoughts on implementing an EntityComponentSystem (ECS) pattern:
 // May be overkill for this project, but could be useful if it grows
 
 GameObject::~GameObject()

@@ -14,9 +14,14 @@
     <ClCompile Include="CircleRenderer-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mocks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Mocks.h" />
+    <ClInclude Include="MockRenderer.h" />
+    <ClInclude Include="MockLogger.h" />
+    <ClInclude Include="MockGameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Unit Test Files">
