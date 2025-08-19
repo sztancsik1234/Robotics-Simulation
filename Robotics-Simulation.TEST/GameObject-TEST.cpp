@@ -38,7 +38,7 @@ public:
 
 TEST(GameObjectTest, Creation)
 {
-    // Arrange
+	// Arrange
     MockLogger logger;
     std::string name = "TestObject";
     int id = 1;
