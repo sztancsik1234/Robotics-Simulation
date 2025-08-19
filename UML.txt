@@ -1,4 +1,4 @@
-https://www.plantuml.com/plantuml/uml/
+//www.plantuml.com/plantuml/png/VLBHIiGm47plL-HPo7s1bCCJfN0Ws2_Oszj294cFJKuH-l66dhfP6tpCp7Hdfim-PU1y3Rv33ocPPmZqSdeZpD_0OGwNELBCdL3cpjgAE3X6JwyKpyJ4vdufxEqbcZzlO-tILoTSpCGJ89dXaU43JdAlyMc_LTKNVh07IDJ2ZsuY_4Ilo2U6yE-rJZnLKsqtj4dnt2YqiMORFSSf-5_DRhVqTSADMpEYScm9fFo85Eaumrd_ao5UhdaaVdT8Qw8QkANI6XdNEYDZhLO8h3m5bP8hL0POJtLVoBBXBm00
 
 @startuml
 class GameObject

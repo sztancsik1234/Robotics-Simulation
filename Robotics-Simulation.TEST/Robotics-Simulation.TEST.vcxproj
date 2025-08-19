@@ -104,11 +104,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MockGameObject.h" />
+    <ClInclude Include="MockLogger.h" />
+    <ClInclude Include="MockRenderer.h" />
+    <ClInclude Include="Mocks.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircleRenderer-TEST.cpp" />
     <ClCompile Include="GameObject-TEST.cpp" />
+    <ClCompile Include="Mocks.cpp" />
     <ClCompile Include="SfmlRendererer-TEST.cpp" />
     <ClCompile Include="Vector2-TEST.cpp" />
     <ClCompile Include="pch.cpp">
