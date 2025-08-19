@@ -1,3 +1,5 @@
+https://www.plantuml.com/plantuml/uml/
+
 @startuml
 class GameObject
 class Component
