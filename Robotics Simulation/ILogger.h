@@ -3,7 +3,8 @@
 
 enum class LogLevel
 {
-	INFO = 0,
+	TRACE = 0,
+	INFO,
 	WARNING,
 	ERROR
 };

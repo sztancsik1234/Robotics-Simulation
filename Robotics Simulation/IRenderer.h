@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Color.inl"
 
 struct IRendererBase { virtual ~IRendererBase() = default; };
 
@@ -15,8 +16,8 @@ struct IRendererLifecycle : IRendererBase {
 /// Interface for managing the lifecycle of one frame.
 /// </summary>
 struct IFrameRenderer : IRendererBase {
-    virtual void Clear() = 0;
-    virtual void Render() = 0;
+    virtual void Clear(Color color) = 0;
+    virtual void DisplayFrame() = 0;
 };
 
 /// <summary>

@@ -141,9 +141,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CircleRenderer.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Coordinates.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClInclude Include="CircleRenderer.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConsoleLogger.h" />
     <ClInclude Include="GameObject.h" />
@@ -166,6 +168,9 @@
     <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="SfmlInputService.h" />
     <ClInclude Include="SfmlRenderer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Color.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

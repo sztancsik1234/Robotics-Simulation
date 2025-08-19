@@ -16,8 +16,8 @@ TEST_F(SfmlRendererTest, CanInitializeAndShutdown) {
 
 TEST_F(SfmlRendererTest, CanClearAndRender) {
     renderer.Initialize();
-    EXPECT_NO_THROW(renderer.Clear());
-    EXPECT_NO_THROW(renderer.Render());
+    EXPECT_NO_THROW(renderer.Clear(Color::Black));
+    EXPECT_NO_THROW(renderer.DisplayFrame());
     renderer.Shutdown();
 }
 
@@ -46,7 +46,8 @@ TEST_F(SfmlRendererTest, DrawRectangleWithTwoPointsDoesNotThrow) {
 TEST_F(SfmlRendererTest, DrawLineThrowsNotImplemented) {
     renderer.Initialize();
     Vector2 p(0.0f, 0.0f);
-    EXPECT_THROW(renderer.DrawLine(p), NotImplementedException);
+	Vector2 p2(100.0f, 100.0f);
+    EXPECT_THROW(renderer.DrawLine(p, p2), NotImplementedException);
     renderer.Shutdown();
 }
 

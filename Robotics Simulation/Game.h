@@ -1,8 +1,12 @@
 #pragma once
+
+#include <forward_list>
+
 #include "IRenderer.h"
 #include "ISceneLoader.h"
 #include "IInputService.h"
 #include "ILogger.h"
+#include "GameObject.h"
 
 class Game
 {
@@ -25,11 +29,33 @@ private:
 	IInputService& InputService;
 	ILogger& Logger;
 
+	// TEST variable. Temporary
 	Vector2 mousePosition;
+	// TEST variable. Temporary
+	GameObject* testGameObject = nullptr;
+	std::forward_list<GameObject> gameObjects;
 
+	/// <summary>
+	/// Handles input events by delegating to the input service.
+	/// </summary>
 	void HandleEvents();
+
+	/// <summary>
+	/// Handles user input and flips the `running` flag, if termination is requested.
+	/// TODO: Update as more functionality is added.
+	/// Also updates the mouse position.
+	/// </summary>
 	void HandleInput();
+	// go over all game objects and call their update method
 	void Update();
-	void Render();
+	// clear the frame by clearing the renderer
+	void ClearFrame();
+	// display what has been drawn so far in the current frame
+	void DisplayFrame();
+
+	void addGameObject(GameObject&& gameObject);
+	// void addGameObject(GameObject gameObject);
+
+	void clearGameObjects();
 };
 

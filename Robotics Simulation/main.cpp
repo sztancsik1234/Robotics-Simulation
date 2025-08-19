@@ -10,7 +10,7 @@ int main()
 	SfmlRenderer	 renderer;
 	SceneLoader		 sceneLoader;
 	SfmlInputService inputService(renderer);
-	ConsoleLogger	 logger;
+	ConsoleLogger	 logger(LogLevel::INFO);
 
 	//create the game object with dependencies
 	Game game(renderer, sceneLoader, inputService, logger);
@@ -19,7 +19,6 @@ int main()
 	game.Initialize();
 
 	//run the game loop
-
 	game.RunMainLoop();
 
 	//shutdown the game

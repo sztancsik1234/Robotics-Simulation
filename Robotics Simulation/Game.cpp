@@ -1,5 +1,7 @@
 #include "Game.h"
 #include "Component.h"
+#include "Color.inl"
+#include "CircleRenderer.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.
@@ -12,11 +14,11 @@ Game::Game(IRenderer& renderer,
 	ISceneLoader& sceneLoader,
 	IInputService& inputService,
 	ILogger& logger) :
+	Running(false),
 	Renderer(renderer),
 	SceneLoader(sceneLoader),
 	InputService(inputService),
-	Logger(logger),
-	Running(false) {}
+	Logger(logger) {}
 
 /// <summary>
 /// Initializes the game by initializing the renderer and setting the running state.
@@ -34,6 +36,24 @@ void Game::Initialize()
 	{
 		Logger.Log(std::string("Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
 		Running = false;
+	}
+
+	// create a gameobject, attach a circlerenderer, then add it to the game
+	GameObject gameObject(Logger, 1, "CircleRendererObject");
+	gameObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	addGameObject(std::move(gameObject));
+	// TODO: Remove this test game object after testing is done
+	testGameObject = &gameObjects.front(); // store the first game object for testing purposes
+	Logger.Log("Game initialized with a test GameObject:", LogLevel::TRACE);
+	// log the test game object details
+	if (testGameObject)
+	{
+		Logger.Log("Test GameObject ID: " + std::to_string(testGameObject->GetId()), LogLevel::TRACE);
+		Logger.Log("Test GameObject Name: " + testGameObject->GetName(), LogLevel::TRACE);
+	}
+	else
+	{
+		Logger.Log("No test GameObject available.", LogLevel::WARNING);
 	}
 }
 
@@ -53,10 +73,7 @@ void Game::HandleEvents()
 	InputService.HandleEvents();
 }
 
-/// <summary>
-/// Handles user input and updates the running state if termination is requested.
-/// Also updates the mouse position.
-/// </summary>
+
 void Game::HandleInput()
 {
 	if (InputService.ShouldTerminate())
@@ -73,22 +90,41 @@ void Game::HandleInput()
 	mousePosition = InputService.GetMousePosition();
 }
 
-/// <summary>
-/// Updates the game state. (Currently empty.)
-/// </summary>
 void Game::Update()
 {
+	// for now, manually update the component position to the mouse position
+	testGameObject->SetPosition(mousePosition);
+
+	//iterate through game objects and update them
+	for (auto& gameObject : gameObjects)
+	{
+		Logger.Log("In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
+		gameObject.Update();
+	}
+
 }
 
-/// <summary>
-/// Renders the current game state, including drawing a circle at the mouse position.
-/// </summary>
-void Game::Render()
+void Game::ClearFrame()
 {
-	Renderer.Clear();
-	Renderer.DrawCircle(mousePosition, 50.0f);
-	Renderer.Render();
+	Renderer.Clear(Color::Black);
 }
+
+void Game::DisplayFrame()
+{
+	Renderer.DisplayFrame();
+}
+
+void Game::addGameObject(GameObject&& gameObject)
+{
+	gameObjects.push_front(std::move(gameObject));
+	Logger.Log("GameObject added with move semantics.");
+}
+
+//void Game::addGameObject(GameObject gameObject)
+//{
+//	gameObjects.push_front(std::move(gameObject));
+//	Logger.Log("GameObject added.");
+//}
 
 /// <summary>
 /// Starts the main game loop. Returns when the game closes.
@@ -97,10 +133,18 @@ void Game::RunMainLoop()
 {
 	while (Running)
 	{
+		ClearFrame();
 		HandleEvents();
 		HandleInput();
-		Render();
+		Update();
+		DisplayFrame();
 	}
+}
+
+void Game::clearGameObjects()
+{
+	gameObjects.clear();
+	Logger.Log("All game objects cleared.");
 }
 
 /// <summary>
@@ -108,7 +152,9 @@ void Game::RunMainLoop()
 /// </summary>
 void Game::Shutdown()
 {
+	clearGameObjects(); // clear all game objects
 	Renderer.Shutdown();
 	Logger.Log("Renderer shutdown.");
+
 	Running = false;
 }

@@ -1,17 +1,19 @@
 #pragma once
 #include "Component.h"
 #include "IRenderer.h"
+#include "ILogger.h"
 #include <memory>
 
-// TODO: INCOMPLETE
-class RenderComponent final : public Component
+class RenderComponent : public Component
 {
-	public:
+public:
+	~RenderComponent() override = default;
+
 	/// <summary>
 	/// Constructs a RenderComponent and associates it with a given GameObject.
 	/// </summary>
 	/// <param name="owner">Pointer to the GameObject that owns this Component.</param>
-		RenderComponent(IDrawableRenderer* renderer, GameObject* owner) : Component(owner), Renderer(*renderer) {}
+	RenderComponent(GameObject* owner, IDrawableRenderer& renderer, ILogger& logger) : Component(owner), Renderer(renderer), Logger(logger) {}
 	/// <summary>
 	/// Called when the component is added to a GameObject. Initializes rendering resources.
 	/// </summary>
@@ -25,10 +27,11 @@ class RenderComponent final : public Component
 	/// </summary>
 	void OnRemove() override;
 
-private:
+protected:
 	/// <summary>
 	/// stores a reference to the renderer used for drawing operations. Also stores texture and sprite information if needed.
 	/// </summary>
 	IDrawableRenderer& Renderer; // Reference to the renderer for drawing operations
+	ILogger& Logger;
 };
 

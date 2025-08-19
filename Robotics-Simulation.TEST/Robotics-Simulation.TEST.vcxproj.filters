@@ -8,7 +8,12 @@
     <ClCompile Include="SfmlRendererer-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject-TEST.cpp" />
+    <ClCompile Include="GameObject-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleRenderer-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

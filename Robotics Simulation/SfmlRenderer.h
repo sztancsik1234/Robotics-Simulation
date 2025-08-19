@@ -8,17 +8,17 @@
 
 class SfmlRenderer : public IRenderer
 {
-	public:
+public:
 	SfmlRenderer();
 	~SfmlRenderer() override;
 	void Initialize() override;
-	void Clear() override;
+	void Clear(Color color) override;
 	void DrawLine(Vector2 x, Vector2 y) override;
 	void DrawCircle(Vector2 p, float radius) override;
 	void DrawRectangle(Vector2 p1, float width, float height) override;
 	void DrawRectangle(Vector2 p1, Vector2 p2) override;
 	void DrawSprite(Vector2 p1, float width, float height, const char* texturePath) override;
-	void Render() override;
+	void DisplayFrame() override;
 	void Shutdown() override;
 
 private:
@@ -26,6 +26,9 @@ private:
 	sf::Clock clock;
 	float deltaTime = 0.0f;
 
-	friend class SfmlInputService; // Allow SfmlInputService to access private members if needed
+	// sf::color to color
+	sf::Color ConvertColor(Color color) const;
+
+	friend class SfmlInputService;
 };
 

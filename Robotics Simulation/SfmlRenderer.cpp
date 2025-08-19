@@ -28,9 +28,9 @@ void SfmlRenderer::Initialize()
 /// <summary>
 /// Clears the window with a black color.
 /// </summary>
-void SfmlRenderer::Clear()
+void SfmlRenderer::Clear(Color color = Color::Black)
 {
-	window.clear(sf::Color::Black); // Clear the window with a black color
+	window.clear(ConvertColor(color)); // Clear the window with a black color
 }
 
 /// <summary>
@@ -57,12 +57,15 @@ void SfmlRenderer::DrawLine(Vector2 start, Vector2 end)
 /// <param name="radius">The radius of the circle.</param>
 void SfmlRenderer::DrawCircle(Vector2 p, float radius)  
 {  
-	sf::CircleShape circle(radius);  
-	circle.setPosition(sf::Vector2f(p.x - radius, p.y - radius));  
-	circle.setFillColor(sf::Color::Transparent);  
-	circle.setOutlineColor(sf::Color::White);  
-	circle.setOutlineThickness(1.0f);  
-	window.draw(circle);  
+    sf::CircleShape circle(radius);
+    // Set the origin to the center of the circle instead of the default top-left
+	circle.setOrigin(sf::Vector2f({ radius, radius }));
+    // Now we can position it directly at the point without manual adjustment
+    circle.setPosition(sf::Vector2f(p.x, p.y));
+    circle.setFillColor(sf::Color::Transparent);  
+    circle.setOutlineColor(sf::Color::White);  
+    circle.setOutlineThickness(1.0f);  
+    window.draw(circle);  
 }
 
 /// <summary>
@@ -114,7 +117,7 @@ void SfmlRenderer::DrawSprite(Vector2 p1, float width, float height, const char*
 /// <summary>
 /// Displays the contents of the window.
 /// </summary>
-void SfmlRenderer::Render()
+void SfmlRenderer::DisplayFrame()
 {
 	window.display(); // Display the contents of the window
 }
@@ -127,3 +130,19 @@ void SfmlRenderer::Shutdown()
 	window.close(); // Close the window
 }
 
+sf::Color SfmlRenderer::ConvertColor(Color color) const
+{
+	switch (color)
+	{
+	case Color::Black: return sf::Color::Black;
+	case Color::White: return sf::Color::White;
+	case Color::Red: return sf::Color::Red;
+	case Color::Green: return sf::Color::Green;
+	case Color::Blue: return sf::Color::Blue;
+	case Color::Yellow: return sf::Color(255, 255, 0);
+	case Color::Magenta: return sf::Color(255, 0, 255);
+	case Color::Cyan: return sf::Color(0, 255, 255);
+	case Color::Transparent: return sf::Color(0, 0, 0, 0);
+	default: return sf::Color(0, 0, 0); // Default to black if unknown
+	}
+}
