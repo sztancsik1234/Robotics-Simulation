@@ -2,6 +2,7 @@
 #include "core/Component.h"
 #include "core/Color.inl"
 #include "graphics/CircleRenderer.h"
+#include "input/MouseFollowerComponent.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.
@@ -28,7 +29,7 @@ void Game::Initialize()
 {
 	InitializeRenderer();
 
-	addCircleRenderer();
+	addTestGameObject();
 
 	// log the test game object details
 	if (testGameObject)
@@ -58,11 +59,12 @@ void Game::InitializeRenderer()
 }
 
 // Adds a CircleRenderer component to a new GameObject and adds it to the game.
-void Game::addCircleRenderer()
+void Game::addTestGameObject()
 {
 	// create a gameobject, attach a circlerenderer, then add it to the game
-	GameObject gameObject(Logger, 1, "CircleRendererObject");
+	GameObject gameObject(Logger, 1, "TestObject");
 	gameObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	gameObject.EmplaceComponent<MouseFollowerComponent>(InputService);
 	addGameObject(std::move(gameObject));
 	// TODO: Remove this test game object after testing is done
 	testGameObject = &gameObjects.front(); // store the first game object for testing purposes

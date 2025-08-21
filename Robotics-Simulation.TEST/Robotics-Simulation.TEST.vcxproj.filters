@@ -15,12 +15,15 @@
       <Filter>Unit Test Files</Filter>
     </ClCompile>
     <ClCompile Include="Mocks.cpp" />
+    <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
+    <ClCompile Include="EmplaceComponent-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="MockRenderer.h" />
     <ClInclude Include="MockLogger.h" />
     <ClInclude Include="MockGameObject.h" />
+    <ClInclude Include="MockInputService.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Unit Test Files">

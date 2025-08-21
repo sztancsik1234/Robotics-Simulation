@@ -59,6 +59,6 @@ private:
 	void clearGameObjects();
 
 	void InitializeRenderer();
-	void addCircleRenderer();
+	void addTestGameObject();
 };
 
