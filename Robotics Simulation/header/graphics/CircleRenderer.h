@@ -1,6 +1,6 @@
 #pragma once  
 #include "RenderComponent.h"  
-#include "GameObject.h"  
+#include "core/GameObject.h"  
 
 /// <summary>  
 /// A mock class to render a circle on the screen.  

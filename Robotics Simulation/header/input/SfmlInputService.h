@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Vector2.h"
-#include "IInputService.h"
-#include "SfmlRenderer.h"
+#include "core/Vector2.h"
+#include "input/IInputService.h"
+#include "graphics/SfmlRenderer.h"
 #include <SFML/Window.hpp>
 
 /// <summary>

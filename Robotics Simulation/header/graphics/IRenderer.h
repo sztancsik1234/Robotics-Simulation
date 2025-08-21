@@ -1,6 +1,6 @@
 #pragma once
-#include "Vector2.h"
-#include "Color.inl"
+#include "core/Vector2.h"
+#include "core/Color.inl"
 
 struct IRendererBase { virtual ~IRendererBase() = default; };
 

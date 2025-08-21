@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GameObject.h"
+#include "core/GameObject.h"
 #include <memory>
 #include <string>
 #include "MockLogger.h"

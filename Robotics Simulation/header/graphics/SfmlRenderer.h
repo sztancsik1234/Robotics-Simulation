@@ -1,9 +1,9 @@
 #pragma once
-#include "IRenderer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
-#include "pch.h"
+#include "graphics/IRenderer.h"
+#include "core/Color.inl"
 
 
 class SfmlRenderer : public IRenderer
