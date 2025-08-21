@@ -1,8 +1,7 @@
 #pragma once
-#include "Component.h"
-#include "IRenderer.h"
-#include "ILogger.h"
-#include <memory>
+#include "core/Component.h"
+#include "graphics/IRenderer.h"
+#include "util/ILogger.h"
 
 class RenderComponent : public Component
 {

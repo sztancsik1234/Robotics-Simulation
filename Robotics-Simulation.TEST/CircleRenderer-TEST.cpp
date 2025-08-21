@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CircleRenderer.h"
+#include "graphics/CircleRenderer.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include "MockLogger.h"

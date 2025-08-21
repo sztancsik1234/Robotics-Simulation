@@ -1,5 +1,5 @@
 #pragma once
-#include "ISceneLoader.h"
+#include "util/ISceneLoader.h"
 
 class SceneLoader : public ISceneLoader
 {

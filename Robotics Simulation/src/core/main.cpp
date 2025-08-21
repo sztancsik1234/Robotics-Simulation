@@ -1,8 +1,8 @@
-#include "Game.h"
-#include "SfmlRenderer.h"
-#include "SceneLoader.h"
-#include "SfmlInputService.h"
-#include "ConsoleLogger.h"
+#include "core/Game.h"
+#include "graphics/SfmlRenderer.h"
+#include "util/SceneLoader.h"
+#include "input/SfmlInputService.h"
+#include "util/ConsoleLogger.h"
 
 int main()
 {

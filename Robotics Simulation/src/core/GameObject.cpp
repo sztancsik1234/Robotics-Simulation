@@ -1,7 +1,7 @@
 #include <type_traits>
 #include <concepts>
-#include "GameObject.h"
-#include "Component.h"
+#include "core/GameObject.h"
+#include "core/Component.h"
 
 
 

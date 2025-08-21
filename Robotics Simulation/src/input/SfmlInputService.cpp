@@ -1,5 +1,5 @@
-#include "SfmlInputService.h"
-#include "pch.h"
+#include "input/SfmlInputService.h"
+#include "util/Exceptions.h"
 
 SfmlInputService::SfmlInputService(SfmlRenderer& sfmlWindowProvider) :
 	window(sfmlWindowProvider.window)

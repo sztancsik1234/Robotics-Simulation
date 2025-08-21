@@ -1,7 +1,7 @@
-#include "Game.h"
-#include "Component.h"
-#include "Color.inl"
-#include "CircleRenderer.h"
+#include "core/Game.h"
+#include "core/Component.h"
+#include "core/Color.inl"
+#include "graphics/CircleRenderer.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.

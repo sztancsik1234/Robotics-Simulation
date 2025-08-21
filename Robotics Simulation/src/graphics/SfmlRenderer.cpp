@@ -1,6 +1,6 @@
-#include "pch.h"
-#include "SfmlRenderer.h"
 #include <SFML/Graphics.hpp>
+#include "graphics/SfmlRenderer.h"
+#include "util/Exceptions.h"
 
 /// <summary>
 /// Constructs an SfmlRenderer object, initializing the window, clock, and deltaTime.
