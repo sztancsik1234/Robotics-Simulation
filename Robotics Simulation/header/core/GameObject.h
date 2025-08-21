@@ -48,7 +48,7 @@ public:
 	/// </summary>
 	/// <typeparam name="...Args"></typeparam>
 	/// <typeparam name="ComponentType"></typeparam>
-	/// <param name="...args">Arguments for the constructor of the component. Pass everything it needs!</param>
+	/// <param name="...args">Arguments for the constructor of the component, except the pointer to owner, whichc is passed automatically</param>
 	/// <returns>Raw pointer to the component created</returns>
 	template<ComponentDerived ComponentType, typename ...Args>
 	ComponentType* EmplaceComponent(Args && ...args)
