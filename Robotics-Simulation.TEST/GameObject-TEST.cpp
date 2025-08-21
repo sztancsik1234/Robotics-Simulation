@@ -77,3 +77,154 @@ TEST(GameObjectTest, ResourceCleanup) {
     // After GameObject goes out of scope, all components should be destroyed
     EXPECT_EQ(destructorCallCount, 3);
 }
+
+TEST(GameObjectTest, EmplaceComponent)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    
+    // Act
+    auto* component = gameObject.EmplaceComponent<MockComponent>();
+    
+    // Assert
+    EXPECT_NE(component, nullptr);
+    EXPECT_TRUE(component->wasAdded); // OnAdd should be called
+    EXPECT_FALSE(component->wasUpdated); // Update hasn't been called yet
+}
+
+TEST(GameObjectTest, ComponentUpdate)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    auto* component = gameObject.EmplaceComponent<MockComponent>();
+    
+    // Verify component is not updated initially
+    EXPECT_FALSE(component->wasUpdated);
+    
+    // Act
+    gameObject.Update();
+    
+    // Assert
+    EXPECT_TRUE(component->wasUpdated);
+}
+
+TEST(GameObjectTest, GetComponent)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    auto* originalComponent = gameObject.EmplaceComponent<MockComponent>();
+    
+    // Act
+    auto* retrievedComponent = gameObject.GetComponent<MockComponent>();
+    
+    // Assert
+    EXPECT_EQ(retrievedComponent, originalComponent);
+}
+
+TEST(GameObjectTest, GetNonexistentComponent)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    // Don't add any MockComponent
+    
+    // Act & Assert
+    EXPECT_THROW(gameObject.GetComponent<MockComponent>(), ComponentNotFoundException);
+}
+
+TEST(GameObjectTest, MoveGameObjectWithComponents)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject sourceObj(logger, 1, "SourceObject");
+    auto* component = sourceObj.EmplaceComponent<MockComponent>();
+    
+    // Act
+    GameObject movedObj(std::move(sourceObj));
+    
+    // Assert
+    auto* retrievedComponent = movedObj.GetComponent<MockComponent>();
+    EXPECT_NE(retrievedComponent, nullptr);
+    EXPECT_EQ(retrievedComponent, component);
+    EXPECT_TRUE(retrievedComponent->wasAdded);
+    EXPECT_EQ(movedObj.GetId(), 1);
+    EXPECT_EQ(movedObj.GetName(), "SourceObject");
+    
+    // Source object should be reset to default state
+    EXPECT_EQ(sourceObj.GetId(), 0);
+    EXPECT_EQ(sourceObj.GetName(), "Unnamed");
+    EXPECT_THROW(sourceObj.GetComponent<MockComponent>(), ComponentNotFoundException);
+}
+
+TEST(GameObjectTest, SetAndGetPosition)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    Vector2 position(10.0f, 20.0f);
+    
+    // Act
+    gameObject.SetPosition(position);
+    
+    // Assert
+    EXPECT_EQ(gameObject.GetPosition().x, position.x);
+    EXPECT_EQ(gameObject.GetPosition().y, position.y);
+}
+
+TEST(GameObjectTest, GetIdAndName)
+{
+    // Arrange
+    MockLogger logger;
+    int id = 42;
+    std::string name = "GameObjectName";
+    
+    // Act
+    GameObject gameObject(logger, id, name);
+    
+    // Assert
+    EXPECT_EQ(gameObject.GetId(), id);
+    EXPECT_EQ(gameObject.GetName(), name);
+}
+
+TEST(GameObjectTest, AddMultipleComponentsOfSameType)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    
+    // Act
+    auto* first = gameObject.EmplaceComponent<MockComponent>();
+    auto* second = gameObject.EmplaceComponent<MockComponent>();
+    
+    // Assert
+    EXPECT_NE(first, nullptr);
+    EXPECT_NE(second, nullptr);
+    EXPECT_NE(first, second);
+    EXPECT_TRUE(first->wasAdded);
+    EXPECT_TRUE(second->wasAdded);
+    
+    // GetComponent should return the second one added
+    auto* retrieved = gameObject.GetComponent<MockComponent>();
+    EXPECT_EQ(retrieved, second);
+}
+
+TEST(GameObjectTest, AddComponentDirectly)
+{
+    // Arrange
+    MockLogger logger;
+    GameObject gameObject(logger);
+    auto component = std::make_unique<MockComponent>(&gameObject);
+    
+    // Act
+    gameObject.AddComponent(std::move(component));
+    
+    // Assert
+    auto* retrieved = gameObject.GetComponent<MockComponent>();
+    EXPECT_NE(retrieved, nullptr);
+    EXPECT_TRUE(retrieved->wasAdded);
+}
+
+
