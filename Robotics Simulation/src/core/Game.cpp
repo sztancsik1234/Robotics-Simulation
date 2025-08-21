@@ -26,6 +26,24 @@ Game::Game(IRenderer& renderer,
 /// </summary>
 void Game::Initialize()
 {
+	InitializeRenderer();
+
+	addCircleRenderer();
+
+	// log the test game object details
+	if (testGameObject)
+	{
+		Logger.Log("Test GameObject ID: " + std::to_string(testGameObject->GetId()), LogLevel::TRACE);
+		Logger.Log("Test GameObject Name: " + testGameObject->GetName(), LogLevel::TRACE);
+	}
+	else
+	{
+		Logger.Log("No test GameObject available.", LogLevel::WARNING);
+	}
+}
+
+void Game::InitializeRenderer()
+{
 	try
 	{
 		Renderer.Initialize();
@@ -37,7 +55,11 @@ void Game::Initialize()
 		Logger.Log(std::string("Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
 		Running = false;
 	}
+}
 
+// Adds a CircleRenderer component to a new GameObject and adds it to the game.
+void Game::addCircleRenderer()
+{
 	// create a gameobject, attach a circlerenderer, then add it to the game
 	GameObject gameObject(Logger, 1, "CircleRendererObject");
 	gameObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
@@ -45,16 +67,6 @@ void Game::Initialize()
 	// TODO: Remove this test game object after testing is done
 	testGameObject = &gameObjects.front(); // store the first game object for testing purposes
 	Logger.Log("Game initialized with a test GameObject:", LogLevel::TRACE);
-	// log the test game object details
-	if (testGameObject)
-	{
-		Logger.Log("Test GameObject ID: " + std::to_string(testGameObject->GetId()), LogLevel::TRACE);
-		Logger.Log("Test GameObject Name: " + testGameObject->GetName(), LogLevel::TRACE);
-	}
-	else
-	{
-		Logger.Log("No test GameObject available.", LogLevel::WARNING);
-	}
 }
 
 /// <summary>

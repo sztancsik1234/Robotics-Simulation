@@ -28,6 +28,7 @@ private:
 	IInputService& InputService;
 	ILogger& Logger;
 
+	// TODO: remove test variables
 	// TEST variable. Temporary
 	Vector2 mousePosition;
 	// TEST variable. Temporary
@@ -56,5 +57,8 @@ private:
 	// void addGameObject(GameObject gameObject);
 
 	void clearGameObjects();
+
+	void InitializeRenderer();
+	void addCircleRenderer();
 };
 
