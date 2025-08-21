@@ -1,7 +1,7 @@
 // Unit tests for the SfmlRenderer class
 #include "pch.h"
-#include "SfmlRenderer.h"
-#include "Vector2.h"
+#include "graphics/SfmlRenderer.h"
+#include "core/Vector2.h"
 
 // Test fixture for SfmlRenderer
 class SfmlRendererTest : public ::testing::Test {

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Vector2.h"
+#include "core/Vector2.h"
 
 TEST(NewVector2Case, ConversionTest) {
 	Vector2 v1(1.0f, 2.0f);

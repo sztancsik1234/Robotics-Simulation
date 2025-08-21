@@ -1,6 +1,6 @@
-#include "RenderComponent.h"
-#include "GameObject.h"
-#include "Exceptions.h"
+#include "graphics/RenderComponent.h"
+#include "core/GameObject.h"
+#include "util/Exceptions.h"
 
 
 void RenderComponent::OnAdd()

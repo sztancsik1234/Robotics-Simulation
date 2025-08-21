@@ -1,12 +1,11 @@
 #pragma once
 
 #include <forward_list>
-
-#include "IRenderer.h"
-#include "ISceneLoader.h"
-#include "IInputService.h"
-#include "ILogger.h"
-#include "GameObject.h"
+#include "graphics/IRenderer.h"
+#include "util/ISceneLoader.h"
+#include "input/IInputService.h"
+#include "util/ILogger.h"
+#include "core/GameObject.h"
 
 class Game
 {

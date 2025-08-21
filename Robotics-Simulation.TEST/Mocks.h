@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IRenderer.h"
-#include "ILogger.h"
-#include "GameObject.h"
-#include "Vector2.h"
 #include <string>
+#include "graphics/IRenderer.h"
+#include "util/ILogger.h"
+#include "core/GameObject.h"
+#include "core/Vector2.h"
 
 
 

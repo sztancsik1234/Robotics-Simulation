@@ -1,5 +1,5 @@
 #pragma once
-#include "IRenderer.h"
+#include "graphics/IRenderer.h"
 
 
 // mock renderer for testing

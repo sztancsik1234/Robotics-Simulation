@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "core/GameObject.h"
 
 // Mock GameObject for testing
 class MockGameObject : public GameObject {

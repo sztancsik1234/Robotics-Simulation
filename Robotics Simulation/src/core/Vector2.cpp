@@ -1,4 +1,4 @@
-#include "Vector2.h"
+#include "core/Vector2.h"
 
 // Overload addition operator
 Vector2 operator+(Vector2 const& left, Vector2 const& right) {
