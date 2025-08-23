@@ -124,25 +124,25 @@ unsigned int SfmlRenderer::LoadTexture()
 	return emplacedID;
 }
 
-void SfmlRenderer::DrawSprite(Vector2 p1, int id, Vector2 scale)
+void SfmlRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 scale)
 {
 	try
 	{
-		sf::Sprite sprite(textures[id]);
-		sprite.setPosition(p1);
+		sf::Sprite sprite(textures[textureId]);
+		sprite.setPosition(position);
 		sprite.setScale(scale);
 		window.draw(sprite);
 	}
 	catch (const std::exception&)
 	{
-		throw TextureLoadException(std::format("[SfmlRenderer::DrawSprite] Sprite from Texture with id={} could not be created!", id));
+		throw TextureLoadException(std::format("[SfmlRenderer::DrawSprite] Sprite from Texture with id={} could not be created!", textureId));
 	}
 
 }
 
-void SfmlRenderer::UnloadTexture(int id)
+void SfmlRenderer::UnloadTexture(unsigned int textureId)
 {
-	textures.erase(id);
+	textures.erase(textureId);
 }
 
 

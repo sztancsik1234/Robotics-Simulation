@@ -53,6 +53,15 @@ void GameObject::AddComponent(std::unique_ptr<Component> component)
 	componentList.push_front(std::move(component));
 }
 
+void GameObject::RemoveComponent(Component* component)
+{
+    throw NotImplementedException();
+    // find component
+        // when found, call OnRemove()
+        // remove
+        // return;
+}
+
 void GameObject::Update()
 {
     Logger.Log("In GameObject::Update:\tGameobject.position: (" + std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ")", LogLevel::TRACE);

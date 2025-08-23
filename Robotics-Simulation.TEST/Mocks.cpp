@@ -28,8 +28,9 @@ void MockRenderer::DrawRectangle(Vector2 p1, Vector2 p2) {
     throw NotImplementedException();
 }
 
-void MockRenderer::DrawSprite(Vector2 position, int textureId, Vector2 scale)
+void MockRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 scale)
 {
+	drawSpriteCalled = true;
 	lastPosition = position;
 	lastTextureId = textureId;
 	lastScale = scale;
@@ -37,17 +38,22 @@ void MockRenderer::DrawSprite(Vector2 position, int textureId, Vector2 scale)
 
 unsigned int MockRenderer::LoadTexture(const char* filePath)
 {
+    if (std::string(filePath) != "Test texture.jpg") {
+        throw TextureLoadException("Failed to load texture from path: " + std::string(filePath));
+	}
 	loadTextureCalled = true;
-	return 1; // Return a dummy texture ID
+	lastTextureId = DummyTextureId;
+	return DummyTextureId; // Return a dummy texture ID
 }
 
 unsigned int MockRenderer::LoadTexture()
 {
 	loadTextureCalled = true;
-    return 0;
+	lastTextureId = DummyDefaultTextureId;
+    return MockRenderer::DummyDefaultTextureId;
 }
 
-void MockRenderer::UnloadTexture(int textureId)
+void MockRenderer::UnloadTexture(unsigned int textureId)
 {
 	unloadTextureCalled = true;
 }
