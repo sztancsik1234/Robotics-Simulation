@@ -7,6 +7,7 @@ class ConsoleLogger : public ILogger
 public:
 	explicit ConsoleLogger(LogLevel minLevel) : currentLogLevel(minLevel) {}
 
+	// TODO: Can be refactored into  template function
 	void Log(const std::string& message, LogLevel level = LogLevel::INFO) override
 	{
 		if (level < currentLogLevel)

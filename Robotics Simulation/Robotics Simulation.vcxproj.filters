@@ -48,6 +48,9 @@
     <ClCompile Include="src\input\MouseFollowerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\SpriteRendererComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Game.h">
@@ -96,6 +99,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\input\MouseFollowerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\graphics\SpriteRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

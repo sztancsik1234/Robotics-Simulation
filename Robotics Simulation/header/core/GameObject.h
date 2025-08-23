@@ -4,9 +4,9 @@
 #include "Vector2.h"
 #include <forward_list>
 #include <memory>
-#include "core/Component.h"
 #include "util/ILogger.h"
 #include "util/Exceptions.h"
+#include "Component.h"
 
 class Component;
 class ComponentNotFoundException;

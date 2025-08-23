@@ -28,8 +28,28 @@ void MockRenderer::DrawRectangle(Vector2 p1, Vector2 p2) {
     throw NotImplementedException();
 }
 
-void MockRenderer::DrawSprite(Vector2 position, float width, float height, const char* texturePath) {
-    throw NotImplementedException();
+void MockRenderer::DrawSprite(Vector2 position, int textureId, Vector2 scale)
+{
+	lastPosition = position;
+	lastTextureId = textureId;
+	lastScale = scale;
+}
+
+unsigned int MockRenderer::LoadTexture(const char* filePath)
+{
+	loadTextureCalled = true;
+	return 1; // Return a dummy texture ID
+}
+
+unsigned int MockRenderer::LoadTexture()
+{
+	loadTextureCalled = true;
+    return 0;
+}
+
+void MockRenderer::UnloadTexture(int textureId)
+{
+	unloadTextureCalled = true;
 }
 
 // MockLogger implementation
