@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <format>
 
 enum class LogLevel
 {

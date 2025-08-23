@@ -147,6 +147,7 @@
     <ClCompile Include="src\core\Game.cpp" />
     <ClInclude Include="header\graphics\CircleRenderer.h" />
     <ClInclude Include="header\core\Component.h" />
+    <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="src\core\GameObject.cpp" />
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\graphics\RenderComponent.cpp" />
+    <ClCompile Include="src\graphics\SpriteRendererComponent.cpp" />
     <ClCompile Include="src\input\MouseFollowerComponent.cpp" />
     <ClCompile Include="src\util\SceneLoader.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
