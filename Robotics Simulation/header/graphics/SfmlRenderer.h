@@ -21,8 +21,8 @@ public:
 	unsigned int LoadTexture(const char* filePath) override;
 	unsigned int LoadTexture() override; // Fallback if path could not be loaded
 										// not overriding? Why?
-	void DrawSprite(Vector2 p1, int id, Vector2 scale = { 1.f, 1.f }) override;
-	void UnloadTexture(int id) override;
+	void DrawSprite(Vector2 position, unsigned int textureId, Vector2 scale = { 1.f, 1.f }) override;
+	void UnloadTexture(unsigned int textureId) override;
 	void DisplayFrame() override;
 	void Shutdown() override;
 

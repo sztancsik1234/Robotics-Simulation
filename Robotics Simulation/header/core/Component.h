@@ -41,10 +41,10 @@ public:
 	virtual void OnRemove() = 0;
 
 	virtual GameObject* GetOwner() const { return Owner; }
+	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
 private:
 	GameObject* Owner;
 
-	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
 
 };
 

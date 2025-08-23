@@ -17,6 +17,7 @@
     <ClCompile Include="Mocks.cpp" />
     <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
     <ClCompile Include="EmplaceComponent-TEST.cpp" />
+    <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

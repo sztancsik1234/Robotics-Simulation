@@ -36,8 +36,8 @@ struct ISpriteRenderer : IRendererBase
     // not sure about the return type here
     virtual unsigned int LoadTexture(const char* filePath) = 0;
     virtual unsigned int LoadTexture() = 0;
-    virtual void DrawSprite(Vector2 position, int textureId, Vector2 scale = { 1.f, 1.f }) = 0;
-	virtual void UnloadTexture(int textureId) = 0;
+    virtual void DrawSprite(Vector2 position, unsigned int textureId, Vector2 scale = { 1.f, 1.f }) = 0;
+	virtual void UnloadTexture(unsigned int textureId) = 0;
 };
 
 struct IDrawableRenderer :

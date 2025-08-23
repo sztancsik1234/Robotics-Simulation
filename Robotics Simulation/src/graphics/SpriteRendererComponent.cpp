@@ -28,4 +28,5 @@ void SpriteRenderComponent::Update()
 
 void SpriteRenderComponent::OnRemove()
 {
+
 }

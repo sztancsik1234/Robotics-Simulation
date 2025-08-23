@@ -15,6 +15,9 @@ public:
 	void Update() override;
 	void OnRemove() override;
 
+	const char* GetTexturePath() const { return TexturePath; }
+	const unsigned int GetTextureId() const { return TextureId; }
+
 private:
 	ISpriteRenderer& Renderer;
 	unsigned int TextureId = 0;
