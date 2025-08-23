@@ -153,6 +153,7 @@
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
+    <ClInclude Include="header\util\FileLogger.h" />
     <ClInclude Include="header\util\ILogger.h" />
     <ClCompile Include="src\core\GameObject.cpp" />
     <ClCompile Include="src\core\main.cpp" />
