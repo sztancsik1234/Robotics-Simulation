@@ -28,3 +28,11 @@ TEST_F(SfmlRendererTest, DrawCircleDoesNotThrow) {
     renderer.Shutdown();
 }
 
+TEST_F(SfmlRendererTest, LoadTextureAssignsUniqueIds) {
+    renderer.Initialize();
+    unsigned int textureId1 = renderer.LoadTexture();
+    unsigned int textureId2 = renderer.LoadTexture();
+    EXPECT_NE(textureId1, textureId2);
+    renderer.Shutdown();
+}
+
