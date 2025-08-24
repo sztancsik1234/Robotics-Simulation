@@ -23,10 +23,11 @@ void SpriteRenderComponent::Update()
 		Logger.Log("[SpriteRenderComponent] TextureId is 0, sprite will not be drawn!", LogLevel::WARNING);
 		return;
 	}
-	Renderer.DrawSprite(GetOwner()->GetPosition(), TextureId);
+	Renderer.DrawSprite(GetOwner()->GetPosition(), TextureId, Size, {0.5f, 0.5f});
 }
 
 void SpriteRenderComponent::OnRemove()
 {
-
+	Renderer.UnloadTexture(TextureId);
+	Logger.Log("[SpriteRenderComponent] Texture unloaded.", LogLevel::INFO);
 }
