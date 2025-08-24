@@ -28,12 +28,13 @@ void MockRenderer::DrawRectangle(Vector2 p1, Vector2 p2) {
     throw NotImplementedException();
 }
 
-void MockRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 scale)
+void MockRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 size, const Vector2 SpriteAncor)
 {
 	drawSpriteCalled = true;
 	lastPosition = position;
 	lastTextureId = textureId;
-	lastScale = scale;
+	lastSize = size;
+	lastAncor = SpriteAncor;
 }
 
 unsigned int MockRenderer::LoadTexture(const char* filePath)
