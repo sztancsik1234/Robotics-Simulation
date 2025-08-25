@@ -8,7 +8,13 @@
 class CircleRenderer : public RenderComponent  
 {  
 public:  
-    using RenderComponent::RenderComponent;  
+    CircleRenderer(GameObject* owner, IPrimitiveRenderer& renderer, ILogger& logger) :
+		RenderComponent(owner, logger),
+        Renderer(renderer)
+    {}
 
     void Update() override;
+
+private:
+	IPrimitiveRenderer& Renderer;
 };

@@ -1,7 +1,7 @@
 #include "core/Game.h"
 #include "core/Component.h"
 #include "core/Color.inl"
-#include "graphics/CircleRenderer.h"
+#include "graphics/SpriteRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 
 /// <summary>
@@ -63,7 +63,7 @@ void Game::addTestGameObject()
 {
 	// create a gameobject, attach a circlerenderer, then add it to the game
 	GameObject gameObject(Logger, 1, "TestObject");
-	gameObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	gameObject.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Test texture.jpg", Vector2{200.f, 200.f});
 	gameObject.EmplaceComponent<MouseFollowerComponent>(InputService);
 	addGameObject(std::move(gameObject));
 	// TODO: Remove this test game object after testing is done

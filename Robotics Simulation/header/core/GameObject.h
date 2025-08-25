@@ -4,9 +4,9 @@
 #include "Vector2.h"
 #include <forward_list>
 #include <memory>
-#include "core/Component.h"
 #include "util/ILogger.h"
 #include "util/Exceptions.h"
+#include "Component.h"
 
 class Component;
 class ComponentNotFoundException;
@@ -66,6 +66,8 @@ public:
 	/// </summary>
 	/// <param name="component">A unique pointer to the component to be added.</param>
 	void AddComponent(std::unique_ptr<Component> component);
+
+	void RemoveComponent(Component* component);
 	
 	/// <summary>
 	/// Updates the game object by calling Update on each component. Called from the Game class. If a derived class wants to implement it's own update logic, it should just add a component that implements it.

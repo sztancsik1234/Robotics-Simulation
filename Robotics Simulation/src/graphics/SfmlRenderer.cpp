@@ -101,18 +101,61 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 	window.draw(rectangle);
 }
 
-/// <summary>
-/// Draws a sprite at the specified position with the given width and height.
-/// Not implemented.
-/// </summary>
-/// <param name="p1">The position to draw the sprite.</param>
-/// <param name="width">The width of the sprite.</param>
-/// <param name="height">The height of the sprite.</param>
-/// <param name="texturePath">The path to the texture file.</param>
-void SfmlRenderer::DrawSprite(Vector2 p1, float width, float height, const char* texturePath)
+unsigned int SfmlRenderer::LoadTexture(const char* filePath)
 {
-	throw NotImplementedException();
+	sf::Texture texture;
+	if (!texture.loadFromFile(filePath)) {
+		throw TextureLoadException(std::format("Failed to load texture from path: {}", filePath));
+	}
+
+	auto emplacedID = ++TextureKeyCounter;
+	textures.emplace(emplacedID, std::move(texture));
+	return emplacedID;
+	
 }
+
+unsigned int SfmlRenderer::LoadTexture()
+{
+	sf::Image image(sf::Vector2u(200, 200), sf::Color::Magenta);
+	sf::Texture texture(image);
+
+	auto emplacedID = ++TextureKeyCounter;
+	textures.emplace(emplacedID, std::move(texture));
+	return emplacedID;
+}
+
+/// <summary>
+/// Draws a sprite at a specified position with a given texture, scale, and anchor point using SFML.
+/// </summary>
+/// <param name="position">The position on the screen where the sprite will be drawn.</param>
+/// <param name="textureId">The identifier of the texture to use for the sprite.</param>
+/// <param name="scale">The size of the drawn sprite in pixels.</param>
+/// <param name="SpriteAncor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
+void SfmlRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 size, const Vector2 SpriteAncor)
+{
+	try
+	{
+		const auto& texture = textures.at(textureId);
+		sf::Sprite sprite(texture);
+		const sf::Vector2u textureSize = texture.getSize();
+		const Vector2 ancourPixel = { textureSize.x * SpriteAncor.x, textureSize.y * SpriteAncor.y };
+		sprite.setOrigin(ancourPixel);
+		sprite.setPosition(position);
+		sprite.setScale({ size.x / textureSize.x, size.y / textureSize.y });
+		window.draw(sprite);
+	}
+	catch (const std::exception&)
+	{
+		throw TextureLoadException(std::format("[SfmlRenderer::DrawSprite] Sprite from Texture with id={} could not be created!", textureId));
+	}
+}
+
+
+void SfmlRenderer::UnloadTexture(unsigned int textureId)
+{
+	textures.erase(textureId);
+}
+
 
 /// <summary>
 /// Displays the contents of the window.

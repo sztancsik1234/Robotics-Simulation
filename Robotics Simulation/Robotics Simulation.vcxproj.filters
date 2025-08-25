@@ -48,6 +48,9 @@
     <ClCompile Include="src\input\MouseFollowerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\SpriteRendererComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Game.h">
@@ -98,10 +101,18 @@
     <ClInclude Include="header\input\MouseFollowerComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\graphics\SpriteRendererComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="header\core\Color.inl">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Test texture.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
