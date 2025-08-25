@@ -2,6 +2,7 @@
 #include "core/Component.h"
 #include "core/Color.inl"
 #include "graphics/SpriteRendererComponent.h"
+#include "graphics/CircleRenderer.h"
 #include "input/MouseFollowerComponent.h"
 
 /// <summary>
@@ -29,18 +30,7 @@ void Game::Initialize()
 {
 	InitializeRenderer();
 
-	addTestGameObject();
-
-	// log the test game object details
-	if (testGameObject)
-	{
-		Logger.Log("Test GameObject ID: " + std::to_string(testGameObject->GetId()), LogLevel::TRACE);
-		Logger.Log("Test GameObject Name: " + testGameObject->GetName(), LogLevel::TRACE);
-	}
-	else
-	{
-		Logger.Log("No test GameObject available.", LogLevel::WARNING);
-	}
+	LoadInitialScene();
 }
 
 void Game::InitializeRenderer()
@@ -58,17 +48,29 @@ void Game::InitializeRenderer()
 	}
 }
 
-// Adds a CircleRenderer component to a new GameObject and adds it to the game.
+// A test function to load a simple component with a circleRenderer
 void Game::addTestGameObject()
 {
-	// create a gameobject, attach a circlerenderer, then add it to the game
-	GameObject gameObject(Logger, 1, "TestObject");
-	gameObject.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Test texture.jpg", Vector2{200.f, 200.f});
-	gameObject.EmplaceComponent<MouseFollowerComponent>(InputService);
-	addGameObject(std::move(gameObject));
-	// TODO: Remove this test game object after testing is done
-	testGameObject = &gameObjects.front(); // store the first game object for testing purposes
-	Logger.Log("Game initialized with a test GameObject:", LogLevel::TRACE);
+	// add a test game object, add a circle renderer, and a mouseFollower component to it
+	GameObject testObject(Logger, 1, "TestObject");
+	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
+	addGameObject(std::move(testObject));
+}
+
+// A temporary function to add a couple of game objects to the game for testing purposes
+void Game::LoadInitialScene()
+{
+	// load background
+	GameObject background(Logger, 1, "Background");												// TODO: Get the window size from the renderer, and use that for background size
+	background.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Concrete.jpg", Vector2{ 800.f, 800.f });
+
+	GameObject Crate(Logger, 2, "Crate");
+	Crate.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Crate.png", Vector2{ 100.f, 100.f }, Vector2{0.5f, 0.5f});
+	Crate.EmplaceComponent<MouseFollowerComponent>(InputService);
+	
+	addGameObject(std::move(Crate));
+	addGameObject(std::move(background));
 }
 
 /// <summary>
@@ -101,14 +103,10 @@ void Game::HandleInput()
 		Logger.Log("ESCAPE key pressed. Exiting game.");
 		Running = false;
 	}
-	mousePosition = InputService.GetMousePosition();
 }
 
 void Game::Update()
 {
-	// for now, manually update the component position to the mouse position
-	testGameObject->SetPosition(mousePosition);
-
 	//iterate through game objects and update them
 	for (auto& gameObject : gameObjects)
 	{
