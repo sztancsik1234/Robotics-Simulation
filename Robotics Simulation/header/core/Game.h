@@ -30,9 +30,6 @@ private:
 
 	// TODO: remove test variables
 	// TEST variable. Temporary
-	Vector2 mousePosition;
-	// TEST variable. Temporary
-	GameObject* testGameObject = nullptr;
 	std::forward_list<GameObject> gameObjects;
 
 	/// <summary>
@@ -60,5 +57,6 @@ private:
 
 	void InitializeRenderer();
 	void addTestGameObject();
+	void LoadInitialScene();
 };
 

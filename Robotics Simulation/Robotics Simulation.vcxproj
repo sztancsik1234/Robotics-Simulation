@@ -141,10 +141,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Sceneloader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClInclude Include="header\core\Sceneloader.h" />
     <ClInclude Include="header\graphics\CircleRenderer.h" />
     <ClInclude Include="header\core\Component.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
@@ -177,6 +179,8 @@
     <None Include="header\core\Color.inl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\Concrete.jpg" />
+    <Image Include="assets\Crate.png" />
     <Image Include="assets\Test texture.jpg">
       <DeploymentContent>false</DeploymentContent>
     </Image>
