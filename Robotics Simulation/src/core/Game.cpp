@@ -48,6 +48,7 @@ void Game::InitializeRenderer()
 	}
 }
 
+// A test function to load a simple component with a circleRenderer
 void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it

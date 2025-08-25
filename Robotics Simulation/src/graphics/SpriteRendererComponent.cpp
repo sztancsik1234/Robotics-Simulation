@@ -23,6 +23,7 @@ void SpriteRenderComponent::Update()
 		Logger.Log("[SpriteRenderComponent] TextureId is 0, sprite will not be drawn!", LogLevel::WARNING);
 		return;
 	}
+  
 	Renderer.DrawSprite(GetOwner()->GetPosition(), TextureId, Size, SpriteAncor);
 }
 
