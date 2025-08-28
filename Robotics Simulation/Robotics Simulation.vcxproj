@@ -153,13 +153,15 @@
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
+    <ClInclude Include="header\util\FileLogger.h" />
     <ClInclude Include="header\util\ILogger.h" />
     <ClCompile Include="src\core\GameObject.cpp" />
     <ClCompile Include="src\core\main.cpp" />
     <ClCompile Include="src\graphics\RenderComponent.cpp" />
     <ClCompile Include="src\graphics\SpriteRendererComponent.cpp" />
     <ClCompile Include="src\input\MouseFollowerComponent.cpp" />
-    <ClCompile Include="src\util\SceneLoader.cpp" />
+    <ClCompile Include="src\util\FileLogger.cpp" />
+    <ClCompile Include="src\util\ILogger.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
   </ItemGroup>

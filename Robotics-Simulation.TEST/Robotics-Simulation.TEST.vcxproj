@@ -64,7 +64,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>"$(SolutionDir)Robotics Simulation\$(Platform)\$(ConfigurationName)";$(SolutionDir)libraries\lib;$(SolutionDir)libraries\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRenderer.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SceneLoader.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRenderer.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SceneLoader.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,7 +100,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalLibraryDirectories>"$(SolutionDir)Robotics Simulation\$(Platform)\$(ConfigurationName)";$(SolutionDir)libraries\lib;$(SolutionDir)libraries\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRenderer.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SceneLoader.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRenderer.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SceneLoader.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

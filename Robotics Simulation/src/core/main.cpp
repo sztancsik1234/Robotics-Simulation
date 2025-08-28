@@ -3,6 +3,7 @@
 #include "util/SceneLoader.h"
 #include "input/SfmlInputService.h"
 #include "util/ConsoleLogger.h"
+#include "util/FileLogger.h"
 
 int main()
 {
@@ -11,6 +12,7 @@ int main()
 	SceneLoader		 sceneLoader;
 	SfmlInputService inputService(renderer);
 	ConsoleLogger	 logger(LogLevel::INFO);
+	//FileLogger 		 fileLogger("logs", LogLevel::TRACE);
 
 	//create the game object with dependencies
 	Game game(renderer, sceneLoader, inputService, logger);
