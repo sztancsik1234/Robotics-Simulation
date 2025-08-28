@@ -5,34 +5,19 @@
 class ConsoleLogger : public ILogger
 {
 public:
-	explicit ConsoleLogger(LogLevel minLevel) : currentLogLevel(minLevel) {}
+	explicit ConsoleLogger(LogLevel minLevel) : ILogger(minLevel) {}
 
-	// TODO: Can be refactored into  template function
-	void Log(const std::string& message, LogLevel level = LogLevel::INFO) override
+	// Can not be refactored into template function easily.
+	void Log(const std::string message, LogLevel level = LogLevel::INFO) override
 	{
-		if (level < currentLogLevel)
+		if (level < MinLogLevel)
 			return;
 
-		switch (level)
-		{
-			using enum LogLevel;
-			case TRACE:
-				std::cout << "[TRACE] " << message << std::endl;
-				break;
-			case INFO:
-				std::cout << "[INFO] " << message << std::endl;
-				break;
-			case WARNING:
-				std::cout << "[WARNING] " << message << std::endl;
-				break;
-			case ERROR:
-				std::cerr << "[ERROR] " << message << std::endl;
-				break;
-			default:
-				std::cerr << "[UNKNOWN] " << message << std::endl;
-				break;
-		}
+		
+		std::cout 
+			<< LogLevelToString(level) << "\t" 
+			<< GetTimestamp() << ": " 
+			<< message << std::endl;
+		
 	}
-private:
-	LogLevel currentLogLevel;
 };
