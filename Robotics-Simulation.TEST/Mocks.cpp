@@ -60,7 +60,7 @@ void MockRenderer::UnloadTexture(unsigned int textureId)
 }
 
 // MockLogger implementation
-void MockLogger::Log(const std::string& message, LogLevel level) {
+void MockLogger::Log(const std::string message, LogLevel level) {
     lastMessage = message;
     lastLevel = level;
     logCalled = true;
