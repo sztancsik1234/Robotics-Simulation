@@ -8,10 +8,10 @@
 int main()
 {
 	//instantiate the renderer and scene loader
-	SfmlRenderer	 renderer;
+	ConsoleLogger	 logger(LogLevel::INFO);
+	SfmlRenderer	 renderer(logger);
 	SceneLoader		 sceneLoader;
 	SfmlInputService inputService(renderer);
-	ConsoleLogger	 logger(LogLevel::INFO);
 	//FileLogger 		 fileLogger("logs", LogLevel::TRACE);
 
 	//create the game object with dependencies

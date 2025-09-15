@@ -7,7 +7,7 @@
 
 /// <summary>
 /// Easy input service to use if an SFML renderer is used.
-/// using this before the renderer is initialized will cause a null-reference exception.
+/// <Remark>using this before the renderer is initialized will cause a null-reference exception.</Remark>
 /// </summary>
 class SfmlInputService : public IInputService
 {
@@ -16,6 +16,7 @@ public:
 	explicit SfmlInputService(SfmlRenderer& sfmlWindowProvider);
 
 	// implementation of IInputService methods
+
 	bool IsKeyPressed(KeyCode key) override;
 	Vector2 GetMousePosition() override;
 	void HandleEvents() override;

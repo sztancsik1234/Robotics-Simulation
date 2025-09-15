@@ -5,8 +5,8 @@
 /// <summary>
 /// Constructs an SfmlRenderer object, initializing the window, clock, and deltaTime.
 /// </summary>
-SfmlRenderer::SfmlRenderer()
-	: window(), clock(), deltaTime(0.0f)
+SfmlRenderer::SfmlRenderer(ILogger& logger)
+	: Logger(logger), window(), clock(), deltaTime(0.0f)
 {}
 
 /// <summary>
@@ -14,10 +14,6 @@ SfmlRenderer::SfmlRenderer()
 /// </summary>
 SfmlRenderer::~SfmlRenderer() = default;
 
-/// <summary>
-/// Initializes the SFML window with a specific size and title.
-/// Sets the frame rate limit to 60 FPS.
-/// </summary>
 void SfmlRenderer::Initialize()
 {
 	// Create a window with a specific size and title
@@ -25,19 +21,11 @@ void SfmlRenderer::Initialize()
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 
-/// <summary>
-/// Clears the window with a black color.
-/// </summary>
 void SfmlRenderer::Clear(Color color = Color::Black)
 {
 	window.clear(ConvertColor(color)); // Clear the window with a black color
 }
 
-/// <summary>
-/// Draws a line between two points.
-/// </summary>
-/// <param name="start">The starting point of the line.</param>
-/// <param name="end">The endpoint of the line.</param>
 void SfmlRenderer::DrawLine(Vector2 start, Vector2 end)
 {
 	throw NotImplementedException();
@@ -49,12 +37,6 @@ void SfmlRenderer::DrawLine(Vector2 start, Vector2 end)
     //window.draw(line, 2, sf::Lines);
 }
 
-/// <summary>
-/// Draws a circle at the specified position with the given radius.
-/// The circle is outlined in white and filled transparent.
-/// </summary>
-/// <param name="p">The center position of the circle.</param>
-/// <param name="radius">The radius of the circle.</param>
 void SfmlRenderer::DrawCircle(Vector2 p, float radius)  
 {  
     sf::CircleShape circle(radius);
@@ -68,13 +50,6 @@ void SfmlRenderer::DrawCircle(Vector2 p, float radius)
     window.draw(circle);  
 }
 
-/// <summary>
-/// Draws a rectangle at the specified position with the given width and height.
-/// The rectangle is outlined in white and filled transparent.
-/// </summary>
-/// <param name="p1">The top-left position of the rectangle.</param>
-/// <param name="width">The width of the rectangle.</param>
-/// <param name="height">The height of the rectangle.</param>
 void SfmlRenderer::DrawRectangle(Vector2 p1, float width, float height)
 {
 	sf::RectangleShape rectangle(sf::Vector2f(width, height));
@@ -85,12 +60,6 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, float width, float height)
 	window.draw(rectangle);
 }
 
-/// <summary>
-/// Draws a rectangle defined by two points (top-left and bottom-right).
-/// The rectangle is outlined in white and filled transparent.
-/// </summary>
-/// <param name="p1">The top-left position of the rectangle.</param>
-/// <param name="p2">The bottom-right position of the rectangle.</param>
 void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 {
 	sf::RectangleShape rectangle(sf::Vector2f(p2.x - p1.x, p2.y - p1.y));
@@ -101,37 +70,29 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 	window.draw(rectangle);
 }
 
-unsigned int SfmlRenderer::LoadTexture(const char* filePath)
+TextureId SfmlRenderer::LoadTexture(const char* filePath)
 {
 	sf::Texture texture;
 	if (!texture.loadFromFile(filePath)) {
 		throw TextureLoadException(std::format("Failed to load texture from path: {}", filePath));
 	}
 
-	auto emplacedID = ++TextureKeyCounter;
+	TextureId emplacedID = (TextureId)++TextureKeyCounter;
 	textures.emplace(emplacedID, std::move(texture));
 	return emplacedID;
-	
 }
 
-unsigned int SfmlRenderer::LoadTexture()
+TextureId SfmlRenderer::LoadTexture()
 {
 	sf::Image image(sf::Vector2u(200, 200), sf::Color::Magenta);
 	sf::Texture texture(image);
 
-	auto emplacedID = ++TextureKeyCounter;
+	TextureId emplacedID = (TextureId)++TextureKeyCounter;
 	textures.emplace(emplacedID, std::move(texture));
 	return emplacedID;
 }
 
-/// <summary>
-/// Draws a sprite at a specified position with a given texture, scale, and anchor point using SFML.
-/// </summary>
-/// <param name="position">The position on the screen where the sprite will be drawn.</param>
-/// <param name="textureId">The identifier of the texture to use for the sprite.</param>
-/// <param name="scale">The size of the drawn sprite in pixels.</param>
-/// <param name="SpriteAncor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
-void SfmlRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 size, const Vector2 SpriteAncor)
+void SfmlRenderer::DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAncor)
 {
 	try
 	{
@@ -151,7 +112,7 @@ void SfmlRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 
 }
 
 
-void SfmlRenderer::UnloadTexture(unsigned int textureId)
+void SfmlRenderer::UnloadTexture(TextureId textureId)
 {
 	textures.erase(textureId);
 }

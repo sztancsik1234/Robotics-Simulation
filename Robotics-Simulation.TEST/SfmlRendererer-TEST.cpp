@@ -2,11 +2,13 @@
 #include "pch.h"
 #include "graphics/SfmlRenderer.h"
 #include "core/Vector2.h"
+#include "MockLogger.h"
 
 // Test fixture for SfmlRenderer
 class SfmlRendererTest : public ::testing::Test {
 protected:
-    SfmlRenderer renderer;
+    MockLogger logger;
+    SfmlRenderer renderer = SfmlRenderer(logger);
 };
 
 TEST_F(SfmlRendererTest, CanInitializeAndShutdown) {

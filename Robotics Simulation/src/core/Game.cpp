@@ -22,14 +22,9 @@ Game::Game(IRenderer& renderer,
 	InputService(inputService),
 	Logger(logger) {}
 
-/// <summary>
-/// Initializes the game by initializing the renderer and setting the running state.
-/// Logs the result of the initialization.
-/// </summary>
 void Game::Initialize()
 {
 	InitializeRenderer();
-
 	LoadInitialScene();
 }
 
@@ -48,7 +43,6 @@ void Game::InitializeRenderer()
 	}
 }
 
-// A test function to load a simple component with a circleRenderer
 void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
@@ -58,7 +52,6 @@ void Game::addTestGameObject()
 	addGameObject(std::move(testObject));
 }
 
-// A temporary function to add a couple of game objects to the game for testing purposes
 void Game::LoadInitialScene()
 {
 	// load background
@@ -73,22 +66,15 @@ void Game::LoadInitialScene()
 	addGameObject(std::move(background));
 }
 
-/// <summary>
-/// Returns whether the game is currently running.
-/// </summary>
-/// <returns>True if the game is running, false otherwise.</returns>
 bool Game::IsRunning() const {
 	return Running;
 }
 
-/// <summary>
-/// Handles input events by delegating to the input service.
-/// </summary>
 void Game::HandleEvents()
 {
+	// Place of improvement: implement a custom event system, or separate from input.
 	InputService.HandleEvents();
 }
-
 
 void Game::HandleInput()
 {
@@ -132,15 +118,6 @@ void Game::addGameObject(GameObject&& gameObject)
 	Logger.Log("GameObject added with move semantics.");
 }
 
-//void Game::addGameObject(GameObject gameObject)
-//{
-//	gameObjects.push_front(std::move(gameObject));
-//	Logger.Log("GameObject added.");
-//}
-
-/// <summary>
-/// Starts the main game loop. Returns when the game closes.
-/// </summary>
 void Game::RunMainLoop()
 {
 	while (Running)
@@ -166,7 +143,6 @@ void Game::Shutdown()
 {
 	clearGameObjects(); // clear all game objects
 	Renderer.Shutdown();
-	Logger.Log("Renderer shutdown.");
 
 	Running = false;
 }

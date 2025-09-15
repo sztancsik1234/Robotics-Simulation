@@ -16,9 +16,22 @@ public:
 		IInputService& inputService,
 		ILogger& logger);
 
+	/// <summary>
+	/// Initializes the game by initializing the renderer and setting the running state.
+	/// Logs the result of the initialization.
+	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// Starts the main game loop. Returns when the game closes.
+	/// </summary>
 	void RunMainLoop();
 	void Shutdown();
+
+	/// <summary>
+	/// Returns whether the game is currently running.
+	/// </summary>
+	/// <returns>True if the game is running, false otherwise.</returns>
 	bool IsRunning() const;
 
 private:
@@ -28,8 +41,6 @@ private:
 	IInputService& InputService;
 	ILogger& Logger;
 
-	// TODO: remove test variables
-	// TEST variable. Temporary
 	std::forward_list<GameObject> gameObjects;
 
 	/// <summary>
@@ -43,20 +54,33 @@ private:
 	/// Also updates the mouse position.
 	/// </summary>
 	void HandleInput();
+
 	// go over all game objects and call their update method
 	void Update();
+
 	// clear the frame by clearing the renderer
 	void ClearFrame();
+
 	// display what has been drawn so far in the current frame
 	void DisplayFrame();
 
+	/// <summary>
+	/// Add a new gameobject to the active scene
+	/// </summary>
+	/// <remark> The method uese move scemantics to move a valid gameobject into the buffer.</remark>
+	/// <param name="gameObject"></param>
 	void addGameObject(GameObject&& gameObject);
-	// void addGameObject(GameObject gameObject);
 
+	// Clear all gameobjects, destroying them cleanly
 	void clearGameObjects();
 
+	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();
-	void addTestGameObject();
+
+	// loads the starup scene. For now, hardcoded, but later use scenemanager.
 	void LoadInitialScene();
+
+	// A test function to load a simple component with a circleRenderer
+	void addTestGameObject();
 };
 
