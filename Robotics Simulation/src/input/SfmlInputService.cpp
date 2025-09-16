@@ -1,8 +1,8 @@
 #include "input/SfmlInputService.h"
 #include "util/Exceptions.h"
 
-SfmlInputService::SfmlInputService(SfmlRenderer& sfmlWindowProvider) :
-	window(sfmlWindowProvider.window)
+SfmlInputService::SfmlInputService(sf::RenderWindow& window) :
+	Window(window)
 {
 }
 
@@ -16,9 +16,8 @@ bool SfmlInputService::IsKeyPressed(KeyCode key)
 	return sf::Keyboard::isKeyPressed(KeyToSfmlKeycode(key));
 }
 	
-sf::Keyboard::Key SfmlInputService::KeyToSfmlKeycode(KeyCode key)
+sf::Keyboard::Key SfmlInputService::KeyToSfmlKeycode(KeyCode key) const
 {
-	sf::Keyboard::Key sfmlKey;
 	switch (key)
 	{
 		case KeyCode::UP: return sf::Keyboard::Key::Up;
@@ -39,7 +38,7 @@ sf::Keyboard::Key SfmlInputService::KeyToSfmlKeycode(KeyCode key)
 /// <returns>the mouse position in window pixels. origin is top left</returns>
 Vector2 SfmlInputService::GetMousePosition()
 {
-	sf::Vector2i position = sf::Mouse::getPosition(window);
+	sf::Vector2i position = sf::Mouse::getPosition(Window);
 	return Vector2(static_cast<float>(position.x), static_cast<float>(position.y));
 }
 
@@ -47,7 +46,7 @@ Vector2 SfmlInputService::GetMousePosition()
 void SfmlInputService::HandleEvents()
 {
 	verifyWindowInitialized();
-	while (const std::optional event = window.pollEvent())
+	while (const std::optional event = Window.pollEvent())
 	{
 		if (event.value().is<sf::Event::Closed>())
 		{

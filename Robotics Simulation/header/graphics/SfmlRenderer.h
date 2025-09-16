@@ -21,6 +21,12 @@ public:
 	void Initialize() override;
 
 	/// <summary>
+	/// Provide a reference for the window to other services, like input.
+	/// </summary>
+	/// <returns>The reference to the window</returns>
+	sf::RenderWindow& GetWindow();
+
+	/// <summary>
 	/// Clears the window with a black color.
 	/// </summary>
 	void Clear(Color color) override;
@@ -62,7 +68,7 @@ public:
 	/// </summary>
 	/// <param name="filePath"></param>
 	/// <returns>A textureId identifying the texture. subsequent draw calls use this ID as a parameter.</returns>
-	TextureId LoadTexture(const char* filePath) override;
+	TextureId LoadTexture(const std::string filePath) override;
 
 	/// <summary>
 	/// Loads a default texture, for when a texture is needed, but not specified.
@@ -76,8 +82,8 @@ public:
 	/// <param name="position">The position on the screen where the sprite will be drawn.</param>
 	/// <param name="textureId">The identifier of the texture to use for the sprite.</param>
 	/// <param name="scale">The size of the drawn sprite in pixels.</param>
-	/// <param name="SpriteAncor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
-	void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAncor = { 0.f,0.f });
+	/// <param name="SpriteAnchor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
+	void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor = { 0.f,0.f });
 	
 	/// <summary>
 	/// Unloads a texture from memory safely.
@@ -99,7 +105,5 @@ private:
 
 	// color to sf::color
 	sf::Color ConvertColor(Color color) const;
-
-	friend class SfmlInputService;
 };
 

@@ -21,6 +21,11 @@ void SfmlRenderer::Initialize()
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 
+sf::RenderWindow& SfmlRenderer::GetWindow()
+{
+	return window;
+}
+
 void SfmlRenderer::Clear(Color color = Color::Black)
 {
 	window.clear(ConvertColor(color)); // Clear the window with a black color
@@ -70,7 +75,7 @@ void SfmlRenderer::DrawRectangle(Vector2 p1, Vector2 p2)
 	window.draw(rectangle);
 }
 
-TextureId SfmlRenderer::LoadTexture(const char* filePath)
+TextureId SfmlRenderer::LoadTexture(const std::string filePath)
 {
 	sf::Texture texture;
 	if (!texture.loadFromFile(filePath)) {
@@ -92,14 +97,14 @@ TextureId SfmlRenderer::LoadTexture()
 	return emplacedID;
 }
 
-void SfmlRenderer::DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAncor)
+void SfmlRenderer::DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor)
 {
 	try
 	{
 		const auto& texture = textures.at(textureId);
 		sf::Sprite sprite(texture);
 		const sf::Vector2u textureSize = texture.getSize();
-		const Vector2 ancourPixel = { textureSize.x * SpriteAncor.x, textureSize.y * SpriteAncor.y };
+		const Vector2 ancourPixel = { textureSize.x * SpriteAnchor.x, textureSize.y * SpriteAnchor.y };
 		sprite.setOrigin(ancourPixel);
 		sprite.setPosition(position);
 		sprite.setScale({ size.x / textureSize.x, size.y / textureSize.y });

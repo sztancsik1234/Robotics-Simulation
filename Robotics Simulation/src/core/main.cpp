@@ -11,7 +11,7 @@ int main()
 	ConsoleLogger	 logger(LogLevel::INFO);
 	SfmlRenderer	 renderer(logger);
 	SceneLoader		 sceneLoader;
-	SfmlInputService inputService(renderer);
+	SfmlInputService inputService(renderer.GetWindow());
 	//FileLogger 		 fileLogger("logs", LogLevel::TRACE);
 
 	//create the game object with dependencies

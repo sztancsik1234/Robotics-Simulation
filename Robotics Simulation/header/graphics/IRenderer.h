@@ -3,7 +3,7 @@
 #include "core/Color.inl"
 #include <stdexcept>
 
-typedef unsigned int TextureId;
+using TextureId = unsigned int;
 
 struct IRendererBase { virtual ~IRendererBase() = default; };
 
@@ -82,7 +82,7 @@ struct ISpriteRenderer : IRendererBase
     /// </summary>
     /// <param name="filePath"></param>
     /// <returns>A TextureId used to identify the texture in subsequent calls</returns>
-    virtual TextureId LoadTexture(const char* filePath) = 0;
+    virtual TextureId LoadTexture(const std::string filePath) = 0;
 
     /// <summary>
     /// Load a default texture
@@ -96,8 +96,8 @@ struct ISpriteRenderer : IRendererBase
     /// <param name="position">The position on the screen where the sprite will be drawn.</param>
     /// <param name="textureId">The identifier of the texture to use for the sprite.</param>
     /// <param name="scale">The size of the drawn sprite in pixels.</param>
-    /// <param name="SpriteAncor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
-    virtual void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAncor = { 0.f,0.f }) = 0;
+    /// <param name="SpriteAnchor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
+    virtual void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor = { 0.f,0.f }) = 0;
 	
     /// <summary>
     /// Unloads a texture safely
@@ -120,6 +120,5 @@ struct IRenderer :
 
 class TextureLoadException : public std::runtime_error {
     public:
-    explicit TextureLoadException(const std::string& message)
-        : std::runtime_error(message) {}
+    using runtime_error::runtime_error;
 };

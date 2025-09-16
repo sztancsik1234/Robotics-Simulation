@@ -3,7 +3,6 @@
 #include "core/Vector2.h"
 #include "input/IInputService.h"
 #include "graphics/SfmlRenderer.h"
-#include <SFML/Window.hpp>
 
 /// <summary>
 /// Easy input service to use if an SFML renderer is used.
@@ -13,7 +12,7 @@ class SfmlInputService : public IInputService
 {
 public:
 	// Constructor that takes a reference to the SfmlRenderer
-	explicit SfmlInputService(SfmlRenderer& sfmlWindowProvider);
+	explicit SfmlInputService(sf::RenderWindow& window);
 
 	// implementation of IInputService methods
 
@@ -24,8 +23,8 @@ public:
 
 private:
 	void verifyWindowInitialized();
-	sf::RenderWindow& window; // Reference to the SFML window
-	sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key);
+	sf::RenderWindow& Window; // Reference to the SFML window
+	sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key) const;
 	bool ShouldClose = false;
 };
 
