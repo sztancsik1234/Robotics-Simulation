@@ -4,6 +4,7 @@
 #include "graphics/SpriteRendererComponent.h"
 #include "graphics/CircleRenderer.h"
 #include "input/MouseFollowerComponent.h"
+#include "tinyxml/tinyxml2.h"
 
 /// <summary>
 /// Constructs a Game object with the required dependencies.
@@ -54,6 +55,7 @@ void Game::addTestGameObject()
 
 void Game::LoadInitialScene()
 {
+	// TODO: Load from XML file and load the scene based on that
 	// load background
 	GameObject background(Logger, 1, "Background");												// TODO: Get the window size from the renderer, and use that for background size
 	background.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Concrete.jpg", Vector2{ 800.f, 800.f });
@@ -64,6 +66,8 @@ void Game::LoadInitialScene()
 	
 	addGameObject(std::move(Crate));
 	addGameObject(std::move(background));
+
+
 }
 
 bool Game::IsRunning() const {

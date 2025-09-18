@@ -37,7 +37,7 @@ void MockRenderer::DrawSprite(Vector2 position, unsigned int textureId, Vector2 
 	lastAncor = SpriteAnchor;
 }
 
-unsigned int MockRenderer::LoadTexture(const char* filePath)
+unsigned int MockRenderer::LoadTexture(const std::string filePath)
 {
     if (std::string(filePath) != "Test texture.jpg") {
         throw TextureLoadException("Failed to load texture from path: " + std::string(filePath));
