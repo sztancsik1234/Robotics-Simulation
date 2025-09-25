@@ -22,7 +22,7 @@ public:
     int value;
     bool wasAdded = false;
 
-    SingleParamComponent(GameObject* owner, int val) 
+    SingleParamComponent(GameObject* owner, int val)
         : Component(owner), value(val) {}
 
     void OnAdd() override { wasAdded = true; }
@@ -80,7 +80,8 @@ protected:
     std::unique_ptr<GameObject> gameObject;
 
     void SetUp() override {
-        gameObject = std::make_unique<GameObject>(logger, 1, "TestObject");
+        // FIX: Pass Vector2 as third argument, then name string (constructor order: logger, id, position, name)
+        gameObject = std::make_unique<GameObject>(logger, 1, Vector2{0.f, 0.f}, "TestObject");
     }
 };
 

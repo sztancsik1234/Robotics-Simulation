@@ -14,7 +14,7 @@ class ComponentNotFoundException;
 template<typename T>
 concept ComponentDerived = std::is_base_of_v<Component, T>;
 
-class GameObject final
+class GameObject
 {
 public:
 	explicit GameObject(ILogger& logger, int id = 0, Vector2 position = {0.f, 0.f}, const std::string& name = "Unnamed") :
