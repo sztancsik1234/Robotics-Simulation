@@ -14,12 +14,10 @@
 /// <param name="inputService">Reference to the input service implementation.</param>
 /// <param name="logger">Reference to the logger implementation.</param>
 Game::Game(IRenderer& renderer,
-	ISceneLoader& sceneLoader,
 	IInputService& inputService,
 	ILogger& logger) :
 	Running(false),
 	Renderer(renderer),
-	SceneLoader(sceneLoader),
 	InputService(inputService),
 	Logger(logger) {}
 

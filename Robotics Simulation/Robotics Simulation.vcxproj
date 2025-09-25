@@ -172,8 +172,6 @@
     <ClInclude Include="header\core\Game.h" />
     <ClInclude Include="header\input\IInputService.h" />
     <ClInclude Include="header\graphics\IRenderer.h" />
-    <ClInclude Include="header\util\ISceneLoader.h" />
-    <ClInclude Include="header\util\SceneLoader.h" />
     <ClInclude Include="header\input\SfmlInputService.h" />
     <ClInclude Include="header\graphics\SfmlRenderer.h" />
   </ItemGroup>
