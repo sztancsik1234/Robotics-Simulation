@@ -17,8 +17,9 @@ concept ComponentDerived = std::is_base_of_v<Component, T>;
 class GameObject
 {
 public:
-	explicit GameObject(ILogger& logger, int id = 0, const std::string& name = "Unnamed") :id(id), name(name), Logger(logger) {}
-	virtual ~GameObject();
+	explicit GameObject(ILogger& logger, int id = 0, Vector2 position = {0.f, 0.f}, const std::string& name = "Unnamed") :
+		id(id), name(name), Position(position), Logger(logger) {}
+	~GameObject();
 	GameObject(GameObject&& other) noexcept;
 
 	Vector2 GetPosition() const { return Position; }
@@ -48,7 +49,7 @@ public:
 	/// </summary>
 	/// <typeparam name="...Args"></typeparam>
 	/// <typeparam name="ComponentType"></typeparam>
-	/// <param name="...args">Arguments for the constructor of the component, except the pointer to owner, whichc is passed automatically</param>
+	/// <param name="...args">Arguments for the constructor of the component, except the pointer to owner, which is passed automatically</param>
 	/// <returns>Raw pointer to the component created</returns>
 	template<ComponentDerived ComponentType, typename ...Args>
 	ComponentType* EmplaceComponent(Args && ...args)

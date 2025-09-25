@@ -4,7 +4,12 @@
 class SpriteRenderComponent final : public RenderComponent
 {
 public:
-	SpriteRenderComponent(GameObject* owner, ISpriteRenderer& renderer, ILogger& logger, const std::string& texturePath, Vector2 size, Vector2 anchor = {0.f,0.f}) :
+	SpriteRenderComponent(GameObject* owner, 
+		ISpriteRenderer& renderer, 
+		ILogger& logger, 
+		const std::string& texturePath, 
+		Vector2 size, 
+		Vector2 anchor = {0.f,0.f}) :
 		RenderComponent(owner, logger),
 		Renderer(renderer),
 		TexturePath(texturePath),

@@ -1,13 +1,35 @@
 <scene>
+	<prefabs>
+		<gameObject name="background" id = "1">
+			<component>
+				<SpriteRendererComponent>
+					<texturePath>assets/Concrete.jpg</texturePath>
+					<size>
+						<x>1000</x>
+						<y>1000</y>
+					</size>
+				</SpriteRendererComponent>
+			</component>
+		</gameObject>
+		<gameObject name="box" id="2">
+			<component>
+				<SpriteRendererComponent>
+					<texturePath>assets/Test Texture.jpg</texturePath>
+					<size>
+						<x>50</x>
+						<y>50</y>
+					</size>
+					<anchor>
+						<x>0.95</x>
+						<y>0.95</y>
+					</anchor>
+				</SpriteRendererComponent>
+				<MouseFollowerComponent></MouseFollowerComponent>
+			</component>
+		</gameObject>
+	</prefabs>
 	<gameObjects>
-		<gameobject name="Robot1">
-			<position x="0" y="0" z="0"/>
-			<rotation x="0" y="0" z="0"/>
-			<scale x="1" y="1" z="1"/>
-			<components>
-				<component name="RenderComponent" value=""/>
-				<component name="PhysicsComponent" value=""/>
-			</components>
-		</gameobject>
-	</gameObjects>
+		<prefab id = "1" x = "0" y = "0"></prefab>
+		<prefab id = "2" x = "200" y = "300"></prefab>
+  </gameObjects>
 </scene>

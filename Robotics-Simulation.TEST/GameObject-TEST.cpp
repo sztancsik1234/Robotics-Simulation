@@ -49,7 +49,7 @@ TEST(GameObjectTest, Creation)
     int id = 1;
 
     // Act
-    GameObject gameObject(logger, id, name);
+    GameObject gameObject(logger, id, Vector2 {0.f, 0.f}, name);
 
     // Assert
     EXPECT_EQ(gameObject.GetId(), id);
@@ -139,7 +139,7 @@ TEST(GameObjectTest, MoveGameObjectWithComponents)
 {
     // Arrange
     MockLogger logger;
-    GameObject sourceObj(logger, 1, "SourceObject");
+    GameObject sourceObj(logger, 1, Vector2 { 0.f, 0.f }, "SourceObject");
     auto* component = sourceObj.EmplaceComponent<MockComponent>();
     
     // Act
@@ -182,7 +182,7 @@ TEST(GameObjectTest, GetIdAndName)
     std::string name = "GameObjectName";
     
     // Act
-    GameObject gameObject(logger, id, name);
+    GameObject gameObject(logger, id, Vector2 { 0.f, 0.f }, name);
     
     // Assert
     EXPECT_EQ(gameObject.GetId(), id);

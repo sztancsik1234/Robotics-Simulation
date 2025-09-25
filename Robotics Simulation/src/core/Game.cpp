@@ -47,7 +47,7 @@ void Game::InitializeRenderer()
 void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
-	GameObject testObject(Logger, 1, "TestObject");
+	GameObject testObject(Logger, 1, {0.f, 0.f}, "TestObject");
 	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
 	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
 	addGameObject(std::move(testObject));
@@ -57,10 +57,10 @@ void Game::LoadInitialScene()
 {
 	// TODO: Load from XML file and load the scene based on that
 	// load background
-	GameObject background(Logger, 1, "Background");												// TODO: Get the window size from the renderer, and use that for background size
+	GameObject background(Logger, 1, { 0.f, 0.f }, "Background");												// TODO: Get the window size from the renderer, and use that for background size
 	background.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Concrete.jpg", Vector2{ 800.f, 800.f });
 
-	GameObject Crate(Logger, 2, "Crate");
+	GameObject Crate(Logger, 2, { 0.f, 0.f }, "Crate");
 	Crate.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Crate.png", Vector2{ 100.f, 100.f }, Vector2{0.5f, 0.5f});
 	Crate.EmplaceComponent<MouseFollowerComponent>(InputService);
 	
