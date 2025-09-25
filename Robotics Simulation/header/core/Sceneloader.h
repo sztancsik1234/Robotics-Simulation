@@ -1,10 +1,21 @@
 #pragma once
-class Sceneloader
+#include "core/GameObject.h"
+
+class Game;
+
+class SceneLoader
 {
 public:
-	Sceneloader() = default;
-	~Sceneloader() = default;
+	// can't define a default constructor because of the reference member is incomplete
+    explicit SceneLoader(Game& game);
+    ~SceneLoader() = default;
 
-	void loadInitialScene() {}
+    void LoadInitialScene();
+
+private:
+    const std::string initialSceneFilePath = "assets/initialScene.xml";
+    Game& mainGame;
+
+    
 };
 

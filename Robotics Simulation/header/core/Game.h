@@ -5,9 +5,11 @@
 #include "input/IInputService.h"
 #include "util/ILogger.h"
 #include "core/GameObject.h"
+#include "core/SceneLoader.h"
 
 class Game
 {
+	friend class SceneLoader;
 public:
 	Game(
 		IRenderer& renderer,
@@ -37,6 +39,7 @@ private:
 	IRenderer& Renderer;
 	IInputService& InputService;
 	ILogger& Logger;
+	SceneLoader sceneLoader = SceneLoader(*this);
 
 	std::forward_list<GameObject> gameObjects;
 
