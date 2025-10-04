@@ -55,16 +55,7 @@ void Game::LoadInitialScene()
 {
 	// TODO: Load from XML file and load the scene based on that
 	// load background
-	GameObject background(Logger, 1, { 0.f, 0.f }, "Background");												// TODO: Get the window size from the renderer, and use that for background size
-	background.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Concrete.jpg", Vector2{ 800.f, 800.f });
-
-	GameObject Crate(Logger, 2, { 0.f, 0.f }, "Crate");
-	Crate.EmplaceComponent<SpriteRenderComponent>(Renderer, Logger, "assets\\Crate.png", Vector2{ 100.f, 100.f }, Vector2{0.5f, 0.5f});
-	Crate.EmplaceComponent<MouseFollowerComponent>(InputService);
-	
-	addGameObject(std::move(Crate));
-	addGameObject(std::move(background));
-
+	sceneLoader.LoadInitialScene();
 
 }
 

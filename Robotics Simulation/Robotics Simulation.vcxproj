@@ -141,11 +141,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\ComponentRegistry.cpp" />
     <ClCompile Include="src\core\SceneLoader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClInclude Include="header\core\ComponentDTOs.h" />
     <ClInclude Include="header\core\Game.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\graphics\CircleRenderer.h" />

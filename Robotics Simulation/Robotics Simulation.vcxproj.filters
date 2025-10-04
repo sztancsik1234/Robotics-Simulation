@@ -57,6 +57,9 @@
     <ClCompile Include="src\util\ILogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\ComponentRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\graphics\IRenderer.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\core\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\core\ComponentDTOs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
