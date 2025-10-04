@@ -57,9 +57,6 @@
     <ClCompile Include="src\util\ILogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\ComponentRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\graphics\IRenderer.h">

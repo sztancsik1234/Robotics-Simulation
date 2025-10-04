@@ -141,7 +141,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\ComponentRegistry.cpp" />
     <ClCompile Include="src\core\SceneLoader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
