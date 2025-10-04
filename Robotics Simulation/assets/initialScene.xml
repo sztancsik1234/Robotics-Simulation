@@ -14,7 +14,7 @@
 		<gameObject name="box" id="2">
 			<component>
 				<SpriteRendererComponent>
-					<texturePath>assets/Test Texture.jpg</texturePath>
+					<texturePath>assets/Crate.png</texturePath>
 					<size>
 						<x>50</x>
 						<y>50</y>
@@ -29,7 +29,7 @@
 		</gameObject>
 	</prefabs>
 	<gameObjects>
-		<prefab id = "1" x = "0" y = "0"></prefab>
 		<prefab id = "2" x = "200" y = "300"></prefab>
+		<prefab id = "1" x = "0" y = "0"></prefab>
   </gameObjects>
 </scene>

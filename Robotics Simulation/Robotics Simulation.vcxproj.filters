@@ -48,7 +48,7 @@
     <ClCompile Include="src\graphics\SpriteRendererComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\core\Sceneloader.cpp">
+    <ClCompile Include="src\core\SceneLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\util\FileLogger.cpp">
@@ -59,13 +59,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header\core\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="header\graphics\IRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\util\ISceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\core\Vector2.h">
@@ -75,9 +69,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\input\IInputService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\util\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\input\SfmlInputService.h">
@@ -110,10 +101,16 @@
     <ClInclude Include="header\graphics\SpriteRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header\core\Sceneloader.h">
+    <ClInclude Include="header\core\SceneLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\util\FileLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\core\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\core\ComponentDTOs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,20 +1,32 @@
 #pragma once
 #include "RenderComponent.h"
+#include "core/ComponentDTOs.h"
 
 class SpriteRenderComponent final : public RenderComponent
 {
 public:
-	SpriteRenderComponent(GameObject* owner, 
-		ISpriteRenderer& renderer, 
-		ILogger& logger, 
-		const std::string& texturePath, 
-		Vector2 size, 
+	SpriteRenderComponent(GameObject* owner,
+		ISpriteRenderer& renderer,
+		ILogger& logger,
+		const std::string& texturePath,
+		Vector2 size,
 		Vector2 anchor = {0.f,0.f}) :
 		RenderComponent(owner, logger),
 		Renderer(renderer),
 		TexturePath(texturePath),
 		Size(size),
 		SpriteAnchor(anchor)
+	{}
+
+	SpriteRenderComponent(GameObject* owner,
+		ISpriteRenderer& renderer,
+		ILogger& logger,
+		const SpriteRenderComponentDTO DTO) :
+		RenderComponent(owner, logger),
+		Renderer(renderer),
+		TexturePath(DTO.texturePath),
+		Size(DTO.size),
+		SpriteAnchor(DTO.anchor)
 	{}
 
 	void OnAdd() override;

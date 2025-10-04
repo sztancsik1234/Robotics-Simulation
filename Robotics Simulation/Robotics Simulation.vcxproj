@@ -141,12 +141,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\Sceneloader.cpp" />
+    <ClCompile Include="src\core\SceneLoader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
-    <ClInclude Include="header\core\Sceneloader.h" />
+    <ClInclude Include="header\core\ComponentDTOs.h" />
+    <ClInclude Include="header\core\Game.h" />
+    <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\graphics\CircleRenderer.h" />
     <ClInclude Include="header\core\Component.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
@@ -169,11 +171,8 @@
     <ClInclude Include="header\graphics\RenderComponent.h" />
     <ClInclude Include="header\core\Vector2.h" />
     <ClInclude Include="header\util\Exceptions.h" />
-    <ClInclude Include="header\core\Game.h" />
     <ClInclude Include="header\input\IInputService.h" />
     <ClInclude Include="header\graphics\IRenderer.h" />
-    <ClInclude Include="header\util\ISceneLoader.h" />
-    <ClInclude Include="header\util\SceneLoader.h" />
     <ClInclude Include="header\input\SfmlInputService.h" />
     <ClInclude Include="header\graphics\SfmlRenderer.h" />
   </ItemGroup>

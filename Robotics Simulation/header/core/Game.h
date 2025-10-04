@@ -2,17 +2,17 @@
 
 #include <forward_list>
 #include "graphics/IRenderer.h"
-#include "util/ISceneLoader.h"
 #include "input/IInputService.h"
 #include "util/ILogger.h"
 #include "core/GameObject.h"
+#include "core/SceneLoader.h"
 
 class Game
 {
+	friend class SceneLoader;
 public:
 	Game(
 		IRenderer& renderer,
-		ISceneLoader& sceneLoader,
 		IInputService& inputService,
 		ILogger& logger);
 
@@ -37,9 +37,9 @@ public:
 private:
 	bool Running;
 	IRenderer& Renderer;
-	ISceneLoader& SceneLoader;
 	IInputService& InputService;
 	ILogger& Logger;
+	SceneLoader sceneLoader = SceneLoader(*this);
 
 	std::forward_list<GameObject> gameObjects;
 
