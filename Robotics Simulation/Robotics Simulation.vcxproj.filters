@@ -57,6 +57,9 @@
     <ClCompile Include="src\util\ILogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\core\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\graphics\IRenderer.h">
@@ -111,6 +114,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\core\ComponentDTOs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\physics\IPhysicsEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\core\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

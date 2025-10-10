@@ -6,6 +6,7 @@
 #include "util/ILogger.h"
 #include "core/GameObject.h"
 #include "core/SceneLoader.h"
+#include "core/Scene.h"
 
 class Game
 {
@@ -35,13 +36,15 @@ public:
 	bool IsRunning() const;
 
 private:
+	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+
 	bool Running;
 	IRenderer& Renderer;
 	IInputService& InputService;
 	ILogger& Logger;
 	SceneLoader sceneLoader = SceneLoader(*this);
 
-	std::forward_list<GameObject> gameObjects;
+	std::unique_ptr<Scene> activeScene;
 
 	/// <summary>
 	/// Handles input events by delegating to the input service.
@@ -83,4 +86,3 @@ private:
 	// A test function to load a simple component with a circleRenderer
 	void addTestGameObject();
 };
-

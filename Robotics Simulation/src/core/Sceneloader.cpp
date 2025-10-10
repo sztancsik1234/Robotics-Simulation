@@ -28,7 +28,7 @@ void SceneLoader::RegisterDefaultComponents()
                 return;
             }
 
-			SpriteRenderComponentDTO dto;
+            SpriteRenderComponentDTO dto;
             ParseSpriteRendererXML(xmlElem, dto);
 
             go.EmplaceComponent<SpriteRenderComponent>(*spriteIface,
@@ -55,6 +55,8 @@ void SceneLoader::RegisterDefaultComponents()
         {
             go.EmplaceComponent<MouseFollowerComponent>(mainGame.InputService);
         });
+
+    // TODO: physics component
 }
 
 void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,
@@ -123,7 +125,8 @@ GameObject SceneLoader::CreateGameObjectFromPrefabXML(const tx2::XMLElement& pre
 }
 
 void SceneLoader::InstantiatePrefabReference(const tinyxml2::XMLElement& prefabRefElem,
-                                             const std::unordered_map<int, const tinyxml2::XMLElement*>& prefabMap)
+                                             const std::unordered_map<int, const tinyxml2::XMLElement*>& prefabMap,
+                                             Scene& scene)
 {
     int refId = 0;
     prefabRefElem.QueryIntAttribute("id", &refId);
@@ -140,24 +143,27 @@ void SceneLoader::InstantiatePrefabReference(const tinyxml2::XMLElement& prefabR
     }
 
     GameObject instance = CreateGameObjectFromPrefabXML(*it->second, /*overrideId*/ 0, Vector2{x, y});
-    mainGame.addGameObject(std::move(instance));
+    scene.addGameObject(std::move(instance));
 }
 
-void SceneLoader::LoadInitialScene()
+Scene SceneLoader::LoadScene(const std::string& path)
 {
-    namespace tx2 = tx2;
+    Scene scene(path);
+
+	// load document
     tx2::XMLDocument doc;
-    if (doc.LoadFile(INTIAL_SCENE_PATH.c_str()) != tx2::XML_SUCCESS)
+    if (doc.LoadFile(path.c_str()) != tx2::XML_SUCCESS)
     {
-        mainGame.Logger.Log("Failed to load initial scene file: " + INTIAL_SCENE_PATH, LogLevel::ERROR);
-        return;
+        mainGame.Logger.Log("Failed to load initial scene file: " + path, LogLevel::ERROR);
+        return scene;
     }
 
+    //find root
     tx2::XMLElement* root = doc.RootElement();
     if (!root || std::string(root->Name()) != "scene")
     {
         mainGame.Logger.Log("Scene file missing <scene> root.", LogLevel::ERROR);
-        return;
+        return scene;
     }
 
     // First pass: gather prefab definitions
@@ -189,7 +195,7 @@ void SceneLoader::LoadInitialScene()
             std::string tag = child->Name();
             if (tag == "prefab")
             {
-                InstantiatePrefabReference(*child, prefabMap);
+                InstantiatePrefabReference(*child, prefabMap, scene);
             }
             else if (tag == "gameObject")
             {
@@ -200,7 +206,7 @@ void SceneLoader::LoadInitialScene()
                 child->QueryFloatAttribute("y", &y);
 
                 GameObject go = CreateGameObjectFromPrefabXML(*child, id, Vector2{x, y});
-                mainGame.addGameObject(std::move(go));
+                scene.addGameObject(std::move(go));
             }
             else
             {
@@ -208,4 +214,6 @@ void SceneLoader::LoadInitialScene()
             }
         }
     }
+
+    return scene;
 }

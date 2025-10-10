@@ -53,10 +53,7 @@ void Game::addTestGameObject()
 
 void Game::LoadInitialScene()
 {
-	// TODO: Load from XML file and load the scene based on that
-	// load background
 	sceneLoader.LoadInitialScene();
-
 }
 
 bool Game::IsRunning() const {
