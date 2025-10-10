@@ -17,6 +17,8 @@ public:
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
 
+    void Unload();
+
     // GameObject management.
     void addGameObject(GameObject&& gameObject);
     void clearGameObjects();
@@ -28,4 +30,7 @@ public:
 private:
     std::string SceneFilePath;
     std::forward_list<GameObject> gameObjects;
+
+    void OnLoad();
+    void OnUnload();
 };

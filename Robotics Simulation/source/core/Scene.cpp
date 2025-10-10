@@ -23,6 +23,24 @@ Scene& Scene::operator=(Scene&& other) noexcept
     return *this;
 }
 
+void Scene::OnLoad()
+{
+	// If OnSceneLoad is implemented for components, call it here for each component of each game object.
+}
+
+void Scene::OnUnload()
+{
+    // If OnSceneUnload is implemented for components, call it here for each component of each game object.
+
+	clearGameObjects();
+}
+
+void Scene::Unload()
+{
+	OnUnload();
+	gameObjects.clear();
+}
+
 void Scene::addGameObject(GameObject&& gameObject)
 {
     gameObjects.push_front(std::move(gameObject));

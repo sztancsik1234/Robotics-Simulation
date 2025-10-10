@@ -74,9 +74,6 @@ private:
 	/// <param name="gameObject"></param>
 	void addGameObject(GameObject&& gameObject);
 
-	// Clear all gameobjects, destroying them cleanly
-	void clearGameObjects();
-
 	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();
 

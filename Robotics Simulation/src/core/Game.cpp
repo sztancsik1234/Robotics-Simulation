@@ -53,7 +53,7 @@ void Game::addTestGameObject()
 
 void Game::LoadInitialScene()
 {
-	sceneLoader.LoadInitialScene();
+	sceneLoader.LoadScene(INTIAL_SCENE_PATH);
 }
 
 bool Game::IsRunning() const {
@@ -84,7 +84,7 @@ void Game::HandleInput()
 void Game::Update()
 {
 	//iterate through game objects and update them
-	for (auto& gameObject : gameObjects)
+	for (auto& gameObject : activeScene->getGameObjects())
 	{
 		Logger.Log("In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
 		gameObject.Update();
@@ -104,7 +104,7 @@ void Game::DisplayFrame()
 
 void Game::addGameObject(GameObject&& gameObject)
 {
-	gameObjects.push_front(std::move(gameObject));
+	activeScene->addGameObject(std::move(gameObject));
 	Logger.Log("GameObject added with move semantics.");
 }
 
@@ -120,18 +120,12 @@ void Game::RunMainLoop()
 	}
 }
 
-void Game::clearGameObjects()
-{
-	gameObjects.clear();
-	Logger.Log("All game objects cleared.");
-}
-
 /// <summary>
 /// Shuts down the game by shutting down the renderer and logging the shutdown.
 /// </summary>
 void Game::Shutdown()
 {
-	clearGameObjects(); // clear all game objects
+	activeScene->Unload(); // Unload scene to clear all game objects
 	Renderer.Shutdown();
 
 	Running = false;
