@@ -10,8 +10,9 @@ public:
 	/// Constructs a RenderComponent and associates it with a given GameObject.
 	/// </summary>
 	/// <param name="owner">Pointer to the GameObject that owns this Component.</param>
-	RenderComponent(GameObject* owner, ILogger& logger) :	// IDrawableRenderer doesn't allow to pass ISpriteRenderer or IPrimitiveRenderer
-		Component(owner), Logger(logger)							// Copilot recommends just not passing a renderer, just in the derived classes.
+	RenderComponent(GameObject* owner, ILogger& logger) :
+		Component(owner), 
+		Logger(logger)
 	{}
 
 	~RenderComponent() override = default;

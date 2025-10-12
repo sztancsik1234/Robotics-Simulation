@@ -151,6 +151,7 @@
     <ClInclude Include="header\core\Game.h" />
     <ClInclude Include="header\core\Scene.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
+    <ClInclude Include="header\core\Transform.h" />
     <ClInclude Include="header\graphics\CircleRenderer.h" />
     <ClInclude Include="header\core\Component.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
