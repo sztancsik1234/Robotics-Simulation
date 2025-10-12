@@ -7,7 +7,7 @@
 #include "core/Color.inl"
 #include "util/ILogger.h"
 
-
+// TODO: Implement camera for translating game coordinates to screen coordinates
 class SfmlRenderer : public IRenderer
 {
 public:
@@ -83,7 +83,7 @@ public:
 	/// <param name="textureId">The identifier of the texture to use for the sprite.</param>
 	/// <param name="scale">The size of the drawn sprite in pixels.</param>
 	/// <param name="SpriteAnchor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
-	void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor = { 0.f,0.f });
+	void DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor = { 0.f,0.f }) final;
 	
 	/// <summary>
 	/// Unloads a texture from memory safely.

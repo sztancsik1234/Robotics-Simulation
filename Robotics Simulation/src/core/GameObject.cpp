@@ -24,13 +24,13 @@ GameObject::~GameObject()
 GameObject::GameObject(GameObject&& other) noexcept
     : id(other.id),
       name(std::move(other.name)),
-      Position(other.Position),
+      transform(other.transform),
       componentList(std::move(other.componentList)),
 	Logger(other.Logger)
 {
     // Reset the moved-from object to a valid state
     other.id = 0;
-    other.Position = Vector2();
+    other.transform = Transform();
     other.name = "Unnamed";
     // componentList is already moved from (empty)
     for (auto& component : componentList) {
@@ -41,8 +41,20 @@ GameObject::GameObject(GameObject&& other) noexcept
 
 void GameObject::SetPosition(const Vector2& position)
 {
-    Position = position;
+    transform.position = position;
 	Logger.Log("GameObject position set to: (" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")", LogLevel::TRACE);
+}
+
+void GameObject::SetRotation(const Radian& rotation)
+{
+    transform.rotation = rotation;
+	Logger.Log("GameObject rotation set to: " + std::to_string((float)rotation) + " radians", LogLevel::TRACE);
+}
+
+void GameObject::SetTransform(const Transform& newTransform)
+{
+    transform = newTransform;
+	Logger.Log("GameObject transform set. Position: (" + std::to_string(transform.position.x) + ", " + std::to_string(transform.position.y) + "), Rotation: " + std::to_string((float)transform.rotation) + " radians", LogLevel::TRACE);
 }
 
 void GameObject::AddComponent(std::unique_ptr<Component> component)
@@ -53,6 +65,7 @@ void GameObject::AddComponent(std::unique_ptr<Component> component)
 	componentList.push_front(std::move(component));
 }
 
+// TODO: implement
 void GameObject::RemoveComponent(Component* component)
 {
     throw NotImplementedException();

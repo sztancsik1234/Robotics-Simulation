@@ -92,28 +92,29 @@ TextureId SfmlRenderer::LoadTexture()
 	sf::Image image(sf::Vector2u(200, 200), sf::Color::Magenta);
 	sf::Texture texture(image);
 
-	TextureId emplacedID = (TextureId)++TextureKeyCounter;
+	auto emplacedID = (TextureId)++TextureKeyCounter;
 	textures.emplace(emplacedID, std::move(texture));
 	return emplacedID;
 }
 
-void SfmlRenderer::DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor)
+void SfmlRenderer::DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor)
 {
-	try
-	{
-		const auto& texture = textures.at(textureId);
-		sf::Sprite sprite(texture);
-		const sf::Vector2u textureSize = texture.getSize();
-		const Vector2 ancourPixel = { textureSize.x * SpriteAnchor.x, textureSize.y * SpriteAnchor.y };
-		sprite.setOrigin(ancourPixel);
-		sprite.setPosition(position);
-		sprite.setScale({ size.x / textureSize.x, size.y / textureSize.y });
-		window.draw(sprite);
-	}
-	catch (const std::exception&)
-	{
-		throw TextureLoadException(std::format("[SfmlRenderer::DrawSprite] Sprite from Texture with id={} could not be created!", textureId));
-	}
+    try
+    {
+        const auto& texture = textures.at(textureId);
+        sf::Sprite sprite(texture);
+        const sf::Vector2u textureSize = texture.getSize();
+        const Vector2 ancourPixel = { static_cast<float>(textureSize.x) * SpriteAnchor.x, static_cast<float>(textureSize.y) * SpriteAnchor.y };
+        sprite.setOrigin(ancourPixel);
+        sprite.setPosition(sf::Vector2f(transform.position.x, transform.position.y));
+        sprite.setRotation(sf::radians(static_cast<float>(transform.rotation.toRadian())));
+        sprite.setScale({ transform.size.x / static_cast<float>(textureSize.x), transform.size.y / static_cast<float>(textureSize.y) });
+        window.draw(sprite);
+    }
+    catch (const std::exception&)
+    {
+        throw TextureLoadException(std::format("[SfmlRenderer::DrawSprite] Sprite from Texture with id={} could not be created!", textureId));
+    }
 }
 
 

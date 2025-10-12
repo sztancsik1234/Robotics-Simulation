@@ -24,7 +24,7 @@ void SpriteRenderComponent::Update()
 		return;
 	}
   
-	Renderer.DrawSprite(GetOwner()->GetPosition(), TextureId, Size, SpriteAnchor);
+	Renderer.DrawSprite(GetOwner()->GetTransform(), TextureId, SpriteAnchor);
 }
 
 void SpriteRenderComponent::OnRemove()

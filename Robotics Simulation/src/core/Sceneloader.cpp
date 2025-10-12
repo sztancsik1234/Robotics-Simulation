@@ -116,7 +116,12 @@ GameObject SceneLoader::CreateGameObjectFromPrefabXML(const tx2::XMLElement& pre
     // If overrideId != 0 use it; else use prefab id.
     int finalId = overrideId != 0 ? overrideId : prefabId;
 
-    GameObject go(mainGame.Logger, finalId, position, name);
+    Transform transform
+    {
+        .position = position
+    };
+
+    GameObject go(mainGame.Logger, finalId, transform, name);
 
     if (auto* compRoot = prefabGoElem.FirstChildElement("component"))
         AddComponentsFromXML(go, compRoot);

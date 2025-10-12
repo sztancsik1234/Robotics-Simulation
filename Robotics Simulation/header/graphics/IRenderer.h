@@ -1,5 +1,5 @@
 #pragma once
-#include "core/Vector2.h"
+#include "core/Transform.h"
 #include "core/Color.inl"
 #include <stdexcept>
 
@@ -97,7 +97,7 @@ struct ISpriteRenderer : IRendererBase
     /// <param name="textureId">The identifier of the texture to use for the sprite.</param>
     /// <param name="scale">The size of the drawn sprite in pixels.</param>
     /// <param name="SpriteAnchor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
-    virtual void DrawSprite(Vector2 position, TextureId textureId, Vector2 size, const Vector2 SpriteAnchor = { 0.f,0.f }) = 0;
+    virtual void DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor = { 0.f,0.f }) = 0;
 	
     /// <summary>
     /// Unloads a texture safely

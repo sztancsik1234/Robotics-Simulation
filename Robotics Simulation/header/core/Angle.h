@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 
 // Base interface
 class Angle {
@@ -9,6 +11,7 @@ public:
     virtual double tangent()  const = 0;
     virtual double toRadian() const = 0;
     virtual double toDegree() const = 0;
+	virtual std::string toString() const = 0;
 };
 
 // Forward declaration to allow cross-constructors/operators
@@ -34,6 +37,7 @@ public:
     double tangent()  const override;
     double toRadian() const override;
     double toDegree() const override;
+	std::string toString() const override;
 
     // Implicit downcast to scalar (radians)
     operator double() const noexcept;
@@ -49,7 +53,7 @@ public:
 private:
     static double normalize(double angle) noexcept;
 
-    double m_radians{0.0};
+    double radians{0.0};
 };
 
 class Degree : public Angle
@@ -68,6 +72,7 @@ public:
     double tangent()  const override;
     double toRadian() const override;
     double toDegree() const override;
+	std::string toString() const override;
 
     // Implicit downcast to scalar (degrees)
     operator double() const noexcept;
@@ -83,5 +88,5 @@ public:
 private:
     static double normalize(double angle) noexcept;
 
-    double m_degrees{0.0};
+    double degrees{0.0};
 };

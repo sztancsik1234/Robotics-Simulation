@@ -81,7 +81,7 @@ protected:
 
     void SetUp() override {
         // FIX: Pass Vector2 as third argument, then name string (constructor order: logger, id, position, name)
-        gameObject = std::make_unique<GameObject>(logger, 1, Vector2{0.f, 0.f}, "TestObject");
+        gameObject = std::make_unique<GameObject>(logger, 1, Transform{}, "TestObject");
     }
 };
 
