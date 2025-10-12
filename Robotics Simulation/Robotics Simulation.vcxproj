@@ -158,7 +158,9 @@
     <ClInclude Include="header\core\Component.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
+    <ClInclude Include="header\physics\BodyDefinition.h" />
     <ClInclude Include="header\physics\IPhysicsEngine.h" />
+    <ClInclude Include="header\physics\World.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
     <ClInclude Include="header\util\FileLogger.h" />
