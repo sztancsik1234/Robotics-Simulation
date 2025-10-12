@@ -122,6 +122,12 @@
     <ClInclude Include="header\core\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="header\core\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header\core\Angle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="header\core\Color.inl">

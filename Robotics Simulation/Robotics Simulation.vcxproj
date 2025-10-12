@@ -147,6 +147,7 @@
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClInclude Include="header\core\Angle.h" />
     <ClInclude Include="header\core\ComponentDTOs.h" />
     <ClInclude Include="header\core\Game.h" />
     <ClInclude Include="header\core\Scene.h" />
