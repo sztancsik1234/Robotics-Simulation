@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\core\Scene.cpp" />
+    <ClCompile Include="src\core\Angle.cpp" />
     <ClCompile Include="src\core\SceneLoader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
