@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\Angle.cpp" />
-    <ClCompile Include="src\core\SceneLoader.cpp" />
+    <ClCompile Include="src\core\Sceneloader.cpp" />
     <ClCompile Include="src\graphics\CircleRenderer.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />

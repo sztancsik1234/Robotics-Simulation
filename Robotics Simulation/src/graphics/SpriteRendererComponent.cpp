@@ -18,12 +18,14 @@ void SpriteRenderComponent::OnAdd()
 void SpriteRenderComponent::Update()
 {
 	// in debug check textureid
+#ifdef _DEBUG
 	if (TextureId == 0)
 	{
 		Logger.Log("[SpriteRenderComponent] TextureId is 0, sprite will not be drawn!", LogLevel::WARNING);
 		return;
 	}
-  
+#endif // _DEBUG
+
 	Renderer.DrawSprite(GetOwner()->GetTransform(), TextureId, SpriteAnchor);
 }
 

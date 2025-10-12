@@ -32,24 +32,25 @@ public:
     // Now returns a Scene built from the initial scene file.
     Scene LoadScene(const std::string& path);
 
+
 private:
     Game& mainGame;
     using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement&)>;
 
     void RegisterDefaultComponents();
     void AddComponentsFromXML(GameObject& go, const tinyxml2::XMLElement* componentRoot);
+    inline unsigned int RequestGameObjectId();
 
-    // Now takes a Scene& to add instantiated objects into that scene.
-    void InstantiatePrefabReference(const tinyxml2::XMLElement& prefabRefElem,
-                                    const std::unordered_map<int, const tinyxml2::XMLElement*>& prefabMap,
-                                    Scene& scene);
-
-    GameObject CreateGameObjectFromPrefabXML(const tinyxml2::XMLElement& prefabGoElem,
-                                             int overrideId,
-                                             Vector2 position);
+    // Single factory that creates a GameObject from a <gameObject> XML element.
+    GameObject CreateGameObjectFromXML(const tinyxml2::XMLElement& xmlNode);
+	inline Transform ParseTransformXML(const tinyxml2::XMLElement& xmlNode);
 
     void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,
                                 SpriteRenderComponentDTO& dto);
+    const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene);
 
     std::unordered_map<std::string, ComponentAddFn> componentFactories;
+    std::unordered_map<int, const tinyxml2::XMLElement*> prefabMap;
+
+    unsigned int nextGameObjectId = 1;
 };

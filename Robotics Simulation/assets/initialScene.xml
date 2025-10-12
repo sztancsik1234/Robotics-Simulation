@@ -1,35 +1,35 @@
 <scene>
 	<prefabs>
 		<gameObject name="background" id = "1">
-			<component>
+			<components>
 				<SpriteRendererComponent>
 					<texturePath>assets/Concrete.jpg</texturePath>
-					<size>
-						<x>1000</x>
-						<y>1000</y>
-					</size>
 				</SpriteRendererComponent>
-			</component>
+			</components>
 		</gameObject>
 		<gameObject name="box" id="2">
-			<component>
+			<transform>
+				<position x="200" y="300"></position>
+				<rotation angle="0"></rotation>
+				<size x="50" y="50"></size>
+			</transform>
+			<components>
 				<SpriteRendererComponent>
 					<texturePath>assets/Crate.png</texturePath>
-					<size>
-						<x>50</x>
-						<y>50</y>
-					</size>
-					<anchor>
-						<x>0.95</x>
-						<y>0.95</y>
-					</anchor>
+					<size x="50" y="50"></size>
+					<anchor x="0.95" y="0.95"></anchor>
 				</SpriteRendererComponent>
 				<MouseFollowerComponent></MouseFollowerComponent>
-			</component>
+			</components>
 		</gameObject>
 	</prefabs>
 	<gameObjects>
-		<prefab id = "2" x = "200" y = "300"></prefab>
-		<prefab id = "1" x = "0" y = "0"></prefab>
+		<prefab id = "2">
+		</prefab>
+		<prefab id = "1">
+			<transform>
+				<size x="1000" y="1000"></size>
+			</transform>
+		</prefab>
   </gameObjects>
 </scene>

@@ -16,6 +16,7 @@ public:
 
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
+	//Q: Why delete copy constructor and copy assignment operator?
 
     void Unload();
 

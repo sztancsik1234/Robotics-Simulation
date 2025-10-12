@@ -84,8 +84,11 @@ void Game::HandleInput()
 void Game::Update()
 {
 	//iterate through game objects and update them
-	for (auto& gameObject : activeScene->getGameObjects())
+	// TODO: Investigate if this is a copy or not. Concider using references if it is.
+	auto& gameobjects = activeScene->getGameObjects();
+	for (auto& gameObject : gameobjects)
 	{
+		// TODO: BUG HERE memory violation
 		Logger.Log("In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
 		gameObject.Update();
 	}

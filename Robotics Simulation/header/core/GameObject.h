@@ -17,6 +17,7 @@ concept ComponentDerived = std::is_base_of_v<Component, T>;
 class GameObject
 {
 public:
+	// TODO: Pass transform by const reference
 	explicit GameObject(ILogger& logger, int id = 0, Transform transform = Transform{}, const std::string& name = "Unnamed") :
 		id(id), name(name), transform(transform), Logger(logger) {}
 	~GameObject();

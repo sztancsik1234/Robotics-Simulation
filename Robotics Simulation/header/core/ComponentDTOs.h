@@ -6,11 +6,10 @@
 // SpriteRenderComponent
 // Constructor: SpriteRenderComponent(GameObject*, ISpriteRenderer&, ILogger&, const std::string& texturePath, Vector2 size, Vector2 anchor)
 // Services: ISpriteRenderer&, ILogger&
-// Data: texturePath, size, anchor
+// Data: texturePath, anchor
 struct SpriteRenderComponentDTO
 {
     std::string texturePath;
-    Vector2     size;
     Vector2     anchor {0.f, 0.f};
 };
 
