@@ -17,8 +17,15 @@ SfmlRenderer::~SfmlRenderer() = default;
 void SfmlRenderer::Initialize()
 {
 	// Create a window with a specific size and title
-	window.create(sf::VideoMode(sf::Vector2u(800, 600)), "SFML Renderer");
+	window.create(sf::VideoMode(sf::Vector2u(800, 600)), "SFML Renderer", sf::Style::Close);
 	window.setFramerateLimit(60); // Set the frame rate limit
+}
+
+bool SfmlRenderer::IsInitialized() const
+{
+	if (window.isOpen())
+		return true;
+	return false;
 }
 
 sf::RenderWindow& SfmlRenderer::GetWindow()

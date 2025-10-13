@@ -20,6 +20,8 @@ public:
 	/// </summary>
 	void Initialize() override;
 
+	bool IsInitialized() const override;
+
 	/// <summary>
 	/// Provide a reference for the window to other services, like input.
 	/// </summary>

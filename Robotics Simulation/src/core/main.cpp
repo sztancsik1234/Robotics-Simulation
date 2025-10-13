@@ -18,8 +18,19 @@ int main()
 	//initialize the game
 	game.Initialize();
 
+	try
+	{
+		game.VerifyState();
+
+	}
+	catch (const GameInitializationException&)
+	{
+		logger.Log("[Main] Game initialization failed. Exiting.", LogLevel::ERROR);
+		return -1;
+	}
+
 	//run the game loop
-	game.RunMainLoop();
+	game.StartMainLoop();
 
 	//shutdown the game
 	game.Shutdown();

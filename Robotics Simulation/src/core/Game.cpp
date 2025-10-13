@@ -32,32 +32,35 @@ void Game::InitializeRenderer()
 	try
 	{
 		Renderer.Initialize();
-		Logger.Log("Renderer initialized.");
-		Running = true;
+		Logger.Log("[Game] Renderer initialized.");
 	}
 	catch (const std::exception& ex)
 	{
-		Logger.Log(std::string("Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
-		Running = false;
+		Logger.Log(std::string("[Game] Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
 	}
-}
-
-void Game::addTestGameObject()
-{
-	// add a test game object, add a circle renderer, and a mouseFollower component to it
-	GameObject testObject(Logger, 1, {0.f, 0.f}, "TestObject");
-	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
-	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
-	addGameObject(std::move(testObject));
 }
 
 void Game::LoadInitialScene()
 {
-	sceneLoader.LoadScene(INTIAL_SCENE_PATH);
+	Scene scn = sceneLoader.LoadScene(INTIAL_SCENE_PATH);
+	activeScene = std::make_unique<Scene>(std::move(scn));
 }
 
 bool Game::IsRunning() const {
 	return Running;
+}
+
+
+void Game::StartMainLoop()
+{
+	while (Running)
+	{
+		ClearFrame();
+		HandleEvents();
+		HandleInput();
+		Update();
+		DisplayFrame();
+	}
 }
 
 void Game::HandleEvents()
@@ -70,13 +73,13 @@ void Game::HandleInput()
 {
 	if (InputService.ShouldTerminate())
 	{
-		Logger.Log("Termination requested. Exiting game.");
+		Logger.Log("[Game] Termination requested. Exiting game.");
 		Running = false;
 		return;
 	}
 	if (InputService.IsKeyPressed(KeyCode::ESCAPE))
 	{
-		Logger.Log("ESCAPE key pressed. Exiting game.");
+		Logger.Log("[Game] ESCAPE key pressed. Exiting game.");
 		Running = false;
 	}
 }
@@ -89,10 +92,30 @@ void Game::Update()
 	for (auto& gameObject : gameobjects)
 	{
 		// TODO: BUG HERE memory violation
-		Logger.Log("In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
+		Logger.Log("[Game] In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
 		gameObject.Update();
 	}
 
+}
+
+void Game::VerifyState()
+{
+	// verify Renderer and scene are initialized
+	if (!Renderer.IsInitialized())
+	{
+		Logger.Log("[Game] Renderer not initialized.", LogLevel::ERROR);
+		Running = false;
+		throw GameInitializationException("Renderer not initialized.");
+	}
+	if (!activeScene)
+	{
+		Logger.Log("[Game] No active scene loaded.", LogLevel::ERROR);
+		Running = false;
+		throw GameInitializationException("No active scene loaded.");
+	}
+	Logger.Log("[Game] Game is ready to run.", LogLevel::INFO);
+	Running = true;
+	return;
 }
 
 void Game::ClearFrame()
@@ -108,20 +131,9 @@ void Game::DisplayFrame()
 void Game::addGameObject(GameObject&& gameObject)
 {
 	activeScene->addGameObject(std::move(gameObject));
-	Logger.Log("GameObject added with move semantics.");
+	Logger.Log("[Game] GameObject added with move semantics.");
 }
 
-void Game::RunMainLoop()
-{
-	while (Running)
-	{
-		ClearFrame();
-		HandleEvents();
-		HandleInput();
-		Update();
-		DisplayFrame();
-	}
-}
 
 /// <summary>
 /// Shuts down the game by shutting down the renderer and logging the shutdown.
@@ -132,4 +144,14 @@ void Game::Shutdown()
 	Renderer.Shutdown();
 
 	Running = false;
+}
+
+
+void Game::addTestGameObject()
+{
+	// add a test game object, add a circle renderer, and a mouseFollower component to it
+	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
+	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
+	addGameObject(std::move(testObject));
 }

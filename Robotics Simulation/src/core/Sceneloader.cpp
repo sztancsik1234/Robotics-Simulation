@@ -7,6 +7,8 @@
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
 
+#define TRACE_LOG true
+
 SceneLoader::SceneLoader(Game& game)
 	: mainGame(game)
 {
@@ -65,7 +67,7 @@ void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,
 	if (auto* texNode = elem.FirstChildElement("texturePath"); texNode && texNode->GetText())
 		dto.texturePath = texNode->GetText();
 	else
-		mainGame.Logger.Log("SpriteRendererComponent missing <texturePath>, using empty path (will load default).", LogLevel::WARNING);
+		mainGame.Logger.Log("[Sceneloader] SpriteRendererComponent missing <texturePath>, using empty path (will load default).", LogLevel::WARNING);
 
 	if (auto* anchorNode = elem.FirstChildElement("anchor"))
 	{
@@ -93,11 +95,15 @@ void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,
 	// anchor optional; default already {0,0}
 }
 
-void SceneLoader::AddComponentsFromXML(GameObject& go, const tx2::XMLElement* componentRoot)
+void SceneLoader::AddComponentsFromXML(GameObject& go, const tx2::XMLElement* componentsRoot)
 {
-	if (!componentRoot) return;
+	if (!componentsRoot)
+	{
+		mainGame.Logger.Log("[Sceneloader] AddComponentsFromXML called with null componentsRoot", LogLevel::WARNING);
+		return;
+	}
 
-	for (auto* compElem = componentRoot->FirstChildElement();
+	for (auto* compElem = componentsRoot->FirstChildElement();
 		 compElem;
 		 compElem = compElem->NextSiblingElement())
 	{
@@ -105,7 +111,7 @@ void SceneLoader::AddComponentsFromXML(GameObject& go, const tx2::XMLElement* co
 		auto it = componentFactories.find(tag);
 		if (it == componentFactories.end())
 		{
-			mainGame.Logger.Log("Unknown component tag: " + tag, LogLevel::WARNING);
+			mainGame.Logger.Log("[Sceneloader] Unknown component tag: " + tag, LogLevel::WARNING);
 			continue;
 		}
 		it->second(go, *compElem);
@@ -117,65 +123,79 @@ inline unsigned int SceneLoader::RequestGameObjectId()
 	return nextGameObjectId++;
 }
 
-GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement& xmlNode)
+GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode)
 {
-	const char* nameAttr = xmlNode.Attribute("name");
+	const char* nameAttr = xmlNode->Attribute("name");
 	std::string name = nameAttr ? nameAttr : "Unnamed";
 
 	// querry id attribute. If missing, use nextGameObjectId++;
-	int id;
-	if (!xmlNode.QueryIntAttribute("id", &id))
+	int id = 0;
+	if (!xmlNode->QueryIntAttribute("id", &id))
 	{
 		id = RequestGameObjectId();
 	}
 
-	auto transformNode = xmlNode.FirstChildElement("transform");
+	Transform transform;
+	auto* transformNode = xmlNode->FirstChildElement("transform");
 
-	Transform transform = ParseTransformXML(xmlNode);
+	if (transformNode == nullptr)
+		mainGame.Logger.Log(std::format("[Sceneloader] {} has no <transform> section, using default.", name), LogLevel::WARNING);
+	else
+		transform = ParseTransformXML(transformNode);
+
 
 	GameObject go(mainGame.Logger, id, transform, name);
 
-	if (auto* compRoot = xmlNode.FirstChildElement("component"))
+	if (auto* compRoot = xmlNode->FirstChildElement("components"))
 		AddComponentsFromXML(go, compRoot);
+	else 
+		mainGame.Logger.Log(std::format("[Sceneloader] {} has no <components> section.", go.ToString()), LogLevel::WARNING);
 
 	return go;
 }
 
-Transform SceneLoader::ParseTransformXML(const tx2::XMLElement& xmlNode)
+// Returns a Transform with default values if no <transform> node is found.
+Transform SceneLoader::ParseTransformXML(const tx2::XMLElement* xmlNode) const
 {
+	if (!xmlNode)
+	{
+		// no transform node, return default
+		mainGame.Logger.Log("[Sceneloader] Nullpointer passed to ParseTransform", LogLevel::WARNING);
+		return Transform();
+	}
 	// Parse transform
 	Transform transform;
-	if (auto* transNode = xmlNode.FirstChildElement("transform"))
+	if (auto* posNode = xmlNode->FirstChildElement("position"))
 	{
-		if (auto* posNode = transNode->FirstChildElement("position"))
-		{
-			posNode->QueryFloatAttribute("x", &transform.position.x);
-			posNode->QueryFloatAttribute("y", &transform.position.y);
-		}
-		if (auto* rotNode = transNode->FirstChildElement("rotation"))
-		{
-			float f_rotation = 0.f;
-			rotNode->QueryFloatAttribute("angle", &f_rotation);
-			transform.rotation = f_rotation;
-		}
-		if (auto* scaleNode = transNode->FirstChildElement("size"))
-		{
-			scaleNode->QueryFloatAttribute("x", &transform.size.x);
-			scaleNode->QueryFloatAttribute("y", &transform.size.y);
-		}
+		posNode->QueryFloatAttribute("x", &transform.position.x);
+		posNode->QueryFloatAttribute("y", &transform.position.y);
 	}
+	if (auto* rotNode = xmlNode->FirstChildElement("rotation"))
+	{
+		float f_rotation = 0.f;
+		rotNode->QueryFloatAttribute("angle", &f_rotation);
+		transform.rotation = f_rotation;
+	}
+	if (auto* scaleNode = xmlNode->FirstChildElement("size"))
+	{
+		scaleNode->QueryFloatAttribute("x", &transform.size.x);
+		scaleNode->QueryFloatAttribute("y", &transform.size.y);
+	}
+	
 	return transform;
 }
 
 Scene SceneLoader::LoadScene(const std::string& path)
 {
+	
+	if constexpr (TRACE_LOG) mainGame.Logger.Log("[Sceneloader] Loading initial scene: " + path);
 	Scene scene(path);
 
 	// load document
 	tx2::XMLDocument doc;
 	if (doc.LoadFile(path.c_str()) != tx2::XML_SUCCESS)
 	{
-		mainGame.Logger.Log("Failed to load initial scene file: " + path, LogLevel::ERROR);
+		mainGame.Logger.Log("[Sceneloader] Failed to load initial scene file: " + path, LogLevel::ERROR);
 		return scene;
 	}
 
@@ -183,7 +203,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 	tx2::XMLElement* root = doc.RootElement();
 	if (!root || std::string(root->Name()) != "scene")
 	{
-		mainGame.Logger.Log("Scene file missing <scene> root.", LogLevel::ERROR);
+		mainGame.Logger.Log("[Sceneloader] Scene file missing <scene> root.", LogLevel::ERROR);
 		return scene;
 	}
 
@@ -198,7 +218,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 			objectNode->QueryIntAttribute("id", &prefabId);
 			if (prefabId == 0)
 			{
-				mainGame.Logger.Log("Prefab <gameObject> without valid id attribute.", LogLevel::WARNING);
+				mainGame.Logger.Log("[Sceneloader] Prefab <gameObject> without valid id attribute.", LogLevel::WARNING);
 				continue;
 			}
 			prefabMap[prefabId] = objectNode;
@@ -209,6 +229,8 @@ Scene SceneLoader::LoadScene(const std::string& path)
 		mainGame.Logger.Log("Scene file missing <prefabs> section.", LogLevel::WARNING);
 	}
 
+	if constexpr (TRACE_LOG) mainGame.Logger.Log("[Sceneloader] Prefabs registered: " + std::to_string(prefabMap.size()));
+
 	// Second pass: instantiate gameObjects section
 	if (auto* gosNode = root->FirstChildElement("gameObjects"))
 	{
@@ -216,15 +238,22 @@ Scene SceneLoader::LoadScene(const std::string& path)
 	}
 	else
 	{
-		mainGame.Logger.Log("Scene file missing the whole <gameObjects> section. Scene empty", LogLevel::ERROR);
+		mainGame.Logger.Log("[Sceneloader] Scene file missing the whole <gameObjects> section. Scene empty", LogLevel::ERROR);
 	}
 
+	if constexpr (TRACE_LOG) {
+		mainGame.Logger.Log("[Sceneloader] secondPass over...");
+		scene.logGameObjects(mainGame.Logger);
+	}
+
+	prefabMap.clear();
 	return scene;
 }
 
 // The prefabs are already registered, now instantiate the game objects
 const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 {
+	if constexpr (TRACE_LOG) mainGame.Logger.Log("[Sceneloader] Second pass: instantiating game objects...");
 	// Iterate over children, which can be <prefab> or <gameObject>
 	for (auto* childNode = gosNode->FirstChildElement();
 		childNode;
@@ -240,30 +269,35 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 			auto it = prefabMap.find(refId);
 			if (it == prefabMap.end())
 			{
-				mainGame.Logger.Log("Prefab id not found: " + std::to_string(refId), LogLevel::WARNING);
+				mainGame.Logger.Log("[Sceneloader] Prefab id not found: " + std::to_string(refId), LogLevel::WARNING);
 				continue;
 			}
 
-			GameObject instance = CreateGameObjectFromXML(*it->second);
+			GameObject instance = CreateGameObjectFromXML(it->second);
 
 
 			//querry transform node
 			if (auto const* transformNode = childNode->FirstChildElement("transform"))
 			{
-				instance.SetTransform(ParseTransformXML(*transformNode));
+				instance.SetTransform(ParseTransformXML(transformNode));
 			}
 
+			mainGame.Logger.Log(std::format("[Sceneloader] Instantiated prefab id={} as GameObject id={}, name='{}'",
+											std::to_string(refId), 
+											std::to_string(instance.GetId()), 
+											instance.GetName()),
+								LogLevel::INFO);
 			scene->addGameObject(std::move(instance));
 		}
 		else if (nodeTag == "gameObject")
 		{
 
-			GameObject object = CreateGameObjectFromXML(*childNode);
+			GameObject object = CreateGameObjectFromXML(childNode);
 			scene->addGameObject(std::move(object));
 		}
 		else
 		{
-			mainGame.Logger.Log("Unknown tag inside <gameObjects>: " + nodeTag, LogLevel::WARNING);
+			mainGame.Logger.Log("[Sceneloader] Unknown tag inside <gameObjects>: " + nodeTag, LogLevel::WARNING);
 		}
 	}
 }

@@ -23,6 +23,16 @@ Scene& Scene::operator=(Scene&& other) noexcept
     return *this;
 }
 
+void Scene::logGameObjects(ILogger& logger) const
+{
+    std::string msgToLog = "[Scene] Active gameobjects:\n";
+    for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
+    {
+		msgToLog += std::format("\t{}\n", it->ToString());
+    }
+	logger.Log(msgToLog, LogLevel::INFO);
+}
+
 void Scene::OnLoad()
 {
 	// If OnSceneLoad is implemented for components, call it here for each component of each game object.

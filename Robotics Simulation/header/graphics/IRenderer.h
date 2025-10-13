@@ -20,6 +20,8 @@ struct IRendererLifecycle : IRendererBase {
     /// Called before destruction of the class. Cleans up associated resources.
     /// </summary>
     virtual void Shutdown() = 0;
+
+	virtual bool IsInitialized() const = 0;
 };
 
 /// <summary>

@@ -26,7 +26,7 @@ public:
 	/// <summary>
 	/// Starts the main game loop. Returns when the game closes.
 	/// </summary>
-	void RunMainLoop();
+	void StartMainLoop();
 	void Shutdown();
 
 	/// <summary>
@@ -34,6 +34,9 @@ public:
 	/// </summary>
 	/// <returns>True if the game is running, false otherwise.</returns>
 	bool IsRunning() const;
+
+	// Verify if the game can start running and set the running flag accordingly.
+	void VerifyState();
 
 private:
 	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
@@ -61,6 +64,7 @@ private:
 	// go over all game objects and call their update method
 	void Update();
 
+
 	// clear the frame by clearing the renderer
 	void ClearFrame();
 
@@ -82,4 +86,10 @@ private:
 
 	// A test function to load a simple component with a circleRenderer
 	void addTestGameObject();
+};
+
+class GameInitializationException : public std::runtime_error
+{
+	public:
+		using std::runtime_error::runtime_error;
 };

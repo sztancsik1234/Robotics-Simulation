@@ -80,6 +80,8 @@ public:
 	/// </summary>
 	void Update();
 
+	// tostring method for debugging
+	std::string ToString() const;
 private:
 	int id;
 	std::string name;

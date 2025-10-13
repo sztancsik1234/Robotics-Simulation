@@ -42,14 +42,14 @@ private:
     inline unsigned int RequestGameObjectId();
 
     // Single factory that creates a GameObject from a <gameObject> XML element.
-    GameObject CreateGameObjectFromXML(const tinyxml2::XMLElement& xmlNode);
-	inline Transform ParseTransformXML(const tinyxml2::XMLElement& xmlNode);
+    GameObject CreateGameObjectFromXML(const tinyxml2::XMLElement* xmlNode);
+	inline Transform ParseTransformXML(const tinyxml2::XMLElement* xmlNode) const;
 
     void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,
                                 SpriteRenderComponentDTO& dto);
     const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene);
 
-    std::unordered_map<std::string, ComponentAddFn> componentFactories;
+	std::unordered_map<std::string, ComponentAddFn> componentFactories; //TODO: stored functions should construct a component and return it. The caller should be resposible for adding it to the gameobject.
     std::unordered_map<int, const tinyxml2::XMLElement*> prefabMap;
 
     unsigned int nextGameObjectId = 1;
