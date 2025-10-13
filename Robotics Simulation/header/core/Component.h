@@ -17,7 +17,7 @@ public:
 	/// This method is called by the Game class.
 	/// </summary>
 	/// <param name="owner">Pointer to the GameObject that owns this Component.</param>
-	explicit Component(GameObject* owner) : Owner(owner) {}
+	explicit Component(GameObject* owner) : owner(owner) {}
 
 	virtual ~Component() = default;
 
@@ -45,7 +45,7 @@ public:
 	virtual GameObject* GetOwner() const { return Owner; }
 	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
 private:
-	GameObject* Owner;
+	GameObject* owner;
 
 
 };
