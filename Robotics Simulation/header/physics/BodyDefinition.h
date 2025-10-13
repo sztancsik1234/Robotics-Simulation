@@ -1,6 +1,7 @@
 #pragma once
 #include "core/Vector2.h"
 #include "core/Angle.h" 
+#include <memory>
 
 enum class BodyType : char
 {
@@ -22,6 +23,8 @@ struct Circle : Shape
 struct Rectangle : Shape
 {
 	float width, height;
+	Rectangle(float width, float height) : width(width), height(height) {}
+	Rectangle(Vector2 size) : width(size.x), height(size.y) {}
 };
 
 struct BodyDefinition {
@@ -49,5 +52,5 @@ struct BodyDefinition {
 	float tangentSpeed = 0;		// Speed at which the shape moves along its tangent, useful for simulating conveyor belts or similar effects
 
 	/* Polygon definition */
-	Shape* shape = nullptr;
+	std::unique_ptr<Shape> shape = nullptr;
 };

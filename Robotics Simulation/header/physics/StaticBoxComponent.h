@@ -2,16 +2,16 @@
 #include "core/Component.h"
 #include "physics/IPhysicsEngine.h"
 #include "core/Transform.h"
+#include "util/ILogger.h"
 
 // Created with the owner's position at the center of the box
-class StaticBoxComponent : public Component
+class StaticBoxComponent final : public Component 
 {
 public:
-	StaticBoxComponent(GameObject* owner, IBodyManager& physicsEngine, float width, float height) :
+	StaticBoxComponent(GameObject* owner, ILogger& logger, IBodyManager& physicsEngine) :
 		Component(owner),
-		PhysicsEngine(physicsEngine),
-		initialWidth(width),
-		initialHeight(height)
+		logger(logger),
+		PhysicsEngine(physicsEngine)
 	{}
 
 	void OnAdd() override;
@@ -19,8 +19,11 @@ public:
 	void OnRemove() override;
 
 private:
+	ILogger& logger;
 	IBodyManager& PhysicsEngine;
 	BodyId BodyId = 0;
-	float initialWidth;
-	float initialHeight;
+	// Normalized offset from the top-left corned of the box.
+	// Unused for now. If a body is needed with offset, this can be used.
+	// When used, update needs to be modified to set the body's position based on the owner's position and the anchor.
+	Vector2 anchor = { 0.5f, 0.5f };	
 };
