@@ -174,8 +174,8 @@ TEST(GameObjectTest, SetAndGetPosition)
     gameObject.SetPosition(position);
     
     // Assert
-    EXPECT_EQ(gameObject.GetPosition().x, position.x);
-    EXPECT_EQ(gameObject.GetPosition().y, position.y);
+    EXPECT_EQ(gameObject.GetPosition()->x, position.x);
+    EXPECT_EQ(gameObject.GetPosition()->y, position.y);
 }
 
 TEST(GameObjectTest, GetIdAndName)
