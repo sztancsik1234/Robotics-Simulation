@@ -42,8 +42,8 @@ public:
 
 	virtual std::string ToString() const = 0;
 
-	virtual GameObject* GetOwner() const { return Owner; }
-	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
+	virtual GameObject* GetOwner() const { return owner; }
+	void SetOwner(GameObject* newOwner) { owner = newOwner; }
 private:
 	GameObject* owner;
 

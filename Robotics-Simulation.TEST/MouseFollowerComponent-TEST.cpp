@@ -42,7 +42,7 @@ TEST_F(MouseFollowerComponentTest, UpdateSetsGameObjectPositionToMousePosition) 
     component->Update();
     
     // Assert
-    Vector2 actualPosition = *gameObject->GetPosition();
+    Vector2 actualPosition = gameObject->GetPosition();
     EXPECT_FLOAT_EQ(actualPosition.x, expectedPosition.x);
     EXPECT_FLOAT_EQ(actualPosition.y, expectedPosition.y);
 }
@@ -52,7 +52,7 @@ TEST_F(MouseFollowerComponentTest, HandlesDifferentMousePositions) {
     Vector2 position1(0.0f, 0.0f);
     mockInput.mousePosition = position1;
     component->Update();
-    Vector2 actual1 = *gameObject->GetPosition();
+    Vector2 actual1 = gameObject->GetPosition();
     EXPECT_FLOAT_EQ(actual1.x, position1.x);
     EXPECT_FLOAT_EQ(actual1.y, position1.y);
     
@@ -60,7 +60,7 @@ TEST_F(MouseFollowerComponentTest, HandlesDifferentMousePositions) {
     Vector2 position2(-50.0f, -75.0f);
     mockInput.mousePosition = position2;
     component->Update();
-    Vector2 actual2 = *gameObject->GetPosition();
+    Vector2 actual2 = gameObject->GetPosition();
     EXPECT_FLOAT_EQ(actual2.x, position2.x);
     EXPECT_FLOAT_EQ(actual2.y, position2.y);
     
@@ -68,7 +68,7 @@ TEST_F(MouseFollowerComponentTest, HandlesDifferentMousePositions) {
     Vector2 position3(9999.9f, 8888.8f);
     mockInput.mousePosition = position3;
     component->Update();
-    Vector2 actual3 = *gameObject->GetPosition();
+    Vector2 actual3 = gameObject->GetPosition();
     EXPECT_FLOAT_EQ(actual3.x, position3.x);
     EXPECT_FLOAT_EQ(actual3.y, position3.y);
 }

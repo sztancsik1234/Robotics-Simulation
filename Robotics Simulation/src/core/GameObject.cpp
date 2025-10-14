@@ -77,7 +77,7 @@ void GameObject::RemoveComponent(Component* component)
 
 void GameObject::Update()
 {
-    Logger.Log("[GameObject] In GameObject::Update:\tGameobject.position: (" + std::to_string(GetPosition()->x) + ", " + std::to_string(GetPosition()->y) + ")", LogLevel::TRACE);
+    Logger.Log("[GameObject] In GameObject::Update:\tGameobject.position: (" + std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ")", LogLevel::TRACE);
 
     // iterate through the component list and call Update for each component
     // component list empty?

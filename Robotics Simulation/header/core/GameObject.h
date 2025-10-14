@@ -23,9 +23,9 @@ public:
 	~GameObject();
 	GameObject(GameObject&& other) noexcept;
 
-	Vector2* GetPosition() 		{ return &transform.position; }
-	Radian* GetRotation() 		{ return &transform.rotation; }
-	Transform* GetTransform() 	{ return &transform; }
+	Vector2 GetPosition() 		{ return transform.position; }
+	Radian GetRotation() 		{ return transform.rotation; }
+	const Transform& GetTransform() const	{ return transform; }
 	void SetPosition(const Vector2& position);
 	void SetRotation(const Radian& rotation);
 	void SetTransform(const Transform& transform);

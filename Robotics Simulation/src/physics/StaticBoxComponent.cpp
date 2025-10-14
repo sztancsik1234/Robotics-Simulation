@@ -3,15 +3,12 @@
 
 void StaticBoxComponent::OnAdd()
 {
-	Transform* transform = GetOwner()->GetTransform();
-	if (transform == nullptr)
-	{
-		throw std::runtime_error("StaticBoxComponent requires a Transform component.");
-	}
+	const Transform& transform = GetOwner()->GetTransform();
+
 	BodyDefinition bodyDef;
-	bodyDef.position = transform->position;
-	bodyDef.rotation = transform->rotation;
-	bodyDef.shape = std::make_unique<Rectangle>(transform->size);
+	bodyDef.position = transform.position;
+	bodyDef.rotation = transform.rotation;
+	bodyDef.shape = std::make_unique<Rectangle>(transform.size);
 	BodyId = PhysicsEngine.createBody(bodyDef);
 }
 
