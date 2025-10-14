@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "core/Vector2.h"
 #include "graphics/IRenderer.h"
 #include "util/ILogger.h"
@@ -18,36 +18,17 @@ Vector2 MockViewport::GetScreenResolution() const { return screenSize; }
 
 Vector2 MockViewport::PixelToWorldPos(Vector2 px, bool snapToPixel) const
 {
-    if (snapToPixel) { px.x = std::round(px.x); px.y = std::round(px.y); }
-    // Simple symmetrical mapping for tests (no Y flip):
-    const Vector2 topLeft{ viewCenter.x - viewSize.x * 0.5f, viewCenter.y - viewSize.y * 0.5f };
-    return {
-        topLeft.x + (px.x * (viewSize.x / screenSize.x)),
-        topLeft.y + (px.y * (viewSize.y / screenSize.y))
-    };
+    return px;
 }
 
 Vector2 MockViewport::WorldToPixelPos(Vector2 wp, bool snapToPixel) const
 {
-    const Vector2 topLeft{ viewCenter.x - viewSize.x * 0.5f, viewCenter.y - viewSize.y * 0.5f };
-    Vector2 px{
-        (wp.x - topLeft.x) * (screenSize.x / viewSize.x),
-        (wp.y - topLeft.y) * (screenSize.y / viewSize.y)
-    };
-    if (snapToPixel) { px.x = std::round(px.x); px.y = std::round(px.y); }
-    return px;
+    return wp;
 }
 
 Transform MockViewport::ToScreenSpace(const Transform& world, bool snapToPixel) const
 {
-    Transform t{};
-    t.position = WorldToPixelPos(world.position, snapToPixel);
-    t.size = {
-        std::max(1.f, std::round(world.size.x * (screenSize.x / viewSize.x))),
-        std::max(1.f, std::round(world.size.y * (screenSize.y / viewSize.y)))
-    };
-    t.rotation = world.rotation;
-    return t;
+    return world;
 }
 
 // MockRenderer implementation

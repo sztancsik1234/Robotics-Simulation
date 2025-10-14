@@ -1,21 +1,24 @@
 #include "pch.h"
+#include "graphics/Camera.h"
 #include "input/MouseFollowerComponent.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include "MockLogger.h"
 #include "MockInputService.h"
 #include "MockGameObject.h"
+#include "MockViewport.h"
 
 class MouseFollowerComponentTest : public ::testing::Test {
 protected:
     MockLogger logger;
     MockInputService mockInput;
+	MockViewport mockViewport;
     std::unique_ptr<MockGameObject> gameObject;
     std::unique_ptr<MouseFollowerComponent> component;
 
     void SetUp() override {
         gameObject = std::make_unique<MockGameObject>(logger);
-        component = std::make_unique<MouseFollowerComponent>(gameObject.get(), mockInput);
+        component = std::make_unique<MouseFollowerComponent>(gameObject.get(), mockViewport, mockInput);
     }
 };
 
