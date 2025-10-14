@@ -10,7 +10,7 @@
 		<gameObject name="box" id="2">
 			<transform>
 				<position x="200" y="300"></position>
-				<rotation angle="0"></rotation>
+				<rotation angle="-25"></rotation>
 				<size x="50" y="50"></size>
 			</transform>
 			<components>
