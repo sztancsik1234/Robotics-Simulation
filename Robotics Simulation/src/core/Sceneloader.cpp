@@ -33,7 +33,8 @@ void SceneLoader::RegisterDefaultComponents()
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
 
-			object.EmplaceComponent<SpriteRenderComponent>(*spriteIface,
+			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetCamera(),
+													   *spriteIface,
 													   mainGame.Logger,
 													   dto);
 		});
@@ -48,7 +49,7 @@ void SceneLoader::RegisterDefaultComponents()
 				mainGame.Logger.Log("CircleRendererComponent: Renderer does not implement IPrimitiveRenderer", LogLevel::ERROR);
 				return;
 			}
-			object.EmplaceComponent<CircleRenderer>(*primitiveIface, mainGame.Logger);
+			object.EmplaceComponent<CircleRenderer>(mainGame.GetCamera(), mainGame.Logger);
 		});
 
 	// MouseFollowerComponent

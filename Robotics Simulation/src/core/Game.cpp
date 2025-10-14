@@ -160,7 +160,7 @@ void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
-	testObject.EmplaceComponent<CircleRenderer>(*mainCamera, Logger);
+	testObject.EmplaceComponent<CircleRenderer>(mainCamera, Logger);
 	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
 	addGameObject(std::move(testObject));
 }
