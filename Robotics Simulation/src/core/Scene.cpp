@@ -28,7 +28,7 @@ void Scene::logGameObjects(ILogger& logger, bool logComonents) const
     std::string msgToLog = "[Scene] Active gameobjects:\n";
     for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
     {
-		msgToLog += std::format("\t{}\n", it->ToString(logComonents));
+		msgToLog += std::format("\t{}", it->ToString(logComonents));
     }
 	logger.Log(msgToLog, LogLevel::INFO);
 }
