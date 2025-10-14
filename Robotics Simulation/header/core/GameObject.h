@@ -81,7 +81,9 @@ public:
 	void Update();
 
 	// tostring method for debugging
-	std::string ToString() const;
+	std::string ToString(bool components = false) const;
+
+	void logComponents() const;
 private:
 	int id;
 	std::string name;

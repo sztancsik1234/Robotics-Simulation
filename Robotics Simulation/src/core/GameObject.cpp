@@ -87,7 +87,20 @@ void GameObject::Update()
     }
 }
 
-std::string GameObject::ToString() const
+std::string GameObject::ToString(bool components) const
 {
-	return std::format("Gameobject: id={}, name={}", id, name);
+	std::string result = std::format("<Gameobject> id={}, name={}\n", id, name);
+    for (auto const& component : componentList)
+		result += "\t - " + component->ToString();
+	return result;
+}
+
+void GameObject::logComponents() const
+{
+	std::string debugStr = std::format("[GameObject] Components of GameObject id={}, name='{}':", id, name);
+    for (auto const& component : componentList)
+    {
+        debugStr += "\n - " + component->ToString();
+	}
+	Logger.Log(debugStr, LogLevel::INFO);
 }

@@ -36,6 +36,8 @@ public:
 	/// </summary>
 	void OnRemove() override;
 
+	std::string ToString() const override;
+
 protected:
 	ILogger& Logger;
 	Camera& camera;

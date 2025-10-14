@@ -33,6 +33,7 @@ void SceneLoader::RegisterDefaultComponents()
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
 
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding SpriteRendererComponent to {} with texture '{}'", object.ToString(), dto.texturePath), LogLevel::TRACE);
 			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetCamera(),
 													   *spriteIface,
 													   mainGame.Logger,
@@ -49,6 +50,7 @@ void SceneLoader::RegisterDefaultComponents()
 				mainGame.Logger.Log("CircleRendererComponent: Renderer does not implement IPrimitiveRenderer", LogLevel::ERROR);
 				return;
 			}
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding CircleRendererComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<CircleRenderer>(mainGame.GetCamera(), mainGame.Logger);
 		});
 
@@ -56,6 +58,7 @@ void SceneLoader::RegisterDefaultComponents()
 	componentFactories.try_emplace("MouseFollowerComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseFollowerComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera(), mainGame.InputService);
 		});
 
@@ -244,7 +247,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 
 	if constexpr (TRACE_LOG) {
 		mainGame.Logger.Log("[Sceneloader] secondPass over...");
-		scene.logGameObjects(mainGame.Logger);
+		scene.logGameObjects(mainGame.Logger, true);
 	}
 
 	prefabMap.clear();

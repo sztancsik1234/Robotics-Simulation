@@ -33,6 +33,7 @@ public:
 	void OnAdd() override;
 	void Update() override;
 	void OnRemove() override;
+	std::string ToString() const override;
 
 	std::string GetTexturePath() const { return TexturePath; }
 	TextureId GetTextureId() const { return TextureId; }

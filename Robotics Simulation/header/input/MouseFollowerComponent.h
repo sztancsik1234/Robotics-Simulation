@@ -16,6 +16,7 @@ public:
 	void OnAdd() override;
 	void Update() override;
 	void OnRemove() override;
+	std::string ToString() const override;
 
 private:
 	Camera& camera;

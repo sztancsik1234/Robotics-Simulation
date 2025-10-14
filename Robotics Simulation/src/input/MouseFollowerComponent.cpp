@@ -22,3 +22,8 @@ void MouseFollowerComponent::OnRemove()
 	// Cleanup logic if needed
 	// This could include resetting the position or state of the GameObject
 }
+
+std::string MouseFollowerComponent::ToString() const
+{
+	return std::format("<MouseFollowerComponent> owner={}", GetOwner()->GetId());
+}

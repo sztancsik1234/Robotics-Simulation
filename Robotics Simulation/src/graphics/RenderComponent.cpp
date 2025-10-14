@@ -16,3 +16,8 @@ void RenderComponent::OnRemove()
 {
 	Logger.Log("[RenderComponent] Removed from GameObject.", LogLevel::INFO);
 }
+
+std::string RenderComponent::ToString() const
+{
+	return std::format("<RenderComponent> owner={}", GetOwner()->GetId());
+}

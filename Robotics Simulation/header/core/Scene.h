@@ -28,7 +28,7 @@ public:
     const std::forward_list<GameObject>& getGameObjects() const { return gameObjects; }
 
 	// helper for debugging
-	void logGameObjects(ILogger& logger) const;
+	void logGameObjects(ILogger& logger, bool logComonents = false) const;
 
 private:
     std::string SceneFilePath;

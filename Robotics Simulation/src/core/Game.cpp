@@ -100,8 +100,7 @@ void Game::Update()
 	auto& gameobjects = activeScene->getGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
-		// TODO: BUG HERE memory violation
-		Logger.Log("[Game] In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
+		Logger.Log(std::format("[Game] Updating gameobject'{}'", gameObject.ToString()), LogLevel::TRACE);
 		gameObject.Update();
 	}
 
