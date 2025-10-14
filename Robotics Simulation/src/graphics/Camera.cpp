@@ -173,7 +173,7 @@ void Camera::DrawRectangle(Vector2 worldP1, Vector2 worldP2)
 
 void Camera::DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor)
 {
-	const Transform screen = WorldToScreenTransform(worldTransform, ViewCenter, ViewSize, ScreenSizePixels, true);
+	const Transform screen = WorldToScreenTransform(worldTransform, ScreenSizePixels, ViewSize, ViewCenter, true);
 #ifdef _DEBUG
 	if (textureId == 0)
 	{
