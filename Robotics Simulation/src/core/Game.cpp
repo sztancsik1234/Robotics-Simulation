@@ -2,7 +2,7 @@
 #include "core/Component.h"
 #include "core/Color.inl"
 #include "graphics/SpriteRendererComponent.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
 
@@ -159,7 +159,7 @@ void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
-	testObject.EmplaceComponent<CircleRenderer>(mainCamera, Logger);
+	testObject.EmplaceComponent<CircleRendererComponent>(mainCamera, Logger);
 	testObject.EmplaceComponent<MouseFollowerComponent>(mainCamera, InputService);
 	addGameObject(std::move(testObject));
 }

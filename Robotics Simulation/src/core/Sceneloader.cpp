@@ -1,7 +1,7 @@
 #include "core/SceneLoader.h"
 #include "core/Game.h"
 #include "graphics/SpriteRendererComponent.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
@@ -40,7 +40,7 @@ void SceneLoader::RegisterDefaultComponents()
 													   dto);
 		});
 
-	// CircleRenderer (tag chosen as CircleRendererComponent for consistency)
+	// CircleRendererComponent (tag chosen as CircleRendererComponent for consistency)
 	componentFactories.try_emplace("CircleRendererComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
@@ -51,7 +51,7 @@ void SceneLoader::RegisterDefaultComponents()
 				return;
 			}
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding CircleRendererComponent to {}", object.ToString()), LogLevel::TRACE);
-			object.EmplaceComponent<CircleRenderer>(mainGame.GetCamera(), mainGame.Logger);
+			object.EmplaceComponent<CircleRendererComponent>(mainGame.GetCamera(), mainGame.Logger);
 		});
 
 	// MouseFollowerComponent

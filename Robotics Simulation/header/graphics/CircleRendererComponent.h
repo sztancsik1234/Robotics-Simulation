@@ -6,11 +6,11 @@
 /// <summary>
 /// A mock class to render a circle on the screen.
 /// </summary>
-class CircleRenderer : public RenderComponent
+class CircleRendererComponent : public RenderComponent
 {
 public:
 	// Refactored constructors to take Camera instead of primitive renderer
-	CircleRenderer(GameObject* owner, Camera& camera, ILogger& logger) :
+	CircleRendererComponent(GameObject* owner, Camera& camera, ILogger& logger) :
 		RenderComponent(owner, logger, camera)
 	{
 	}
