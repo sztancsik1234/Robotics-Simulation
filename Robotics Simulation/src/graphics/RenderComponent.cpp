@@ -2,10 +2,9 @@
 #include "core/GameObject.h"
 #include "util/Exceptions.h"
 
-
 void RenderComponent::OnAdd()
 {
-	Logger.Log("RenderComponent added to GameObject: " + GetOwner()->GetName(), LogLevel::INFO);
+	Logger.Log("[RenderComponent] Added to GameObject: " + GetOwner()->GetName(), LogLevel::INFO);
 }
 
 void RenderComponent::Update()
@@ -15,5 +14,5 @@ void RenderComponent::Update()
 
 void RenderComponent::OnRemove()
 {
-	Logger.Log("RenderComponent removed from GameObject.", LogLevel::INFO);
+	Logger.Log("[RenderComponent] Removed from GameObject.", LogLevel::INFO);
 }

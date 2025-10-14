@@ -17,6 +17,7 @@
     <ClCompile Include="src\util\ILogger.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
+    <ClCompile Include="src\graphics\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -41,6 +42,10 @@
     <ClInclude Include="header\graphics\IRenderer.h" />
     <ClInclude Include="header\input\SfmlInputService.h" />
     <ClInclude Include="header\graphics\SfmlRenderer.h" />
+    <ClInclude Include="header\physics\BodyDefinition.h" />
+    <ClInclude Include="header\physics\StaticBoxComponent.h" />
+    <ClInclude Include="header\physics\World.h" />
+    <ClInclude Include="header\graphics\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />

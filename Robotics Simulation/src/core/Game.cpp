@@ -19,7 +19,16 @@ Game::Game(IRenderer& renderer,
 	Running(false),
 	Renderer(renderer),
 	InputService(inputService),
-	Logger(logger) {}
+	Logger(logger),
+	mainCamera(Camera(
+		static_cast<IDrawableRenderer&>(Renderer),
+		Logger,
+		DEFAULT_SCREEN_SIZE_PIXELS,
+		Vector2{ 0.f, 0.f },
+		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
+	))
+{
+}
 
 void Game::Initialize()
 {
@@ -151,7 +160,7 @@ void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
-	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
+	testObject.EmplaceComponent<CircleRenderer>(*mainCamera, Logger);
 	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
 	addGameObject(std::move(testObject));
 }

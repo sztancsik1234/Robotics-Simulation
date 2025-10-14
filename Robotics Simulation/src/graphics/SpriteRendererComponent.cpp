@@ -12,7 +12,6 @@ void SpriteRenderComponent::OnAdd()
 		//Logger.Log(std::format("[SpriteComponent] {}\n\tDefaulting do default texture" + std::string(e.what())), LogLevel::WARNING);
 		TextureId = Renderer.LoadTexture();
 	}
-
 }
 
 void SpriteRenderComponent::Update()
@@ -26,7 +25,7 @@ void SpriteRenderComponent::Update()
 	}
 #endif // _DEBUG
 
-	Renderer.DrawSprite(GetOwner()->GetTransform(), TextureId, SpriteAnchor);
+	camera.DrawSprite(GetOwner()->GetTransform(), TextureId, SpriteAnchor);
 }
 
 void SpriteRenderComponent::OnRemove()
