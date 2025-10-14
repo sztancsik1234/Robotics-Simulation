@@ -183,3 +183,13 @@ void Camera::DrawSprite(const Transform& worldTransform, TextureId textureId, co
 #endif
 	Renderer.DrawSprite(screen, textureId, spriteAnchor);
 }
+
+Vector2 Camera::WorldToPixelPos(Vector2 worldPos, bool snapToPixel) const
+{
+    return WorldPosToScreen(worldPos, ViewCenter, ViewSize, ScreenSizePixels, snapToPixel);
+}
+
+Transform Camera::ToScreenSpace(const Transform& worldTransform, bool snapToPixel) const
+{
+    return WorldToScreenTransform(worldTransform, ViewCenter, ViewSize, ScreenSizePixels, snapToPixel);
+}
