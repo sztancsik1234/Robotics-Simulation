@@ -14,8 +14,8 @@ struct SpriteRenderComponentDTO
 };
 
 // -----------------------------
-// CircleRenderer
-// Constructor: CircleRenderer(GameObject*, IPrimitiveRenderer&, ILogger&)
+// CircleRendererComponent
+// Constructor: CircleRendererComponent(GameObject*, IPrimitiveRenderer&, ILogger&)
 // Services: IPrimitiveRenderer&, ILogger&
 // Data: (none currently)
 // If later you add visual parameters (radius, color, thickness, etc.), put them here.

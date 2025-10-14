@@ -2,7 +2,7 @@
 #include "core/Component.h"
 #include "core/Color.inl"
 #include "graphics/SpriteRendererComponent.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
 
@@ -19,7 +19,16 @@ Game::Game(IRenderer& renderer,
 	Running(false),
 	Renderer(renderer),
 	InputService(inputService),
-	Logger(logger) {}
+	Logger(logger),
+	mainCamera(
+		static_cast<IDrawableRenderer&>(Renderer),
+		Logger,
+		Vector2{ 0.f, 0.f },
+		DEFAULT_SCREEN_SIZE_PIXELS,
+		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
+	)
+{
+}
 
 void Game::Initialize()
 {
@@ -91,8 +100,7 @@ void Game::Update()
 	auto& gameobjects = activeScene->getGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
-		// TODO: BUG HERE memory violation
-		Logger.Log("[Game] In Game::Update:\tGameobject.position: (" + std::to_string(gameObject.GetPosition().x) + ", " + std::to_string(gameObject.GetPosition().y) + ")", LogLevel::TRACE);
+		Logger.Log(std::format("[Game] Updating gameobject'{}'", gameObject.ToString()), LogLevel::TRACE);
 		gameObject.Update();
 	}
 
@@ -151,7 +159,7 @@ void Game::addTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
-	testObject.EmplaceComponent<CircleRenderer>(Renderer, Logger);
-	testObject.EmplaceComponent<MouseFollowerComponent>(InputService);
+	testObject.EmplaceComponent<CircleRendererComponent>(mainCamera, Logger);
+	testObject.EmplaceComponent<MouseFollowerComponent>(mainCamera, InputService);
 	addGameObject(std::move(testObject));
 }

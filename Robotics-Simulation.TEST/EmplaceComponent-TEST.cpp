@@ -14,6 +14,7 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override { wasUpdated = true; }
     void OnRemove() override {}
+	std::string ToString() const override { return "SimpleComponent"; }
 };
 
 // Mock component with one parameter constructor
@@ -28,6 +29,7 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    std::string ToString() const override { return "SingleParamComponent"; }
 };
 
 // Mock component with multiple parameter constructor
@@ -44,6 +46,7 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    std::string ToString() const override { return "MultiParamComponent"; }
 };
 
 // Mock component with reference parameter
@@ -58,6 +61,7 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    std::string ToString() const override { return "RefParamComponent"; }
 };
 
 // Mock component with move-only parameter
@@ -72,6 +76,7 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    std::string ToString() const override { return "MoveOnlyParamComponent"; }
 };
 
 class EmplaceComponentTest : public ::testing::Test {

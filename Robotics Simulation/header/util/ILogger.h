@@ -3,7 +3,7 @@
 #include <format>
 #include <chrono>
 
-enum class LogLevel
+enum class LogLevel : char
 {
 	TRACE = 0,
 	INFO,

@@ -16,7 +16,6 @@ public:
 
     Scene(const Scene&) = delete;
     Scene& operator=(const Scene&) = delete;
-	//Q: Why delete copy constructor and copy assignment operator?
 
     void Unload();
 
@@ -25,11 +24,11 @@ public:
     void clearGameObjects();
 
     // Access to the underlying container if needed.
-    std::forward_list<GameObject>& getGameObjects() { return gameObjects; }
+    std::forward_list<GameObject>&       getGameObjects()       { return gameObjects; }
     const std::forward_list<GameObject>& getGameObjects() const { return gameObjects; }
 
 	// helper for debugging
-	void logGameObjects(ILogger& logger) const;
+	void logGameObjects(ILogger& logger, bool logComonents = false) const;
 
 private:
     std::string SceneFilePath;

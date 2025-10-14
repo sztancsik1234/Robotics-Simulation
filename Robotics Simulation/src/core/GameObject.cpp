@@ -42,7 +42,7 @@ GameObject::GameObject(GameObject&& other) noexcept
 void GameObject::SetPosition(const Vector2& position)
 {
     transform.position = position;
-	Logger.Log("[GameObject] GameObject position set to: (" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")", LogLevel::TRACE);
+	Logger.Log(std::format("[GameObject] GameObject position set to: ({}, {})", std::to_string(position.x), std::to_string(position.y)), LogLevel::TRACE);
 }
 
 void GameObject::SetRotation(const Radian& rotation)
@@ -87,7 +87,24 @@ void GameObject::Update()
     }
 }
 
-std::string GameObject::ToString() const
+std::string GameObject::ToString(bool components) const
 {
-	return std::format("Gameobject: id={}, name={}", id, name);
+	std::string result = std::format("<Gameobject> id={}, name={}", id, name);
+    if (components)
+    {
+        for (auto const& component : componentList)
+            result += "\n\t - " + component->ToString();
+    }
+	result += "\n";
+	return result;
+}
+
+void GameObject::logComponents() const
+{
+	std::string debugStr = std::format("[GameObject] Components of GameObject id={}, name='{}':", id, name);
+    for (auto const& component : componentList)
+    {
+        debugStr += "\n - " + component->ToString();
+	}
+	Logger.Log(debugStr, LogLevel::INFO);
 }

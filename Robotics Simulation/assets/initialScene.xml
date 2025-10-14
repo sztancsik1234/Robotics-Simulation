@@ -4,19 +4,19 @@
 			<components>
 				<SpriteRendererComponent>
 					<texturePath>assets/Concrete.jpg</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 			</components>
 		</gameObject>
 		<gameObject name="box" id="2">
 			<transform>
-				<position x="200" y="300"></position>
-				<rotation angle="0"></rotation>
-				<size x="50" y="50"></size>
+				<position x="0" y="0"></position>
+				<rotation angle="-25"></rotation>
+				<size x="2" y="2"></size>
 			</transform>
 			<components>
 				<SpriteRendererComponent>
 					<texturePath>assets/Crate.png</texturePath>
-					<size x="50" y="50"></size>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 				<MouseFollowerComponent></MouseFollowerComponent>
@@ -27,7 +27,7 @@
 		<prefab id = "2"></prefab>
 		<prefab id = "1">
 			<transform>
-				<size x="1000" y="1000"></size>
+				<size x="50" y="50"></size>
 			</transform>
 		</prefab>
   </gameObjects>

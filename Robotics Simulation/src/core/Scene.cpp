@@ -23,12 +23,12 @@ Scene& Scene::operator=(Scene&& other) noexcept
     return *this;
 }
 
-void Scene::logGameObjects(ILogger& logger) const
+void Scene::logGameObjects(ILogger& logger, bool logComonents) const
 {
     std::string msgToLog = "[Scene] Active gameobjects:\n";
     for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
     {
-		msgToLog += std::format("\t{}\n", it->ToString());
+		msgToLog += std::format("\t{}", it->ToString(logComonents));
     }
 	logger.Log(msgToLog, LogLevel::INFO);
 }

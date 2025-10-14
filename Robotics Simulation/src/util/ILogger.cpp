@@ -8,7 +8,7 @@ const std::string ILogger::LogLevelToString(LogLevel level)
 	{
 		case TRACE: return		"[TRACE]";
 		case INFO: return		"[INFO]";
-		case WARNING: return	"[WARNING]";
+		case WARNING: return	"[WARN]";
 		case ERROR: return		"[ERROR]";
 		default: return			"[UNKNOWN]";
 	}

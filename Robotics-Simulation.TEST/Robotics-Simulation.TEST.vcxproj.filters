@@ -26,6 +26,7 @@
     <ClInclude Include="MockLogger.h" />
     <ClInclude Include="MockGameObject.h" />
     <ClInclude Include="MockInputService.h" />
+    <ClInclude Include="MockViewport.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Unit Test Files">

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "core/Vector2.h"
 #include "graphics/IRenderer.h"
 #include "util/ILogger.h"
@@ -7,7 +7,29 @@
 #include "util/Exceptions.h"
 #include "MockRenderer.h"
 #include "MockLogger.h"
+#include "MockViewport.h"
 
+
+
+// MockViewport implementation
+Vector2 MockViewport::GetViewCenter() const { return viewCenter; }
+Vector2 MockViewport::GetViewSize() const { return viewSize; }
+Vector2 MockViewport::GetScreenResolution() const { return screenSize; }
+
+Vector2 MockViewport::PixelToWorldPos(Vector2 px, bool snapToPixel) const
+{
+    return px;
+}
+
+Vector2 MockViewport::WorldToPixelPos(Vector2 wp, bool snapToPixel) const
+{
+    return wp;
+}
+
+Transform MockViewport::ToScreenSpace(const Transform& world, bool snapToPixel) const
+{
+    return world;
+}
 
 // MockRenderer implementation
 void MockRenderer::DrawCircle(Vector2 position, float radius) {

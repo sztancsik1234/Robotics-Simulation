@@ -9,10 +9,11 @@ TEST(SpriteRenderingComponentTest, ConstructorInitializesCorrectly) {
 	MockLogger logger;
 	GameObject gameObject(logger);
 	MockRenderer renderer;
+	Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
 	const char* texturePath = "Test texture.jpg";
 
     // Act
-    SpriteRenderComponent spriteComponent(&gameObject, renderer, logger, texturePath, {200, 200});
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, texturePath);
     
     // Assert
 	EXPECT_EQ(spriteComponent.GetTexturePath(), texturePath);
@@ -25,11 +26,13 @@ TEST(SpriteRenderingComponentTest, OnAddLoadsTexture) {
 	MockLogger logger;
 	MockGameObject gameObject(logger);
 	MockRenderer renderer;
+    Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
+
 	const char* texturePath = "Test texture.jpg";
 
     // Act
-	SpriteRenderComponent spriteComponent(&gameObject, renderer, logger, texturePath, { 200, 200 });
-	spriteComponent.OnAdd();
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, texturePath);
+    spriteComponent.OnAdd();
     
     // Assert
 	EXPECT_TRUE(renderer.loadTextureCalled);
@@ -41,10 +44,12 @@ TEST(SpriteRenderingComponentTest, OnAddHandlesInvalidTexturePath) {
 	MockLogger logger;
 	MockGameObject gameObject(logger);
 	MockRenderer renderer;
+    Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
+
 	const char* invalidTexturePath = "Invalid texture.jpg";
     
     // Act
-    SpriteRenderComponent spriteComponent(&gameObject, renderer, logger, invalidTexturePath, { 200, 200 });
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, invalidTexturePath);
     spriteComponent.OnAdd();
 
     // Assert
@@ -58,10 +63,12 @@ TEST(SpriteRenderingComponentTest, UpdateCallsRenderer) {
     MockLogger logger;
     MockGameObject gameObject(logger);
     MockRenderer renderer;
+    Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
+
     const char* texturePath = "Test texture.jpg";
     
     // Act
-    SpriteRenderComponent spriteComponent(&gameObject, renderer, logger, texturePath, { 200, 200 });
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, texturePath);
     spriteComponent.OnAdd();
     spriteComponent.Update();
     
@@ -74,8 +81,10 @@ TEST(SpriteRenderingComponentTest, OnRemoveReleasesTexture) {
     MockLogger logger;
     MockGameObject gameObject(logger);
     MockRenderer renderer;
+    Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
+
     const char* texturePath = "Test texture.jpg";
-    SpriteRenderComponent spriteComponent(&gameObject, renderer, logger, texturePath, { 200, 200 });
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, texturePath);
     spriteComponent.OnAdd();
     
     // Act

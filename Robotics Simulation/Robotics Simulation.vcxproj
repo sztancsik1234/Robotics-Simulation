@@ -144,7 +144,9 @@
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\Angle.cpp" />
     <ClCompile Include="src\core\Sceneloader.cpp" />
-    <ClCompile Include="src\graphics\CircleRenderer.cpp" />
+    <ClCompile Include="src\graphics\Camera.cpp" />
+    <ClCompile Include="src\graphics\CameraRenderer.cpp" />
+    <ClCompile Include="src\graphics\CircleRendererComponent.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
@@ -154,8 +156,11 @@
     <ClInclude Include="header\core\Scene.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\core\Transform.h" />
-    <ClInclude Include="header\graphics\CircleRenderer.h" />
+    <ClInclude Include="header\graphics\Camera.h" />
+    <ClInclude Include="header\graphics\CameraRenderer.h" />
+    <ClInclude Include="header\graphics\CircleRendererComponent.h" />
     <ClInclude Include="header\core\Component.h" />
+    <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\physics\BodyDefinition.h" />

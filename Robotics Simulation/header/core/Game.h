@@ -7,6 +7,7 @@
 #include "core/GameObject.h"
 #include "core/SceneLoader.h"
 #include "core/Scene.h"
+#include "graphics/Camera.h" 
 
 class Game
 {
@@ -38,16 +39,40 @@ public:
 	// Verify if the game can start running and set the running flag accordingly.
 	void VerifyState();
 
-private:
-	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+	// get camera
+	Camera& GetCamera() { return mainCamera; }
 
+private:
+	// -- constants --
+	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
+	const float DEFAULT_CAMERA_FOV = 20;	// meters
+
+	// -- Dependencies --
 	bool Running;
 	IRenderer& Renderer;
 	IInputService& InputService;
 	ILogger& Logger;
+
+	// -- members --
+	Camera mainCamera;
+	std::unique_ptr<Scene> activeScene;
+	
+	// -- Helper classes --
 	SceneLoader sceneLoader = SceneLoader(*this);
 
-	std::unique_ptr<Scene> activeScene;
+	// Initializes everything needed for rendering. Called on initialization.
+	void InitializeRenderer();
+
+	// loads the starup scene. For now, hardcoded, but later use scenemanager.
+	void LoadInitialScene();
+
+	/// <summary>
+	/// Add a new gameobject to the active scene
+	/// </summary>
+	/// <remark> The method uese move scemantics to move a valid gameobject into the buffer.</remark>
+	/// <param name="gameObject"></param>
+	void addGameObject(GameObject&& gameObject);
 
 	/// <summary>
 	/// Handles input events by delegating to the input service.
@@ -64,25 +89,11 @@ private:
 	// go over all game objects and call their update method
 	void Update();
 
-
 	// clear the frame by clearing the renderer
 	void ClearFrame();
 
 	// display what has been drawn so far in the current frame
 	void DisplayFrame();
-
-	/// <summary>
-	/// Add a new gameobject to the active scene
-	/// </summary>
-	/// <remark> The method uese move scemantics to move a valid gameobject into the buffer.</remark>
-	/// <param name="gameObject"></param>
-	void addGameObject(GameObject&& gameObject);
-
-	// Initializes everything needed for rendering. Called on initialization.
-	void InitializeRenderer();
-
-	// loads the starup scene. For now, hardcoded, but later use scenemanager.
-	void LoadInitialScene();
 
 	// A test function to load a simple component with a circleRenderer
 	void addTestGameObject();

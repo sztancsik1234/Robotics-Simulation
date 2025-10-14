@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 
 class GameObject;
 
@@ -39,6 +39,8 @@ public:
 	/// Called by the GameObject's destuctor when it is destroyed or the component is removed.
 	/// </summary>
 	virtual void OnRemove() = 0;
+
+	virtual std::string ToString() const = 0;
 
 	virtual GameObject* GetOwner() const { return Owner; }
 	void SetOwner(GameObject* newOwner) { Owner = newOwner; }

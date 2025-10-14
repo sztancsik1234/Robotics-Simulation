@@ -26,6 +26,10 @@ public:
     void OnRemove() override {
         // No specific action needed for this mock
     }
+
+    std::string ToString() const override {
+        return "MockComponent";
+	}
     
     ~MockComponent() override {
         destructorCallCount++;

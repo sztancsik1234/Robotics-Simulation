@@ -3,7 +3,7 @@
 
 
 // mock renderer for testing
-class MockRenderer : public IPrimitiveRenderer, public ISpriteRenderer {
+class MockRenderer : public IDrawableRenderer {
 public:
     bool drawCircleCalled = false;
 	bool loadTextureCalled = false;

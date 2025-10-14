@@ -1,7 +1,7 @@
 #include "core/SceneLoader.h"
 #include "core/Game.h"
 #include "graphics/SpriteRendererComponent.h"
-#include "graphics/CircleRenderer.h"
+#include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
@@ -33,12 +33,14 @@ void SceneLoader::RegisterDefaultComponents()
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
 
-			object.EmplaceComponent<SpriteRenderComponent>(*spriteIface,
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding SpriteRendererComponent to {} with texture '{}'", object.ToString(), dto.texturePath), LogLevel::TRACE);
+			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetCamera(),
+													   *spriteIface,
 													   mainGame.Logger,
 													   dto);
 		});
 
-	// CircleRenderer (tag chosen as CircleRendererComponent for consistency)
+	// CircleRendererComponent (tag chosen as CircleRendererComponent for consistency)
 	componentFactories.try_emplace("CircleRendererComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
@@ -48,14 +50,16 @@ void SceneLoader::RegisterDefaultComponents()
 				mainGame.Logger.Log("CircleRendererComponent: Renderer does not implement IPrimitiveRenderer", LogLevel::ERROR);
 				return;
 			}
-			object.EmplaceComponent<CircleRenderer>(*primitiveIface, mainGame.Logger);
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding CircleRendererComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<CircleRendererComponent>(mainGame.GetCamera(), mainGame.Logger);
 		});
 
 	// MouseFollowerComponent
 	componentFactories.try_emplace("MouseFollowerComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
-			object.EmplaceComponent<MouseFollowerComponent>(mainGame.InputService);
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseFollowerComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera(), mainGame.InputService);
 		});
 
 	// TODO: physics component
@@ -243,7 +247,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 
 	if constexpr (TRACE_LOG) {
 		mainGame.Logger.Log("[Sceneloader] secondPass over...");
-		scene.logGameObjects(mainGame.Logger);
+		scene.logGameObjects(mainGame.Logger, true);
 	}
 
 	prefabMap.clear();
