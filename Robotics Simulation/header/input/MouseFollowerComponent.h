@@ -7,8 +7,8 @@
 class MouseFollowerComponent final : public Component
 {
 public:
-	MouseFollowerComponent(GameObject* owner, Camera& camera, IInputService& inputService) :
-		Component(owner), camera(camera), InputService(inputService)
+	MouseFollowerComponent(GameObject* owner, IViewport& camera, IInputService& inputService) :
+		Component(owner), viewPort(camera), InputService(inputService)
 	{}
 
 	~MouseFollowerComponent() override = default;
@@ -19,6 +19,6 @@ public:
 	std::string ToString() const override;
 
 private:
-	Camera& camera;
+	IViewport& viewPort;
 	IInputService& InputService;
 };

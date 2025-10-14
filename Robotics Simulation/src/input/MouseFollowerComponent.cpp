@@ -11,7 +11,7 @@ void MouseFollowerComponent::Update()
 	Vector2 mousePosition = InputService.GetMousePosition();
 
 	//worldposition:
-	Vector2 worldMousePosition = camera.PixelToWorldPos(mousePosition);
+	Vector2 worldMousePosition = viewPort.PixelToWorldPos(mousePosition);
 	
 	// Update the position of the GameObject to follow the mouse
 	GetOwner()->SetPosition(worldMousePosition);

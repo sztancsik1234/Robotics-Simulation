@@ -19,6 +19,7 @@
 					<texturePath>assets/Crate.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
+				<MouseFollowerComponent></MouseFollowerComponent>
 			</components>
 		</gameObject>
 	</prefabs>

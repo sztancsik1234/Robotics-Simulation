@@ -8,9 +8,18 @@
 class Camera : public IViewport
 {
 public:
-    Camera(IDrawableRenderer& renderer, ILogger& logger,
-        Vector2 screenSizePixels,
+    /// <summary>
+    /// Constructs a Camera configured with a renderer, logger, and view parameters.
+    /// </summary>
+    /// <param name="renderer">Reference to the IDrawableRenderer used by the camera to perform drawing and rendering operations.</param>
+    /// <param name="logger">Reference to the ILogger used for logging diagnostic and runtime messages.</param>
+    /// <param name="viewCenterWorld">World-space coordinates (x, y) specifying the center of the camera's view.</param>
+    /// <param name="screenSizePixels">Size of the screen in pixels (width, height) used for mapping between world and screen coordinates.</param>
+    /// <param name="viewSizeWorld">Size of the view in world units (width, height) that determines the visible area.</param>
+    Camera(IDrawableRenderer& renderer, 
+        ILogger& logger,
         Vector2 viewCenterWorld,
+        Vector2 screenSizePixels,
         Vector2 viewSizeWorld);
 
     Camera() = delete;
@@ -40,7 +49,7 @@ private:
     ILogger& Logger;
 
     // Screen and view configuration
-    Vector2 ScreenSizePixels{ 800.f, 600.f }; // pixels
-    Vector2 ViewCenter{ 0.f, 0.f };           // world-units (center)
-    Vector2 ViewSize{ 10.f, 10.f };           // world-units (width,height)
+    Vector2 ScreenResolution{ 800.f, 600.f }; // pixels
+    Vector2 viewportCenter{ 0.f, 0.f };           // world-units (center)
+    Vector2 viewportSize{ 10.f, 10.f };           // world-units (width,height)
 };

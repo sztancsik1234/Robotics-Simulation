@@ -20,13 +20,13 @@ Game::Game(IRenderer& renderer,
 	Renderer(renderer),
 	InputService(inputService),
 	Logger(logger),
-	mainCamera(Camera(
+	mainCamera(
 		static_cast<IDrawableRenderer&>(Renderer),
 		Logger,
-		DEFAULT_SCREEN_SIZE_PIXELS,
 		Vector2{ 0.f, 0.f },
+		DEFAULT_SCREEN_SIZE_PIXELS,
 		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
-	))
+	)
 {
 }
 
