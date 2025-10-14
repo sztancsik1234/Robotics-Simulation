@@ -99,9 +99,9 @@ inline bool IsRectOnScreen(const PixelRect& r, Vector2 screenSizePixels) noexcep
 
 
 Camera::Camera(IDrawableRenderer& renderer, ILogger& logger,
-               Vector2 screenSizePixels,
-               Vector2 viewCenterWorld,
-               Vector2 viewSizeWorld)
+	Vector2 viewCenterWorld,
+	Vector2 screenSizePixels,
+	Vector2 viewSizeWorld)
 	: Renderer(renderer),
 	  Logger(logger),
 	  ScreenSizePixels(screenSizePixels),
@@ -115,7 +115,36 @@ void Camera::SetScreenSizePixels(Vector2 sizePixels) { ScreenSizePixels = sizePi
 
 Vector2 Camera::GetViewCenter() const { return ViewCenter; }
 Vector2 Camera::GetViewSize() const { return ViewSize; }
-Vector2 Camera::GetScreenSizePixels() const { return ScreenSizePixels; }
+Vector2 Camera::GetScreenResolution() const { return ScreenSizePixels; }
+
+Vector2 Camera::PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel) const
+{
+	float px = pixelCoords.x;
+	float py = pixelCoords.y;
+
+	if (snapToPixel)
+	{
+		px = std::round(px);
+		py = std::round(py);
+	}
+
+	// Undo Y flip applied in WorldPosToScreen
+	if (WORLDYUP)
+	{
+		py = ScreenSizePixels.y - py;
+	}
+
+	// Compute top-left of the view in world space
+	const float viewLeft = ViewCenter.x - (ViewSize.x * 0.5f);
+	const float viewTop = ViewCenter.y - (ViewSize.y * 0.5f);
+
+	// Convert back to world coordinates
+	const Scale s = ComputeScale(ViewSize, ScreenSizePixels);
+	const float wx = (px / s.x) + viewLeft;
+	const float wy = (py / s.y) + viewTop;
+
+	return { wx, wy };
+}
 
 void Camera::DrawCircle(Vector2 worldCenter, float worldRadius)
 {

@@ -56,7 +56,7 @@ void SceneLoader::RegisterDefaultComponents()
 	componentFactories.try_emplace("MouseFollowerComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
-			object.EmplaceComponent<MouseFollowerComponent>(mainGame.InputService);
+			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera(), mainGame.InputService);
 		});
 
 	// TODO: physics component

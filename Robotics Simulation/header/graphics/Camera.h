@@ -15,14 +15,17 @@ public:
 
 	Camera() = delete;
 
-	// View configuration
+	// Camera configuration
 	void SetViewCenter(Vector2 center);
 	void SetViewSize(Vector2 size);
 	void SetScreenSizePixels(Vector2 sizePixels);
 
 	Vector2 GetViewCenter() const;
 	Vector2 GetViewSize() const;
-	Vector2 GetScreenSizePixels() const;
+	Vector2 GetScreenResolution() const;
+
+	// Coordinate conversions
+	Vector2 PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel = true) const;
 
 	// Draw wrappers (world-space in, pixel-space out)
 	void DrawCircle(Vector2 worldCenter, float worldRadius);
