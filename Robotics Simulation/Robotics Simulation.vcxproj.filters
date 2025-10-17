@@ -19,6 +19,7 @@
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\CameraRenderer.cpp" />
+    <ClCompile Include="src\physics\b2Physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="header\graphics\Camera.h" />
     <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\CameraRenderer.h" />
+    <ClInclude Include="header\physics\b2Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />

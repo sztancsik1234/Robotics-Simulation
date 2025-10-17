@@ -9,19 +9,18 @@ enum class BodyType : char
 	Dynamic
 };
 
-struct Shape
+enum class ShapeType : char
 {
-	virtual ~Shape() = default;
+	None,
+	Circle,
+	Rectangle
 };
 
-struct Circle : Shape
-{
-	float radius;
-};
 
-struct Rectangle : Shape
+union ShapeData
 {
-	float width, height;
+	struct { float radius; } circle;
+	struct { float width, height; } rectangle;
 };
 
 struct BodyDefinition {
@@ -48,6 +47,8 @@ struct BodyDefinition {
 	float rollingFriction = 0;	// Coefficient of rolling friction, typically between 0 and 1
 	float tangentSpeed = 0;		// Speed at which the shape moves along its tangent, useful for simulating conveyor belts or similar effects
 
-	/* Polygon definition */
-	Shape* shape = nullptr;
+		/* Polygon (shape) data */
+	ShapeType shapeType = ShapeType::None;
+	ShapeData shape{}; // zero-initialized; defaults to circle.radius = 0
+
 };

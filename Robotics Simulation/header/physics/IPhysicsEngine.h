@@ -5,7 +5,7 @@
 
 // Interface for a physics engine
 
-using BodyId = unsigned int;
+using BodyId = int;
 
 struct IPhysicsEngineBase
 { 
@@ -42,4 +42,10 @@ struct IPhysicsEngine :
 	IJointManager
 {
 
+};
+
+class PhysicsObjectCreationFailedException : public std::runtime_error
+{
+public:
+	using std::runtime_error::runtime_error;
 };

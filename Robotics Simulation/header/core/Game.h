@@ -8,12 +8,14 @@
 #include "core/SceneLoader.h"
 #include "core/Scene.h"
 #include "graphics/Camera.h" 
+#include "physics/IPhysicsEngine.h"
 
 class Game
 {
 	friend class SceneLoader;
 public:
 	Game(
+		IPhysicsEngine& physicsEngine,
 		IRenderer& renderer,
 		IInputService& inputService,
 		ILogger& logger);
@@ -50,6 +52,7 @@ private:
 
 	// -- Dependencies --
 	bool Running;
+	IPhysicsEngine& PhysicsEngine;
 	IRenderer& Renderer;
 	IInputService& InputService;
 	ILogger& Logger;

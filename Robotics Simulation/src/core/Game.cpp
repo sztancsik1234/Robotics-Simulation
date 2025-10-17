@@ -13,10 +13,13 @@
 /// <param name="sceneLoader">Reference to the scene loader implementation.</param>
 /// <param name="inputService">Reference to the input service implementation.</param>
 /// <param name="logger">Reference to the logger implementation.</param>
-Game::Game(IRenderer& renderer,
+Game::Game(
+	IPhysicsEngine& physicsEngine,
+	IRenderer& renderer,
 	IInputService& inputService,
 	ILogger& logger) :
 	Running(false),
+	PhysicsEngine(physicsEngine),
 	Renderer(renderer),
 	InputService(inputService),
 	Logger(logger),

@@ -141,6 +141,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\physics\b2Physics.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\Angle.cpp" />
     <ClCompile Include="src\core\Sceneloader.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
+    <ClInclude Include="header\physics\b2Physics.h" />
     <ClInclude Include="header\physics\BodyDefinition.h" />
     <ClInclude Include="header\physics\IPhysicsEngine.h" />
     <ClInclude Include="header\physics\StaticBoxComponent.h" />
