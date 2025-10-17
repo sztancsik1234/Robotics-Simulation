@@ -65,12 +65,17 @@ bool Game::IsRunning() const {
 
 void Game::StartMainLoop()
 {
+	// Initialize the frame timer
+	lastFrameTime = std::chrono::steady_clock::now();
+
 	while (Running)
 	{
+		UpdateDeltaTime();
 		ClearFrame();
 		HandleEvents();
 		HandleInput();
-		Update();
+		UpdateGameObjects();
+		updatePhysics(deltaSeconds);
 		DisplayFrame();
 	}
 }
@@ -96,7 +101,7 @@ void Game::HandleInput()
 	}
 }
 
-void Game::Update()
+void Game::UpdateGameObjects()
 {
 	//iterate through game objects and update them
 	// TODO: Investigate if this is a copy or not. Concider using references if it is.
@@ -107,6 +112,11 @@ void Game::Update()
 		gameObject.Update();
 	}
 
+}
+
+void Game::updatePhysics(float deltaSeconds)
+{
+	PhysicsEngine.simulateStep(deltaSeconds);
 }
 
 void Game::VerifyState()
@@ -139,12 +149,19 @@ void Game::DisplayFrame()
 	Renderer.DisplayFrame();
 }
 
+void Game::UpdateDeltaTime()
+{
+	using clock = std::chrono::steady_clock;
+	const auto now = clock::now();
+	deltaSeconds = std::chrono::duration<float>(now - lastFrameTime).count();
+	lastFrameTime = now;
+}
+
 void Game::addGameObject(GameObject&& gameObject)
 {
 	activeScene->addGameObject(std::move(gameObject));
 	Logger.Log("[Game] GameObject added with move semantics.");
 }
-
 
 /// <summary>
 /// Shuts down the game by shutting down the renderer and logging the shutdown.
@@ -152,6 +169,7 @@ void Game::addGameObject(GameObject&& gameObject)
 void Game::Shutdown()
 {
 	activeScene->Unload(); // Unload scene to clear all game objects
+	PhysicsEngine.Shutdown();
 	Renderer.Shutdown();
 
 	Running = false;

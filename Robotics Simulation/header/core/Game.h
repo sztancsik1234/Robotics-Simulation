@@ -9,6 +9,7 @@
 #include "core/Scene.h"
 #include "graphics/Camera.h" 
 #include "physics/IPhysicsEngine.h"
+#include <chrono>
 
 class Game
 {
@@ -57,10 +58,15 @@ private:
 	IInputService& InputService;
 	ILogger& Logger;
 
+
 	// -- members --
 	Camera mainCamera;
 	std::unique_ptr<Scene> activeScene;
 	
+	// -- timing --
+	std::chrono::steady_clock::time_point lastFrameTime{};
+	float deltaSeconds = 0.0f;
+
 	// -- Helper classes --
 	SceneLoader sceneLoader = SceneLoader(*this);
 
@@ -90,13 +96,18 @@ private:
 	void HandleInput();
 
 	// go over all game objects and call their update method
-	void Update();
+	void UpdateGameObjects();
+
+	void updatePhysics(float deltaSeconds);
 
 	// clear the frame by clearing the renderer
 	void ClearFrame();
 
 	// display what has been drawn so far in the current frame
 	void DisplayFrame();
+
+	// Updates deltaSeconds using chrono to measure time since the last frame.
+	void UpdateDeltaTime();
 
 	// A test function to load a simple component with a circleRenderer
 	void addTestGameObject();
