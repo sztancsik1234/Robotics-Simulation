@@ -19,6 +19,7 @@
     <ClCompile Include="EmplaceComponent-TEST.cpp" />
     <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
     <ClCompile Include="Angles-TEST.cpp" />
+    <ClCompile Include="StaticBoxComponent-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="MockGameObject.h" />
     <ClInclude Include="MockInputService.h" />
     <ClInclude Include="MockViewport.h" />
+    <ClInclude Include="MockPhysicsEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Unit Test Files">

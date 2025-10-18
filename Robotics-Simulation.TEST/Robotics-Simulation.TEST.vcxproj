@@ -104,6 +104,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MockPhysicsEngine.h" />
     <ClInclude Include="MockViewport.h" />
     <ClInclude Include="MockGameObject.h" />
     <ClInclude Include="MockInputService.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
     <ClCompile Include="SfmlRendererer-TEST.cpp" />
     <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
+    <ClCompile Include="StaticBoxComponent-TEST.cpp" />
     <ClCompile Include="Vector2-TEST.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

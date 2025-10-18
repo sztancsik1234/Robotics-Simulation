@@ -178,7 +178,7 @@ TEST(Vector2ConversionTest, ConstexprConversion) {
     EXPECT_FLOAT_EQ(sfmlVec.y, 10.0f);
 }
 
-TEST(NewVector2Case, ConversionTest) {
+TEST(Vector2ConversionTest, ConversionTest) {
     Vector2 v1(1.0f, 2.0f);
     Vector2 v2(3.0f, 4.0f);
 
