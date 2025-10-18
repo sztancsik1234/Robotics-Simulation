@@ -57,6 +57,9 @@ public:
 	/// <param name="...args">Arguments for the constructor of the component, except the pointer to owner, which is passed automatically</param>
 	/// <returns>Raw pointer to the component created</returns>
 	template<ComponentDerived ComponentType, typename ...Args>
+		requires requires(GameObject* owner, Args&&... args) {
+		ComponentType{ owner, std::forward<Args>(args)... };
+	}
 	ComponentType* EmplaceComponent(Args && ...args)
 	{
 		auto component = std::make_unique<ComponentType>(this, std::forward<Args>(args)...);
