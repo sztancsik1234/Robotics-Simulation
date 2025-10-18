@@ -8,7 +8,7 @@
 int main()
 {
 	//instantiate the renderer and scene loader
-	ConsoleLogger	 logger(LogLevel::INFO);
+	ConsoleLogger	 logger(LogLevel::TRACE);
 	SfmlRenderer	 renderer(logger);
 	SfmlInputService inputService(renderer.GetWindow());
 	b2Physics		 physicsEngine(logger);

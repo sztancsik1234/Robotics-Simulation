@@ -77,10 +77,9 @@ void GameObject::RemoveComponent(Component* component)
 
 void GameObject::Update()
 {
-    Logger.Log("[GameObject] In GameObject::Update:\tGameobject.position: (" + std::to_string(GetPosition().x) + ", " + std::to_string(GetPosition().y) + ")", LogLevel::TRACE);
+    Logger.Log(std::format("[GameObject] '{}': position: ({}, {})", name, std::to_string(GetPosition().x), std::to_string(GetPosition().y)), LogLevel::TRACE);
 
     // iterate through the component list and call Update for each component
-    // component list empty?
     for (auto const& component : componentList)
     {
         component->Update();
@@ -94,8 +93,8 @@ std::string GameObject::ToString(bool components) const
     {
         for (auto const& component : componentList)
             result += "\n\t - " + component->ToString();
+	    result += "\n";
     }
-	result += "\n";
 	return result;
 }
 

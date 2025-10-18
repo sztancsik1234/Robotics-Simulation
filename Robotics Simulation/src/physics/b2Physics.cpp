@@ -2,29 +2,27 @@
 
 void b2Physics::Initialize()
 {
-    b2::World::Params worldParameters = b2::World::Params();
+    b2WorldDef worldParameters = b2DefaultWorldDef();
     worldParameters.gravity = { 0.f,  -9.8f };
-    world = b2::World(worldParameters);
-	const int worldId = world.Handle().index1;
-    logger.Log(std::format("[b2Physics] World:{} initialized.", worldId), LogLevel::INFO);
+    worldId = b2CreateWorld(&worldParameters);
+    logger.Log(std::format("[b2Physics] World:{} initialized.", worldId.index1), LogLevel::INFO);
 }
 
 void b2Physics::Shutdown()
 {
-    const int worldId = world.Handle().index1;
-    logger.Log(std::format("[b2Physics] World:{} is shutting down.", worldId), LogLevel::INFO);
-    world.Destroy();
+    logger.Log(std::format("[b2Physics] World:{} is shutting down.", worldId.index1), LogLevel::INFO);
+	b2DestroyWorld(worldId);
 }
 
 void b2Physics::simulateStep(float deltaSeconds)
 {
-    world.Step(deltaSeconds, 4);
+    b2World_Step(worldId, deltaSeconds, 4);
 }
 
 BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 {
 	auto bodyparams = bodydefToB2Params(bodyDef);
-	auto bodyId = b2CreateBody(world.Handle(), &bodyparams);
+	auto bodyId = b2CreateBody(worldId, &bodyparams);
     switch (bodyDef.shapeType)
     {
         case ShapeType::Circle:     { CreateCircleShape(bodyId, bodyDef); break; }
@@ -38,7 +36,9 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
     }
 
     auto returnId = registerBodyId(bodyId);
-
+    logger.Log(std::format("[b2Physics] Created body with id={} at position={}",
+        returnId,
+        std::string(bodyDef.position)), LogLevel::INFO);
     return returnId;
 }
 
@@ -46,28 +46,39 @@ void b2Physics::destroyBody(BodyId id)
 {
 	const b2BodyId& b2id = getB2BodyId(id);
     b2DestroyBody(b2id);
+	logger.Log(std::format("[b2Physics] Destroyed body with id={}", id), LogLevel::INFO);
 }
 
 Vector2 b2Physics::getBodyPosition(BodyId id) const
 {
 	b2Vec2 position = b2Body_GetPosition(getB2BodyId(id));
-    return Vector2(position.x, position.y);
+	const Vector2 vecPosition{ position.x, position.y };
+	logger.Log(std::format("[b2Physics] Retrieved position={} for body id={}", std::string(vecPosition), id), LogLevel::TRACE);
+    return vecPosition;
 }
 
 Radian b2Physics::getBodyRotation(BodyId id) const
 {
 	b2Rot rotation = b2Body_GetRotation(getB2BodyId(id));
 	float angleInRadians = b2Rot_GetAngle(rotation);
+	logger.Log(std::format("[b2Physics] Retrieved rotation={} radians for body id={}", angleInRadians, id), LogLevel::TRACE);
     return Radian(angleInRadians);
 }
 
 void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float timeWindow)
 {
+    logger.Log(std::format("[b2Physics] Applying force={} to body id={} over time window={}",
+        std::string(force),
+        id,
+		timeWindow), LogLevel::TRACE);
     b2Body_ApplyForceToCenter(getB2BodyId(id), b2Vec2 { force.x, force.y }, true);
 }
 
 void b2Physics::setSpeed(const BodyId id, const Vector2 & impulse)
 {
+    logger.Log(std::format("[b2Physics] Setting speed={} for body id={}",
+        std::string(impulse),
+		id), LogLevel::TRACE);
     b2Body_SetLinearVelocity(getB2BodyId(id), b2Vec2 { impulse.x, impulse.y });
 }
 
@@ -82,7 +93,7 @@ b2::Body::Params b2Physics::bodydefToB2Params(BodyDefinition def) const
     params.linearVelocity       = def.initialVelocity;
     params.name                 = def.name;
     params.position             = def.position;
-    params.rotation             = { .c = (float)def.rotation.cosine(),
+	params.rotation             = { .c = (float)def.rotation.cosine(),  // TODO: Rotation is mirrored in Box2D
                                     .s = (float)def.rotation.sine() };
     params.sleepThreshold       = def.sleepTreshold;
     params.type                 = nativeToB2Bodytype(def.type);
@@ -115,7 +126,6 @@ b2BodyType b2Physics::nativeToB2Bodytype(BodyType inType) const
 
 b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const
 {
-    logger.Log("[b2Physics] Creating circle at location ({}, {})", LogLevel::TRACE);
 
 #ifdef _DEBUG
     if (bodyDef.shapeType != ShapeType::Circle)
@@ -133,12 +143,12 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 
 	b2::Shape::Params shapeDef = bodydefToB2ShapeParams(bodyDef);
     auto returnId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
+    logger.Log(std::format("[b2Physics] Creating circle at location={}", std::string(bodyDef.position)), LogLevel::TRACE);
 	return returnId;
 }
 
 b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const
 {
-    logger.Log("[b2Physics] Creating Rectangle at location ({}, {})", LogLevel::TRACE);
 
 #ifdef _DEBUG
     if (bodyDef.shapeType != ShapeType::Rectangle)
@@ -147,6 +157,7 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
         throw PhysicsObjectCreationFailedException("Attempted to create a rectangle, but BodyDefinition shape type is not Rectangle");
     }
 #endif
+    logger.Log(std::format("[b2Physics] Creating rectangle at location=({}, {}), size=({}, {})", bodyDef.position.x, bodyDef.position.y, bodyDef.shape.rectangle.width, bodyDef.shape.rectangle.height), LogLevel::INFO);
 
     const float halfWidth = 0.5f * bodyDef.shape.rectangle.width;
     const float halfHeight = 0.5f * bodyDef.shape.rectangle.height;

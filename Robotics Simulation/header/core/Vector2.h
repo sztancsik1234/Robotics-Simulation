@@ -1,6 +1,7 @@
 #pragma once
 #include "util/Exceptions.h"
 #include <concepts>
+#include <string>
 
 // Concept to check if a type has accessible x and y members
 template<typename T>
@@ -19,7 +20,7 @@ struct Vector2
 
 	Vector2(float x = 0.0f, float y = 0.0f) : x(x), y(y) {}
 	explicit Vector2(const float arr[2]) : x(arr[0]), y(arr[1]) {}
-	
+
 	// Overload addition operator
 	friend Vector2 operator+(Vector2 const& left, Vector2 const& right);
 	// Overload subtraction operator
@@ -28,6 +29,8 @@ struct Vector2
 	friend Vector2 operator*(Vector2 const& vec, float scalar);
 	// Overload for scalar division operator
 	friend Vector2 operator/(Vector2 const& vec, float scalar);
+	
+	operator std::string() const;
 
 	// Template for converting to any class that has x and y properties
 	template<HasXYMembers T>

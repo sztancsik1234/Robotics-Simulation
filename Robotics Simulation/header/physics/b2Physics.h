@@ -24,7 +24,7 @@ public:
 	void setSpeed(const BodyId id, const Vector2& impulse) override;
 
 private:
-	b2::World world;
+	b2WorldId worldId;
 	b2::Body::Params bodydefToB2Params(BodyDefinition bodydef) const;
 	b2::Shape::Params bodydefToB2ShapeParams(const BodyDefinition& bodyDef) const;
 	[[nodiscard]] b2BodyType nativeToB2Bodytype(BodyType inType) const;

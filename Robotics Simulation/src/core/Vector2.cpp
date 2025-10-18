@@ -1,4 +1,5 @@
 #include "core/Vector2.h"
+#include <format>
 
 // Overload addition operator
 Vector2 operator+(Vector2 const& left, Vector2 const& right) {
@@ -33,4 +34,9 @@ Vector2 operator/(Vector2 const& vec, float scalar) {
 	result.x /= scalar;
 	result.y /= scalar;
 	return result;
+}
+
+Vector2::operator std::string() const
+{
+	return std::format("({}, {})", x, y);
 }

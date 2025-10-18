@@ -23,7 +23,7 @@ public:
 private:
 	ILogger& logger;
 	IBodyManager& PhysicsEngine;
-	BodyId BodyId = 0;
+	BodyId bodyId = 0;
 	// Normalized offset from the top-left corned of the box.
 	// Unused for now. If a body is needed with offset, this can be used.
 	// When used, update needs to be modified to set the body's position based on the owner's position and the anchor.

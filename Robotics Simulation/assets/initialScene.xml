@@ -11,7 +11,8 @@
 		<gameObject name="ball" id="2">
 			<transform>
 				<position x="0" y="5"></position>
-				<size x="0.238732" y="0.238732"></size>
+				<!--<size x="0.238732" y="0.238732"></size>-->
+				<size x="2" y="2"></size>
 			</transform>
 			<components>
 				<SpriteRendererComponent>
@@ -24,17 +25,20 @@
 		<gameObject name="platform" id="3">
 			<transform>
 				<position x="0" y="-5"></position>
-				<size x="5" y="0.7704569"></size>
+				<rotation angle="0.001"></rotation>
+				<size x="15" y="2.3113707"></size>
 			</transform>
 			<components>
 				<SpriteRendererComponent>
-					<texturePath>assets/platform.png</texturePath>
+					<texturePath>assets/truss.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
+				<StaticBoxComponent></StaticBoxComponent>
 			</components>
 		</gameObject>
 	</prefabs>
 	<gameObjects>
+		<prefab id = "3"></prefab>
 		<prefab id = "2"></prefab>
 		<prefab id = "1">
 			<transform>
