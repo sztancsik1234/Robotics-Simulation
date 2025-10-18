@@ -21,3 +21,8 @@ void StaticBoxComponent::OnRemove()
 {
 	PhysicsEngine.destroyBody(BodyId);
 }
+
+std::string StaticBoxComponent::ToString() const
+{
+	return "<StaticBoxComponent>";
+}

@@ -4,7 +4,7 @@
 #include "core/Transform.h"
 #include "util/ILogger.h"
 
-// Created with the owner's position at the center of the box
+// Inherits the owner's transform to create a static box in the physics engine.
 class StaticBoxComponent final : public Component 
 {
 public:
@@ -17,6 +17,7 @@ public:
 	void OnAdd() override;
 	void Update() override;
 	void OnRemove() override;
+	std::string ToString() const override;
 
 private:
 	ILogger& logger;
@@ -25,5 +26,5 @@ private:
 	// Normalized offset from the top-left corned of the box.
 	// Unused for now. If a body is needed with offset, this can be used.
 	// When used, update needs to be modified to set the body's position based on the owner's position and the anchor.
-	Vector2 anchor = { 0.5f, 0.5f };	
+	Vector2 anchor = { 0.5f, 0.5f };
 };

@@ -19,6 +19,7 @@
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\CameraRenderer.cpp" />
+    <ClCompile Include="src\physics\StaticBoxComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
