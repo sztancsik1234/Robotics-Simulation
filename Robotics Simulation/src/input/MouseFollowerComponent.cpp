@@ -25,5 +25,5 @@ void MouseFollowerComponent::OnRemove()
 
 std::string MouseFollowerComponent::ToString() const
 {
-	return std::format("<MouseFollowerComponent> owner={}", GetOwner()->GetId());
+	return std::format("<MouseFollowerComponent>");
 }

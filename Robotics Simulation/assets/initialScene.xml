@@ -3,23 +3,34 @@
 		<gameObject name="background" id = "1">
 			<components>
 				<SpriteRendererComponent>
-					<texturePath>assets/Concrete.jpg</texturePath>
+					<texturePath>assets/factory-background(blurred).jpg</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 			</components>
 		</gameObject>
-		<gameObject name="box" id="2">
+		<gameObject name="ball" id="2">
 			<transform>
-				<position x="0" y="0"></position>
-				<rotation angle="-25"></rotation>
-				<size x="2" y="2"></size>
+				<position x="0" y="5"></position>
+				<size x="0.238732" y="0.238732"></size>
 			</transform>
 			<components>
 				<SpriteRendererComponent>
-					<texturePath>assets/Crate.png</texturePath>
+					<texturePath>assets/basketball.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
-				<MouseFollowerComponent></MouseFollowerComponent>
+				<BallPhysicsComponent></BallPhysicsComponent>
+			</components>
+		</gameObject>
+		<gameObject name="platform" id="3">
+			<transform>
+				<position x="0" y="-5"></position>
+				<size x="5" y="0.7704569"></size>
+			</transform>
+			<components>
+				<SpriteRendererComponent>
+					<texturePath>assets/platform.png</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</SpriteRendererComponent>
 			</components>
 		</gameObject>
 	</prefabs>

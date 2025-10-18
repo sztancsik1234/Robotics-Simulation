@@ -3,6 +3,8 @@
 #include "graphics/SpriteRendererComponent.h"
 #include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
+#include "physics/StaticBoxComponent.h"
+#include "physics/BallPhysicsComponent.h"
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
@@ -62,7 +64,23 @@ void SceneLoader::RegisterDefaultComponents()
 			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera(), mainGame.InputService);
 		});
 
-	// TODO: physics component
+	// StaticBoxComponent
+	componentFactories.try_emplace("StaticBoxComponent",
+		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding StaticBoxComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<StaticBoxComponent>(mainGame.Logger, mainGame.PhysicsEngine);
+		}
+	);
+
+	// BallPhysicsComponent
+	componentFactories.try_emplace("BallPhysicsComponent",
+		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding BallPhysicsComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<BallPhysicsComponent>(mainGame.Logger, mainGame.PhysicsEngine);
+		}
+	);
 }
 
 void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,

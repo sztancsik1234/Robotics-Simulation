@@ -19,5 +19,5 @@ void RenderComponent::OnRemove()
 
 std::string RenderComponent::ToString() const
 {
-	return std::format("<RenderComponent> owner={}", GetOwner()->GetId());
+	return std::format("<RenderComponent>");
 }
