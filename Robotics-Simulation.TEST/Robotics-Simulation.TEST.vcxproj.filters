@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Vector2-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
@@ -14,28 +13,68 @@
     <ClCompile Include="CircleRenderer-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mocks.cpp" />
-    <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
-    <ClCompile Include="EmplaceComponent-TEST.cpp" />
-    <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
-    <ClCompile Include="Angles-TEST.cpp" />
-    <ClCompile Include="StaticBoxComponent-TEST.cpp" />
+    <ClCompile Include="Angles-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EmplaceComponent-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseFollowerComponent-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderingComponent-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBoxComponent-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mocks.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="b2Physics-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="MockRenderer.h" />
-    <ClInclude Include="MockLogger.h" />
-    <ClInclude Include="MockGameObject.h" />
-    <ClInclude Include="MockInputService.h" />
-    <ClInclude Include="MockViewport.h" />
-    <ClInclude Include="MockPhysicsEngine.h" />
+    <ClInclude Include="MockGameObject.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockInputService.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockLogger.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockPhysicsEngine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockRenderer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockViewport.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Unit Test Files">
       <UniqueIdentifier>{56ebeb35-db43-4e77-9677-6f13f9102b42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{08fc9e11-d7ff-4dee-9b5e-b066e08f091e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{1dbed28d-b5ef-4eac-aff5-12565166f87f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <Filter>Other</Filter>
+    </None>
   </ItemGroup>
 </Project>
