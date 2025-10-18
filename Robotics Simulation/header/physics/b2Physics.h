@@ -27,6 +27,7 @@ private:
 	b2::Shape::Params bodydefToB2ShapeParams(const BodyDefinition& bodyDef) const;
 	b2BodyType nativeToB2Bodytype(BodyType inType) const;
 	b2ShapeId CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const;
+	b2ShapeId CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const;
 
 	ILogger& logger;
 };

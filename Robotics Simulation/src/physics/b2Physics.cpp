@@ -23,17 +23,13 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 	auto bodyId = b2CreateBody(world.Handle(), &bodyparams);
     switch (bodyDef.shapeType)
     {
-        case ShapeType::Circle: { CreateCircleShape(bodyId, bodyDef); break; }
-        case ShapeType::Rectangle: 
-            {
-                // To be implemented later
-                logger.Log("[b2Physics] Rectangle shape creation not yet implemented", LogLevel::ERROR);
-                break; 
-	        }
+        case ShapeType::Circle:     { CreateCircleShape(bodyId, bodyDef); break; }
+        case ShapeType::Rectangle:  { CreateBoxShape(bodyId, bodyDef);    break; }
         default:
         {
-                logger.Log("[b2Physics] Error: BodyDefinition has no valid shape type for body creation", LogLevel::ERROR);
-                throw PhysicsObjectCreationFailedException("BodyDefinition has no valid shape type for body creation");
+            logger.Log("[b2Physics] Error: BodyDefinition has no valid shape type for body creation",
+                        LogLevel::ERROR);
+            throw PhysicsObjectCreationFailedException("BodyDefinition has no valid shape type for body creation");
 	    }
     }
 
@@ -59,10 +55,14 @@ Radian b2Physics::getBodyRotation(BodyId id) const
 }
 
 void b2Physics::applyForceToBody(BodyId id, const Vector2& force, float timeWindow)
-{}
+{
+    b2Body_ApplyForceToCenter(static_cast<b2BodyId>(id), b2Vec2 { force.x, force.y }, true);
+}
 
 void b2Physics::setSpeed(BodyId id, const Vector2 & impulse)
-{}
+{
+    b2Body_SetLinearVelocity(static_cast<b2BodyId>(id), b2Vec2 { impulse.x, impulse.y });
+}
 
 b2::Body::Params b2Physics::bodydefToB2Params(BodyDefinition def) const
 {
@@ -108,6 +108,8 @@ b2BodyType b2Physics::nativeToB2Bodytype(BodyType inType) const
 
 b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const
 {
+    logger.Log("[b2Physics] Creating circle at location ({}, {})", LogLevel::TRACE);
+
 #ifdef _DEBUG
     if (bodyDef.shapeType != ShapeType::Circle)
     {
@@ -125,4 +127,32 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 	b2::Shape::Params shapeDef = bodydefToB2ShapeParams(bodyDef);
     auto returnId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
 	return returnId;
+}
+
+b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const
+{
+    logger.Log("[b2Physics] Creating Rectangle at location ({}, {})", LogLevel::TRACE);
+
+#ifdef _DEBUG
+    if (bodyDef.shapeType != ShapeType::Rectangle)
+    {
+        logger.Log("[b2Physics] Error: Attempted to create rectangle shape with non-rectangle BodyDefinition", LogLevel::ERROR);
+        throw PhysicsObjectCreationFailedException("Attempted to create a rectangle, but BodyDefinition shape type is not Rectangle");
+    }
+#endif
+
+    const float halfWidth = 0.5f * bodyDef.shape.rectangle.width;
+    const float halfHeight = 0.5f * bodyDef.shape.rectangle.height;
+
+    b2Rot rot
+    {
+        .c = (float)bodyDef.rotation.cosine(),
+        .s = (float)bodyDef.rotation.sine()
+    };
+
+    b2Polygon poly = b2MakeOffsetBox(halfWidth, halfHeight, bodyDef.position, rot);
+
+    b2::Shape::Params shapeDef = bodydefToB2ShapeParams(bodyDef);
+    auto returnId = b2CreatePolygonShape(bodyId, &shapeDef, &poly);
+    return returnId;
 }
