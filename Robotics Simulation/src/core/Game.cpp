@@ -35,6 +35,7 @@ Game::Game(
 
 void Game::Initialize()
 {
+	InitializePhysicsEngine();
 	InitializeRenderer();
 	LoadInitialScene();
 }
@@ -49,6 +50,19 @@ void Game::InitializeRenderer()
 	catch (const std::exception& ex)
 	{
 		Logger.Log(std::string("[Game] Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
+	}
+}
+
+void Game::InitializePhysicsEngine()
+{
+	try
+	{
+		PhysicsEngine.Initialize();
+		Logger.Log("[Game] Physics engine initialized.");
+	}
+	catch (const std::exception& ex)
+	{
+		Logger.Log(std::string("[Game] Physics engine initialization failed: ") + ex.what(), LogLevel::ERROR);
 	}
 }
 
@@ -75,7 +89,7 @@ void Game::StartMainLoop()
 		HandleEvents();
 		HandleInput();
 		UpdateGameObjects();
-		updatePhysics(deltaSeconds);
+		updatePhysics();
 		DisplayFrame();
 	}
 }
@@ -108,13 +122,13 @@ void Game::UpdateGameObjects()
 	auto& gameobjects = activeScene->getGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
-		Logger.Log(std::format("[Game] Updating gameobject'{}'", gameObject.ToString()), LogLevel::TRACE);
+		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
 		gameObject.Update();
 	}
 
 }
 
-void Game::updatePhysics(float deltaSeconds)
+void Game::updatePhysics()
 {
 	PhysicsEngine.simulateStep(deltaSeconds);
 }

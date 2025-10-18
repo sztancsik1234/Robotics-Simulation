@@ -73,6 +73,9 @@ private:
 	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();
 
+	// initialize physics engine
+	void InitializePhysicsEngine();
+
 	// loads the starup scene. For now, hardcoded, but later use scenemanager.
 	void LoadInitialScene();
 
@@ -98,7 +101,7 @@ private:
 	// go over all game objects and call their update method
 	void UpdateGameObjects();
 
-	void updatePhysics(float deltaSeconds);
+	void updatePhysics();
 
 	// clear the frame by clearing the renderer
 	void ClearFrame();
