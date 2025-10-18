@@ -5,10 +5,14 @@ void b2Physics::Initialize()
     b2::World::Params worldParameters = b2::World::Params();
     worldParameters.gravity = { 0.f,  -9.8f };
     world = b2::World(worldParameters);
+	const int worldId = world.Handle().index1;
+    logger.Log(std::format("[b2Physics] World:{} initialized.", worldId), LogLevel::INFO);
 }
 
 void b2Physics::Shutdown()
 {
+    const int worldId = world.Handle().index1;
+    logger.Log(std::format("[b2Physics] World:{} is shutting down.", worldId), LogLevel::INFO);
     world.Destroy();
 }
 
@@ -33,35 +37,38 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 	    }
     }
 
-    return BodyId();
+    auto returnId = registerBodyId(bodyId);
+
+    return returnId;
 }
 
 void b2Physics::destroyBody(BodyId id)
 {
-    b2DestroyBody(static_cast<b2BodyId>(id));
+	const b2BodyId& b2id = getB2BodyId(id);
+    b2DestroyBody(b2id);
 }
 
 Vector2 b2Physics::getBodyPosition(BodyId id) const
 {
-	b2Vec2 position = b2Body_GetPosition(static_cast<b2BodyId>(id));
+	b2Vec2 position = b2Body_GetPosition(getB2BodyId(id));
     return Vector2(position.x, position.y);
 }
 
 Radian b2Physics::getBodyRotation(BodyId id) const
 {
-	b2Rot rotation = b2Body_GetRotation(static_cast<b2BodyId>(id));
+	b2Rot rotation = b2Body_GetRotation(getB2BodyId(id));
 	float angleInRadians = b2Rot_GetAngle(rotation);
-    return angleInRadians;
+    return Radian(angleInRadians);
 }
 
-void b2Physics::applyForceToBody(BodyId id, const Vector2& force, float timeWindow)
+void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float timeWindow)
 {
-    b2Body_ApplyForceToCenter(static_cast<b2BodyId>(id), b2Vec2 { force.x, force.y }, true);
+    b2Body_ApplyForceToCenter(getB2BodyId(id), b2Vec2 { force.x, force.y }, true);
 }
 
-void b2Physics::setSpeed(BodyId id, const Vector2 & impulse)
+void b2Physics::setSpeed(const BodyId id, const Vector2 & impulse)
 {
-    b2Body_SetLinearVelocity(static_cast<b2BodyId>(id), b2Vec2 { impulse.x, impulse.y });
+    b2Body_SetLinearVelocity(getB2BodyId(id), b2Vec2 { impulse.x, impulse.y });
 }
 
 b2::Body::Params b2Physics::bodydefToB2Params(BodyDefinition def) const
@@ -155,4 +162,14 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
     b2::Shape::Params shapeDef = bodydefToB2ShapeParams(bodyDef);
     auto returnId = b2CreatePolygonShape(bodyId, &shapeDef, &poly);
     return returnId;
+}
+
+BodyId b2Physics::registerBodyId(b2BodyId b2Id)
+{
+	return bodyrepository._registerNewBody(b2Id);
+}
+
+inline const b2BodyId& b2Physics::getB2BodyId(const BodyId nativeId) const
+{
+	return bodyrepository[nativeId];
 }

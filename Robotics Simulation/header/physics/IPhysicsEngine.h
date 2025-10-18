@@ -5,7 +5,7 @@
 
 // Interface for a physics engine
 
-using BodyId = int;
+using BodyId = unsigned int;
 
 struct IPhysicsEngineBase
 { 
