@@ -94,3 +94,23 @@ TEST(SpriteRenderingComponentTest, OnRemoveReleasesTexture) {
     EXPECT_TRUE(renderer.unloadTextureCalled);
 }
 
+TEST(SpriteRenderingComponentTest, DrawsAtCorrectPosition) {
+    // Arrange
+    MockLogger logger;
+    MockGameObject gameObject(logger);
+    MockRenderer renderer;
+    Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
+    const char* texturePath = "Test texture.jpg";
+    Vector2 testPosition(100, 150);
+    gameObject.SetPosition(testPosition);
+    SpriteRenderComponent spriteComponent(&gameObject, camera, renderer, logger, texturePath);
+    spriteComponent.OnAdd();
+    
+    // Act
+    spriteComponent.Update();
+    
+    // Assert
+    EXPECT_TRUE(renderer.drawSpriteCalled);
+    EXPECT_FLOAT_EQ(renderer.lastPosition.x, camera.PixelToWorldPos(testPosition).x);
+    EXPECT_FLOAT_EQ(renderer.lastPosition.y, camera.PixelToWorldPos(testPosition).y);
+}

@@ -7,7 +7,7 @@
 #include "MockGameObject.h"
 
 
-
+// TODO: Update this test to use a MockCamera when available
 TEST(CircleRendererTest, UpdateDrawsCircleAtCorrectPosition) {
     // Arrange
     MockLogger logger;

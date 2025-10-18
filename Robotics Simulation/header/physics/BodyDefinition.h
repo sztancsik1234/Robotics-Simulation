@@ -1,6 +1,7 @@
 #pragma once
 #include "core/Vector2.h"
 #include "core/Angle.h" 
+#include <memory>
 
 enum class BodyType : char
 {
@@ -51,4 +52,14 @@ struct BodyDefinition {
 	ShapeType shapeType = ShapeType::None;
 	ShapeData shape{}; // zero-initialized; defaults to circle.radius = 0
 
+	// TODO: separate into src file
+	void SetShapeCircle(float radius) {
+		shapeType = ShapeType::Circle;
+		shape.circle.radius = radius;
+	}
+	void SetShapeRectangle(Vector2 size) {
+		shapeType = ShapeType::Rectangle;
+		shape.rectangle.width = size.x;
+		shape.rectangle.height = size.y;
+	}
 };
