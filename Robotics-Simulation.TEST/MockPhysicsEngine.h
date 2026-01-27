@@ -45,7 +45,7 @@ private:
         Vector2 position{ 0.f, 0.f };
         Radian rotation{ 0.f };
         Vector2 velocity{ 0.f, 0.f };
-        BodyType type{ BodyType::Static };
+        BodyType type{ BodyType::STATIC };
     };
 
     std::unordered_map<BodyId, BodyData> bodies_;

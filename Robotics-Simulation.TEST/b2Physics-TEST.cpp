@@ -27,10 +27,10 @@ TEST_F(B2PhysicsTest, SimulateStepDoesNotThrow)
 TEST_F(B2PhysicsTest, CreateCircleBodyDoesNotThrow) {
     physics.Initialize();
     BodyDefinition def;
-    def.type = BodyType::Dynamic;
+    def.type = BodyType::DYNAMIC;
     def.position = Vector2(0.0f, 0.0f);
     def.rotation = Radian(0.0f);
-    def.shapeType = ShapeType::Circle;
+    def.shapeType = ShapeType::CIRCLE;
     def.shape.circle.radius = 1.0f;
 
     EXPECT_NO_THROW({
@@ -44,10 +44,10 @@ TEST_F(B2PhysicsTest, CreateCircleBodyDoesNotThrow) {
 TEST_F(B2PhysicsTest, CreateRectangleBodyDoesNotThrow) {
     physics.Initialize();
     BodyDefinition def;
-    def.type = BodyType::Dynamic;
+    def.type = BodyType::DYNAMIC;
     def.position = Vector2(0.0f, 0.0f);
     def.rotation = Radian(0.0f);
-    def.shapeType = ShapeType::Rectangle;
+    def.shapeType = ShapeType::RECTANGLE;
     def.shape.rectangle.width = 2.0f;
     def.shape.rectangle.height = 1.0f;
 
@@ -62,10 +62,10 @@ TEST_F(B2PhysicsTest, CreateRectangleBodyDoesNotThrow) {
 TEST_F(B2PhysicsTest, CreateBodyWithInvalidShapeThrows) {
     physics.Initialize();
     BodyDefinition def;
-    def.type = BodyType::Dynamic;
+    def.type = BodyType::DYNAMIC;
     def.position = Vector2(0.0f, 0.0f);
     def.rotation = Radian(0.0f);
-    def.shapeType = ShapeType::None; // invalid for creation
+    def.shapeType = ShapeType::NONE; // invalid for creation
 
     EXPECT_THROW(physics.createBody(def), PhysicsObjectCreationFailedException);
 

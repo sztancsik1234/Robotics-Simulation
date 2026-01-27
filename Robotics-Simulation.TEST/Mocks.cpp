@@ -112,7 +112,7 @@ void MockPhysicsEngine::simulateStep(float deltaSeconds)
     for (auto& [id, body] : bodies_)
     {
         (void)id;
-        if (body.type == BodyType::Static)
+        if (body.type == BodyType::STATIC)
             continue;
 
         // Simple Euler integration; mass = 1, no damping for simplicity.
