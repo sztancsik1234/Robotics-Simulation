@@ -25,8 +25,8 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 	auto bodyId = b2CreateBody(worldId, &bodyparams);
     switch (bodyDef.shapeType)
     {
-        case ShapeType::Circle:     { CreateCircleShape(bodyId, bodyDef); break; }
-        case ShapeType::Rectangle:  { CreateBoxShape(bodyId, bodyDef);    break; }
+        case ShapeType::CIRCLE:     { CreateCircleShape(bodyId, bodyDef); break; }
+        case ShapeType::RECTANGLE:  { CreateBoxShape(bodyId, bodyDef);    break; }
         default:
         {
             logger.Log("[b2Physics] Error: BodyDefinition has no valid shape type for body creation",
@@ -116,9 +116,9 @@ b2BodyType b2Physics::nativeToB2Bodytype(BodyType inType) const
 {
     switch (inType)
     {
-    case (BodyType::Static):  return b2_staticBody; 
-    case (BodyType::Dynamic): return b2_dynamicBody; 
-    case (BodyType::Kinematic): return b2_kinematicBody; 
+    case (BodyType::STATIC):  return b2_staticBody; 
+    case (BodyType::DYNAMIC): return b2_dynamicBody; 
+    case (BodyType::KINEMATIC): return b2_kinematicBody; 
     }
 	logger.Log("[b2Physics] Error: Invalid BodyType provided for conversion to b2BodyType", LogLevel::ERROR);
 	throw std::runtime_error("Invalid BodyType provided for conversion to b2BodyType");
@@ -128,7 +128,7 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 {
 
 #ifdef _DEBUG
-    if (bodyDef.shapeType != ShapeType::Circle)
+    if (bodyDef.shapeType != ShapeType::CIRCLE)
     {
 		logger.Log("[b2Physics] Error: Attempted to create circle shape with non-circle BodyDefinition", LogLevel::ERROR);
 		throw PhysicsObjectCreationFailedException("Attempted to create a circle, but BodyDefinition shape type is not Circle");
@@ -151,7 +151,7 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
 {
 
 #ifdef _DEBUG
-    if (bodyDef.shapeType != ShapeType::Rectangle)
+    if (bodyDef.shapeType != ShapeType::RECTANGLE)
     {
         logger.Log("[b2Physics] Error: Attempted to create rectangle shape with non-rectangle BodyDefinition", LogLevel::ERROR);
         throw PhysicsObjectCreationFailedException("Attempted to create a rectangle, but BodyDefinition shape type is not Rectangle");

@@ -5,16 +5,16 @@
 
 enum class BodyType : char
 {
-	Static,
-	Kinematic,
-	Dynamic
+	STATIC,
+	KINEMATIC,
+	DYNAMIC
 };
 
 enum class ShapeType : char
 {
-	None,
-	Circle,
-	Rectangle
+	NONE,
+	CIRCLE,
+	RECTANGLE
 };
 
 
@@ -31,7 +31,7 @@ struct BodyDefinition {
 	Vector2 initialVelocity = { 0, 0 };
 	const char name[32] = "RigidBody";
 
-	BodyType type = BodyType::Static;
+	BodyType type = BodyType::STATIC;
 
 	float anglularDamping = 0.f;
 	float linearDamping = 0.f;
@@ -49,16 +49,16 @@ struct BodyDefinition {
 	float tangentSpeed = 0;		// Speed at which the shape moves along its tangent, useful for simulating conveyor belts or similar effects
 
 		/* Polygon (shape) data */
-	ShapeType shapeType = ShapeType::None;
+	ShapeType shapeType = ShapeType::NONE;
 	ShapeData shape{}; // zero-initialized; defaults to circle.radius = 0
 
 	// TODO: separate into src file
 	void SetShapeCircle(float radius) {
-		shapeType = ShapeType::Circle;
+		shapeType = ShapeType::CIRCLE;
 		shape.circle.radius = radius;
 	}
 	void SetShapeRectangle(Vector2 size) {
-		shapeType = ShapeType::Rectangle;
+		shapeType = ShapeType::RECTANGLE;
 		shape.rectangle.width = size.x;
 		shape.rectangle.height = size.y;
 	}

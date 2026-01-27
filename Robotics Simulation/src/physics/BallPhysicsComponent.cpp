@@ -9,7 +9,7 @@ void BallPhysicsComponent::OnAdd()
 	{
 		.position = transform.position,
 		.name = "Basketball",
-		.type = BodyType::Dynamic,
+		.type = BodyType::DYNAMIC,
 		.density = 3.328694f,
 		.friction = 0.75f,
 		.restitution = 0.75f,
