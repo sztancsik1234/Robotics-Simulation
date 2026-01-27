@@ -186,6 +186,10 @@ void Camera::DrawSprite(const Transform& objectTransform, TextureId textureId, c
 		return;
 	}
 #endif
+	Logger.Log(std::format("[Camera] Drawing sprite at screen position ({}, {}), size ({}, {}) with textureId={}",
+		screen.position.x, screen.position.y,
+		screen.size.x, screen.size.y,
+		textureId), LogLevel::TRACE);
 	Renderer.DrawSprite(screen, textureId, spriteAnchor);
 }
 

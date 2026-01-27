@@ -8,7 +8,6 @@
 #include "util/Exceptions.h"
 #include "Component.h"
 
-class Component;
 class ComponentNotFoundException;
 
 template<typename T>

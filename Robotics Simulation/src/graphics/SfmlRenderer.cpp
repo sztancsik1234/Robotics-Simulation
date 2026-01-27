@@ -14,10 +14,10 @@ SfmlRenderer::SfmlRenderer(ILogger& logger)
 /// </summary>
 SfmlRenderer::~SfmlRenderer() = default;
 
-void SfmlRenderer::Initialize()
+void SfmlRenderer::Initialize(Vector2 screenSize)
 {
 	// Create a window with a specific size and title
-	window.create(sf::VideoMode(sf::Vector2u(800, 600)), "SFML Renderer", sf::Style::Close);
+	window.create(sf::VideoMode(sf::Vector2u(screenSize.x, screenSize.y)), "SFML Renderer", sf::Style::Close);
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 

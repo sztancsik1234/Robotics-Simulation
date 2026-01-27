@@ -14,7 +14,7 @@ struct IRendererLifecycle : IRendererBase {
     /// <summary>
     /// Called before every other rendering calls. Creates window and render context
     /// </summary>
-    virtual void Initialize() = 0;
+    virtual void Initialize(Vector2 screenSize) = 0;
 
     /// <summary>
     /// Called before destruction of the class. Cleans up associated resources.

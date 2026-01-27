@@ -18,7 +18,7 @@ public:
 	/// Initializes the SFML window with a specific size and title.
 	/// Sets the frame rate limit to 60 FPS.
 	/// </summary>
-	void Initialize() override;
+	void Initialize(Vector2 screenSize) override;
 
 	bool IsInitialized() const override;
 

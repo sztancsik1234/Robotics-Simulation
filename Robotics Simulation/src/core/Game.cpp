@@ -26,7 +26,7 @@ Game::Game(
 	mainCamera(
 		static_cast<IDrawableRenderer&>(Renderer),
 		Logger,
-		Vector2{ 0.f, -5.f },
+		Vector2{ 0.f, 0.f },
 		DEFAULT_SCREEN_SIZE_PIXELS,
 		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
 	)
@@ -44,7 +44,7 @@ void Game::InitializeRenderer()
 {
 	try
 	{
-		Renderer.Initialize();
+		Renderer.Initialize(DEFAULT_SCREEN_SIZE_PIXELS);
 		Logger.Log("[Game] Renderer initialized.");
 	}
 	catch (const std::exception& ex)
