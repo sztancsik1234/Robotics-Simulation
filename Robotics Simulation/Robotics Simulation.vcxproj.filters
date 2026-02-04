@@ -23,6 +23,7 @@
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
+    <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -57,6 +58,7 @@
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
     <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\graphics\ICameraRenderer.h" />
+    <ClInclude Include="header\physics\BounceDetectComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />

@@ -47,9 +47,9 @@ public:
 
 private:
 	// -- constants --
-	const std::string INTIAL_SCENE_PATH = "assets/anchortestScene.xml";
+	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
 	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
-	const float DEFAULT_CAMERA_FOV = 5;	// meters
+	const float DEFAULT_CAMERA_FOV = 20;	// meters
 
 	// -- Dependencies --
 	bool Running;

@@ -171,6 +171,7 @@
     <ClInclude Include="header\physics\b2Physics.h" />
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
     <ClInclude Include="header\physics\BodyDefinition.h" />
+    <ClInclude Include="header\physics\BounceDetectComponent.h" />
     <ClInclude Include="header\physics\IPhysicsEngine.h" />
     <ClInclude Include="header\physics\StaticBoxComponent.h" />
     <ClInclude Include="header\physics\World.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="src\graphics\RenderComponent.cpp" />
     <ClCompile Include="src\graphics\SpriteRendererComponent.cpp" />
     <ClCompile Include="src\input\MouseFollowerComponent.cpp" />
+    <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
     <ClCompile Include="src\physics\StaticBoxComponent.cpp" />
     <ClCompile Include="src\util\FileLogger.cpp" />
     <ClCompile Include="src\util\ILogger.cpp" />

@@ -15,11 +15,15 @@
 				<size x="1" y="1"></size>
 			</transform>
 			<components>
+				<CircleRendererComponent></CircleRendererComponent>
 				<SpriteRendererComponent>
 					<texturePath>assets/basketball.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 				<BallPhysicsComponent></BallPhysicsComponent>
+				<BounceDetectComponent>
+					<tresholdAcceleration>0.1</tresholdAcceleration>
+				</BounceDetectComponent>
 			</components>
 		</gameObject>
 		<gameObject name="platform" id="3">
@@ -30,8 +34,9 @@
 			<components>
 				<SpriteRendererComponent>
 					<texturePath>assets/truss.png</texturePath>
-					<anchor x="0.5" y="0.5"></anchor>
+					<anchor x="0.5" y="0"></anchor>
 				</SpriteRendererComponent>
+				<CircleRendererComponent></CircleRendererComponent>
 				<StaticBoxComponent></StaticBoxComponent>
 			</components>
 		</gameObject>
@@ -39,7 +44,7 @@
 	<gameObjects>
 		<prefab id="3">
 			<transform>
-				<position x="0" y="-0.505"></position>
+				<position x="0" y="0"></position>
 			</transform>
 		</prefab>
 		<prefab id="2">
@@ -53,6 +58,5 @@
 				<size x="20" y="20"></size>
 			</transform>
 		</prefab>
-		
   </gameObjects>
 </scene>

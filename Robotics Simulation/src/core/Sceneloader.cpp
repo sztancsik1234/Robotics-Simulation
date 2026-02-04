@@ -5,6 +5,7 @@
 #include "input/MouseFollowerComponent.h"
 #include "physics/StaticBoxComponent.h"
 #include "physics/BallPhysicsComponent.h"
+#include "physics/BounceDetectComponent.h"
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
@@ -68,6 +69,8 @@ void SceneLoader::RegisterDefaultComponents()
 	componentFactories.try_emplace("StaticBoxComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
+
+			// TODO: how are the dimentions and positions extracted from this? looked up from the gameobject?
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding StaticBoxComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<StaticBoxComponent>(mainGame.Logger, mainGame.PhysicsEngine);
 		}
@@ -79,6 +82,37 @@ void SceneLoader::RegisterDefaultComponents()
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding BallPhysicsComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<BallPhysicsComponent>(mainGame.Logger, mainGame.PhysicsEngine);
+		}
+	);
+
+	// BounceDetectComponent
+	componentFactories.try_emplace("BounceDetectComponent",
+		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		{
+			ILogger& logger = mainGame.Logger;
+
+			logger.Log(std::format("[SceneLoader] Adding BounceDetectComponent to {}", object.ToString()), LogLevel::TRACE);
+			float threshold = 0.1f; // default
+			// check if name is BounceDetectComponent
+			if (std::string(xmlElem.Name()) != "BounceDetectComponent")
+			{
+				logger.Log("[Sceneloader] BounceDetectComponent cannot be constructed from a non-BounceDetectComponent element. Skipping component", LogLevel::WARNING);
+				return;
+			}
+
+			if (auto* threshNode = xmlElem.FirstChildElement("tresholdAcceleration"))
+			{
+				if (threshNode->QueryFloatText(&threshold) != tx2::XML_SUCCESS)
+				{
+					logger.Log("[Sceneloader] BounceDetectComponent: invalid <tresholdAcceleration> value, using default 0.1f", LogLevel::WARNING);
+				}
+			}
+			else
+			{
+				logger.Log("[Sceneloader] BounceDetectComponent: missing <tresholdAcceleration>, using default 0.1f", LogLevel::WARNING);
+			}
+
+			object.EmplaceComponent<BounceDetectComponent>(mainGame.Logger, threshold);
 		}
 	);
 }
