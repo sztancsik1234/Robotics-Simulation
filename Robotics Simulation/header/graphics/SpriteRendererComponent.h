@@ -6,7 +6,7 @@ class SpriteRenderComponent final : public RenderComponent
 {
 public:
 	SpriteRenderComponent(GameObject* owner,
-		Camera& camera,
+		ICameraRenderer& camera,
 		ISpriteRenderer& renderer,
 		ILogger& logger,
 		const std::string& texturePath,
@@ -19,7 +19,7 @@ public:
 	}
 
 	SpriteRenderComponent(GameObject* owner,
-		Camera& camera,
+		ICameraRenderer& camera,
 		ISpriteRenderer& renderer,
 		ILogger& logger,
 		const SpriteRenderComponentDTO& DTO) :

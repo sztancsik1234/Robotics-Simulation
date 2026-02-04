@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -141,6 +141,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\Viewport.cpp" />
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
     <ClCompile Include="src\physics\b2Physics.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
@@ -162,8 +163,10 @@
     <ClInclude Include="header\graphics\CameraRenderer.h" />
     <ClInclude Include="header\graphics\CircleRendererComponent.h" />
     <ClInclude Include="header\core\Component.h" />
+    <ClInclude Include="header\graphics\ICameraRenderer.h" />
     <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
+    <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\physics\b2Physics.h" />
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
@@ -209,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\initialScene.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\anchortestScene.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

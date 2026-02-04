@@ -7,7 +7,7 @@
 #include "core/GameObject.h"
 #include "core/SceneLoader.h"
 #include "core/Scene.h"
-#include "graphics/Camera.h" 
+#include "graphics/CameraRenderer.h" 
 #include "physics/IPhysicsEngine.h"
 #include <chrono>
 
@@ -43,13 +43,13 @@ public:
 	void VerifyState();
 
 	// get camera
-	Camera& GetCamera() { return mainCamera; }
+	CameraRenderer& GetCamera() { return mainCamera; }
 
 private:
 	// -- constants --
-	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+	const std::string INTIAL_SCENE_PATH = "assets/anchortestScene.xml";
 	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
-	const float DEFAULT_CAMERA_FOV = 20;	// meters
+	const float DEFAULT_CAMERA_FOV = 5;	// meters
 
 	// -- Dependencies --
 	bool Running;
@@ -60,7 +60,7 @@ private:
 
 
 	// -- members --
-	Camera mainCamera;
+	CameraRenderer mainCamera;
 	std::unique_ptr<Scene> activeScene;
 	
 	// -- timing --
@@ -76,7 +76,7 @@ private:
 	// initialize physics engine
 	void InitializePhysicsEngine();
 
-	// loads the starup scene. For now, hardcoded, but later use scenemanager.
+	// loads the starup scene using scenemanager
 	void LoadInitialScene();
 
 	/// <summary>

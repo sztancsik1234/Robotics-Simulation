@@ -56,7 +56,7 @@ void SfmlRenderer::DrawCircle(Vector2 p, float radius)
 	circle.setOrigin(sf::Vector2f({ radius, radius }));
     // Now we can position it directly at the point without manual adjustment
     circle.setPosition(sf::Vector2f(p.x, p.y));
-    circle.setFillColor(sf::Color::Transparent);  
+    circle.setFillColor(sf::Color::Red);  
     circle.setOutlineColor(sf::Color::White);  
     circle.setOutlineThickness(1.0f);  
     window.draw(circle);  

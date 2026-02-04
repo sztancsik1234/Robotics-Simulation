@@ -2,7 +2,7 @@
 #include "core/Component.h"
 #include "util/ILogger.h"
 #include "graphics/IRenderer.h"
-#include "graphics/Camera.h"
+#include "graphics/ICameraRenderer.h"
 
 
 class RenderComponent : public Component
@@ -12,7 +12,7 @@ public:
 	/// Constructs a RenderComponent and associates it with a given GameObject.
 	/// </summary>
 	/// <param name="owner">Pointer to the GameObject that owns this Component.</param>
-	RenderComponent(GameObject* owner, ILogger& logger, Camera& camera) :
+	RenderComponent(GameObject* owner, ILogger& logger, ICameraRenderer& camera) :
 		Component(owner),
 		Logger(logger),
 		camera(camera)
@@ -40,5 +40,5 @@ public:
 
 protected:
 	ILogger& Logger;
-	Camera& camera;
+	ICameraRenderer& camera;
 };

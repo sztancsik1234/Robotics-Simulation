@@ -9,8 +9,7 @@
 class CircleRendererComponent : public RenderComponent
 {
 public:
-	// Refactored constructors to take Camera instead of primitive renderer
-	CircleRendererComponent(GameObject* owner, Camera& camera, ILogger& logger) :
+	CircleRendererComponent(GameObject* owner, ICameraRenderer& camera, ILogger& logger) :
 		RenderComponent(owner, logger, camera)
 	{
 	}

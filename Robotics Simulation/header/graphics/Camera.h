@@ -1,3 +1,7 @@
+/*
+THIS FILE IS DEPRECATED AND IS NOT USED ANYMORE.
+*/
+
 #pragma once
 #include "core/Transform.h"
 #include "graphics/IRenderer.h"
@@ -34,9 +38,9 @@ public:
     Vector2 GetScreenResolution() const override;
 
     // Coordinate conversions
-    Vector2 PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel = true) const override;
-    Vector2 WorldToPixelPos(Vector2 worldPos, bool snapToPixel = true) const override;
-    Transform ToScreenSpace(const Transform& world, bool snapToPixel = true) const override;
+    Vector2 PixelToWorldPos(Vector2 pixelCoords) const override;
+    Vector2 WorldToPixelPos(Vector2 worldPos) const override;
+    Transform ToScreenSpace(const Transform& world) const override;
 
     // Draw wrappers (world-space in, pixel-space out)
     void DrawCircle(Vector2 worldCenter, float worldRadius);

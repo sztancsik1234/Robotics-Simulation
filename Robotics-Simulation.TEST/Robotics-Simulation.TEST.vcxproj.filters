@@ -37,6 +37,9 @@
     <ClCompile Include="b2Physics-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
+    <ClCompile Include="Viewport-TEST.cpp">
+      <Filter>Unit Test Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockGameObject.h">
@@ -54,11 +57,14 @@
     <ClInclude Include="MockRenderer.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="MockViewport.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="MockViewPort.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MockCameraRenderer.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,8 +79,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config">
-      <Filter>Other</Filter>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

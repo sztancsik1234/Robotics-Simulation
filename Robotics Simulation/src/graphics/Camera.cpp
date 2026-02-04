@@ -1,8 +1,13 @@
+/*
+THIS FILE IS DEPRECATED AND IS NOT USED ANYMORE.
+*/
+
 #include "graphics/Camera.h"
 #include <algorithm>
 #include <cmath>
 
 #define WORLDYUP true
+#define SNAPTOPIXEL_DEFAULT true
 
 // Internal-only helpers with minimal overhead
 
@@ -34,8 +39,7 @@ inline Scale ComputeScale(Vector2 viewSize, Vector2 screenSizePixels) noexcept
 inline Vector2 WorldPosToScreen(Vector2 worldPos,
 	                            Vector2 viewCenter,
 	                            Vector2 viewSize,
-	                            Vector2 screenSizePixels,
-	                            bool snapToPixel) noexcept
+	                            Vector2 screenSizePixels) noexcept
 {
 	// Compute top-left of the view in world space
 	const float viewLeft = viewCenter.x - (viewSize.x * 0.5f);
@@ -49,12 +53,12 @@ inline Vector2 WorldPosToScreen(Vector2 worldPos,
 	float py = (worldPos.y - viewTop)  * s.y;
 
 	// Flip Y if world is Y-up
-	if (WORLDYUP)
+	if constexpr (WORLDYUP)
 	{
 		py = screenSizePixels.y - py;
 	}
 
-	if (snapToPixel)
+	if constexpr (SNAPTOPIXEL_DEFAULT)
 	{
 		px = std::round(px);
 		py = std::round(py);
@@ -78,12 +82,11 @@ inline Vector2 WorldSizeToPixelSize(Vector2 objectSize,
 inline Transform WorldToScreenTransform(const Transform& worldTransform,
 	                                    Vector2 viewCenter,
 	                                    Vector2 viewSize,
-	                                    Vector2 screenSizePixels,
-	                                    bool snapToPixel = true) noexcept
+	                                    Vector2 screenSizePixels) noexcept
 {
 	Transform screen{};
 	screen.rotation = worldTransform.rotation;
-	screen.position = WorldPosToScreen(worldTransform.position, viewCenter, viewSize, screenSizePixels, snapToPixel);
+	screen.position = WorldPosToScreen(worldTransform.position, viewCenter, viewSize, screenSizePixels);
 	screen.size     = WorldSizeToPixelSize(worldTransform.size, viewSize, screenSizePixels);
 	return screen;
 }
@@ -122,19 +125,19 @@ Vector2 Camera::GetViewCenter() const { return viewportCenter; }
 Vector2 Camera::GetViewSize() const { return viewportSize; }
 Vector2 Camera::GetScreenResolution() const { return ScreenResolution; }
 
-Vector2 Camera::PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel) const
+Vector2 Camera::PixelToWorldPos(Vector2 pixelCoords) const
 {
 	float px = pixelCoords.x;
 	float py = pixelCoords.y;
 
-	if (snapToPixel)
+	if constexpr (SNAPTOPIXEL_DEFAULT)
 	{
 		px = std::round(px);
 		py = std::round(py);
 	}
 
 	// Undo Y flip applied in WorldPosToScreen
-	if (WORLDYUP)
+	if constexpr (WORLDYUP)
 	{
 		py = ScreenResolution.y - py;
 	}
@@ -153,7 +156,7 @@ Vector2 Camera::PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel) const
 
 void Camera::DrawCircle(Vector2 worldCenter, float worldRadius)
 {
-	const Vector2 centerPx = WorldPosToScreen(worldCenter, viewportCenter, viewportSize, ScreenResolution, true);
+	const Vector2 centerPx = WorldPosToScreen(worldCenter, viewportCenter, viewportSize, ScreenResolution);
 
 	const Scale s = { ScreenResolution.x / viewportSize.x, ScreenResolution.y / viewportSize.y };
 	const float scaleAvg = (s.x + s.y) * 0.5f;
@@ -164,21 +167,21 @@ void Camera::DrawCircle(Vector2 worldCenter, float worldRadius)
 
 void Camera::DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
 {
-	const Vector2 topLeftPx = WorldPosToScreen(worldTopLeft, viewportCenter, viewportSize, ScreenResolution, true);
+	const Vector2 topLeftPx = WorldPosToScreen(worldTopLeft, viewportCenter, viewportSize, ScreenResolution);
 	const Vector2 sizePx    = WorldSizeToPixelSize(worldSize, viewportSize, ScreenResolution);
 	Renderer.DrawRectangle(topLeftPx, sizePx.x, sizePx.y);
 }
 
 void Camera::DrawRectangle(Vector2 worldP1, Vector2 worldP2)
 {
-	const Vector2 p1 = WorldPosToScreen(worldP1, viewportCenter, viewportSize, ScreenResolution, true);
-	const Vector2 p2 = WorldPosToScreen(worldP2, viewportCenter, viewportSize, ScreenResolution, true);
+	const Vector2 p1 = WorldPosToScreen(worldP1, viewportCenter, viewportSize, ScreenResolution);
+	const Vector2 p2 = WorldPosToScreen(worldP2, viewportCenter, viewportSize, ScreenResolution);
 	Renderer.DrawRectangle(p1, p2);
 }
 
 void Camera::DrawSprite(const Transform& objectTransform, TextureId textureId, const Vector2 spriteAnchor)
 {
-	const Transform screen = WorldToScreenTransform(objectTransform, viewportCenter, viewportSize, ScreenResolution, true);
+	const Transform screen = WorldToScreenTransform(objectTransform, viewportCenter, viewportSize, ScreenResolution);
 #ifdef _DEBUG
 	if (textureId == 0)
 	{
@@ -193,12 +196,12 @@ void Camera::DrawSprite(const Transform& objectTransform, TextureId textureId, c
 	Renderer.DrawSprite(screen, textureId, spriteAnchor);
 }
 
-Vector2 Camera::WorldToPixelPos(Vector2 worldPos, bool snapToPixel) const
+Vector2 Camera::WorldToPixelPos(Vector2 worldPos) const
 {
-    return WorldPosToScreen(worldPos, viewportCenter, viewportSize, ScreenResolution, snapToPixel);
+    return WorldPosToScreen(worldPos, viewportCenter, viewportSize, ScreenResolution);
 }
 
-Transform Camera::ToScreenSpace(const Transform& worldTransform, bool snapToPixel) const
+Transform Camera::ToScreenSpace(const Transform& worldTransform) const
 {
-    return WorldToScreenTransform(worldTransform, viewportCenter, viewportSize, ScreenResolution, snapToPixel);
+    return WorldToScreenTransform(worldTransform, viewportCenter, viewportSize, ScreenResolution);
 }

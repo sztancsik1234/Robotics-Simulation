@@ -22,6 +22,7 @@
     <ClCompile Include="src\input\SfmlInputService.cpp" />
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
+    <ClCompile Include="src\graphics\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -54,6 +55,8 @@
     <ClInclude Include="header\input\SfmlInputService.h" />
     <ClInclude Include="header\graphics\SfmlRenderer.h" />
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
+    <ClInclude Include="header\graphics\Viewport.h" />
+    <ClInclude Include="header\graphics\ICameraRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />
@@ -67,5 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\initialScene.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\anchortestScene.xml" />
   </ItemGroup>
 </Project>

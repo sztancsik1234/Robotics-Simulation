@@ -24,11 +24,9 @@ Game::Game(
 	InputService(inputService),
 	Logger(logger),
 	mainCamera(
+		Viewport( Vector2{0.f, 0.f}, DEFAULT_SCREEN_SIZE_PIXELS, Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) }),
 		static_cast<IDrawableRenderer&>(Renderer),
-		Logger,
-		Vector2{ 0.f, 0.f },
-		DEFAULT_SCREEN_SIZE_PIXELS,
-		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
+		&logger
 	)
 {
 }
@@ -45,12 +43,13 @@ void Game::InitializeRenderer()
 	try
 	{
 		Renderer.Initialize(DEFAULT_SCREEN_SIZE_PIXELS);
-		Logger.Log("[Game] Renderer initialized.");
 	}
 	catch (const std::exception& ex)
 	{
 		Logger.Log(std::string("[Game] Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
+		return;
 	}
+	Logger.Log("[Game] Renderer initialized.");
 }
 
 void Game::InitializePhysicsEngine()
@@ -195,6 +194,6 @@ void Game::addTestGameObject()
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
 	testObject.EmplaceComponent<CircleRendererComponent>(mainCamera, Logger);
-	testObject.EmplaceComponent<MouseFollowerComponent>(mainCamera, InputService);
+	testObject.EmplaceComponent<MouseFollowerComponent>(static_cast<const IViewport&>(mainCamera.GetViewport()), InputService);
 	addGameObject(std::move(testObject));
 }

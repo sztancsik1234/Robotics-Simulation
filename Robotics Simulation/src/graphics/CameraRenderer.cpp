@@ -11,17 +11,24 @@ namespace {
     }
 }
 
-void CameraRenderer::DrawCircle(Vector2 worldCenter, float worldRadius)
+// TODO: make a version with pixel radius and with world radius
+void CameraRenderer::DrawCircle(Vector2 worldCenter, float pixelradius)
 {
-    const Vector2 centerPx = Viewport.WorldToPixelPos(worldCenter, /*snapToPixel*/true);
+    float worldRadius = 0;  // alternative passable value to the function
+    const Vector2 centerPx = Viewport.WorldToPixelPos(worldCenter);
     const float scaleAvg = AverageScale(Viewport.GetViewSize(), Viewport.GetScreenResolution());
     const float radiusPx = std::max(1.f, std::round(worldRadius * scaleAvg));
-    Renderer.DrawCircle(centerPx, radiusPx);
+    Renderer.DrawCircle(centerPx, pixelradius);
+
+    Logger->Log(std::format("[CameraRenderer] DrawCircle pixel({}, {})",
+        centerPx.x,
+        centerPx.y
+		), LogLevel::TRACE);
 }
 
 void CameraRenderer::DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
 {
-    const Vector2 topLeftPx = Viewport.WorldToPixelPos(worldTopLeft, /*snapToPixel*/true);
+    const Vector2 topLeftPx = Viewport.WorldToPixelPos(worldTopLeft);
 
     const Vector2 viewSize = Viewport.GetViewSize();
     const Vector2 screen = Viewport.GetScreenResolution();
@@ -34,8 +41,8 @@ void CameraRenderer::DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSiz
 
 void CameraRenderer::DrawRectangle(Vector2 worldP1, Vector2 worldP2)
 {
-    const Vector2 p1 = Viewport.WorldToPixelPos(worldP1, /*snapToPixel*/true);
-    const Vector2 p2 = Viewport.WorldToPixelPos(worldP2, /*snapToPixel*/true);
+    const Vector2 p1 = Viewport.WorldToPixelPos(worldP1);
+    const Vector2 p2 = Viewport.WorldToPixelPos(worldP2);
     Renderer.DrawRectangle(p1, p2);
 }
 
@@ -48,6 +55,6 @@ void CameraRenderer::DrawSprite(const Transform& worldTransform, TextureId textu
         return;
     }
 #endif
-    const Transform screen = Viewport.ToScreenSpace(worldTransform, /*snapToPixel*/true);
-    Renderer.DrawSprite(screen, textureId, spriteAnchor);
+    const Transform screen = Viewport.ToScreenSpace(worldTransform);    
+	Renderer.DrawSprite(screen, textureId, spriteAnchor);   // Size is y=0 for some reason
 }

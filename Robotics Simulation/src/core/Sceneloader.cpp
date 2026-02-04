@@ -61,7 +61,7 @@ void SceneLoader::RegisterDefaultComponents()
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseFollowerComponent to {}", object.ToString()), LogLevel::TRACE);
-			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera(), mainGame.InputService);
+			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera().GetViewport(), mainGame.InputService);
 		});
 
 	// StaticBoxComponent
@@ -136,7 +136,17 @@ void SceneLoader::AddComponentsFromXML(GameObject& go, const tx2::XMLElement* co
 			mainGame.Logger.Log("[Sceneloader] Unknown component tag: " + tag, LogLevel::WARNING);
 			continue;
 		}
-		it->second(go, *compElem);
+		try
+		{
+			it->second(go, *compElem);
+		}
+		catch (const DuplicateComponentException&)
+		{
+			mainGame.Logger.Log(std::format("[Sceneloader] Attempted to add duplicate component {} on GameObject {}. skipping.", tag, go.ToString()), LogLevel::WARNING);
+			mainGame.Logger.Log("[Sceneloader] Try implementing this after removeComponent is implemented", LogLevel::INFO);
+
+			continue;
+		}
 	}
 }
 
@@ -205,6 +215,40 @@ Transform SceneLoader::ParseTransformXML(const tx2::XMLElement* xmlNode) const
 	}
 	
 	return transform;
+}
+
+static Transform MergeTransformFromXML(const tx2::XMLElement* xmlNode, Transform base)
+{
+	if (!xmlNode)
+		return base;
+
+	if (auto* posNode = xmlNode->FirstChildElement("position"))
+	{
+		if (posNode->Attribute("x"))
+			posNode->QueryFloatAttribute("x", &base.position.x);
+		if (posNode->Attribute("y"))
+			posNode->QueryFloatAttribute("y", &base.position.y);
+	}
+
+	if (auto* rotNode = xmlNode->FirstChildElement("rotation"))
+	{
+		if (rotNode->Attribute("angle"))
+		{
+			float angle = 0.0f;
+			rotNode->QueryFloatAttribute("angle", &angle);
+			base.rotation = angle;
+		}
+	}
+
+	if (auto* scaleNode = xmlNode->FirstChildElement("size"))
+	{
+		if (scaleNode->Attribute("x"))
+			scaleNode->QueryFloatAttribute("x", &base.size.x);
+		if (scaleNode->Attribute("y"))
+			scaleNode->QueryFloatAttribute("y", &base.size.y);
+	}
+
+	return base;
 }
 
 Scene SceneLoader::LoadScene(const std::string& path)
@@ -301,9 +345,15 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 			//querry transform node
 			if (auto const* transformNode = childNode->FirstChildElement("transform"))
 			{
-				instance.SetTransform(ParseTransformXML(transformNode));
+				// BUG: if a new transform node here is partially written, then the omitted fields override the existing ones.
+				instance.SetTransform(MergeTransformFromXML(transformNode, instance.GetTransform()));
 			}
 
+			// querry components node
+			if (auto const* componentsNode = childNode->FirstChildElement("components"))
+			{
+				AddComponentsFromXML(instance, componentsNode);
+			}
 			mainGame.Logger.Log(std::format("[Sceneloader] Instantiated prefab id={} as GameObject id={}, name='{}'",
 											std::to_string(refId), 
 											std::to_string(instance.GetId()), 

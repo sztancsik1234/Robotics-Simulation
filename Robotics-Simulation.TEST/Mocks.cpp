@@ -9,25 +9,54 @@
 #include "MockLogger.h"
 #include "MockViewport.h"
 #include "MockPhysicsEngine.h"
+#include "MockCameraRenderer.h"
 
+/* MockCameraRenderer implementation */
+void MockCameraRenderer::DrawCircle(Vector2 worldCenter, float worldRadius)
+{
+    drawCircleCalled = true;
+    lastWorldCenter = worldCenter;
+    lastWorldRadius = worldRadius;
+}
 
+void MockCameraRenderer::DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
+{
+    drawRectangleTopLeftCalled = true;
+    lastWorldTopLeft = worldTopLeft;
+    lastWorldSize = worldSize;
+}
+
+void MockCameraRenderer::DrawRectangle(Vector2 worldP1, Vector2 worldP2)
+{
+    drawRectangleCalled = true;
+    lastWorldP1 = worldP1;
+    lastWorldP2 = worldP2;
+}
+
+void MockCameraRenderer::DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor)
+{
+    drawSpriteCalled = true;
+    lastWorldTransform = worldTransform;
+    lastTextureId = textureId;
+    lastSpriteAnchor = spriteAnchor;
+}
 
 /* MockViewport implementation */
 Vector2 MockViewport::GetViewCenter() const { return viewCenter; }
 Vector2 MockViewport::GetViewSize() const { return viewSize; }
 Vector2 MockViewport::GetScreenResolution() const { return screenSize; }
 
-Vector2 MockViewport::PixelToWorldPos(Vector2 px, bool snapToPixel) const
+Vector2 MockViewport::PixelToWorldPos(Vector2 px) const
 {
     return px;
 }
 
-Vector2 MockViewport::WorldToPixelPos(Vector2 wp, bool snapToPixel) const
+Vector2 MockViewport::WorldToPixelPos(Vector2 wp) const
 {
     return wp;
 }
 
-Transform MockViewport::ToScreenSpace(const Transform& world, bool snapToPixel) const
+Transform MockViewport::ToScreenSpace(const Transform& world) const
 {
     return world;
 }

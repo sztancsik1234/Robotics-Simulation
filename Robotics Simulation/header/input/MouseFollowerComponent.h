@@ -2,12 +2,12 @@
 #include "input/IInputService.h"
 #include "core/GameObject.h"
 #include "core/ComponentDTOs.h"
-#include "graphics/Camera.h"
+#include "graphics/IViewport.h"
 
 class MouseFollowerComponent final : public Component
 {
 public:
-	MouseFollowerComponent(GameObject* owner, IViewport& camera, IInputService& inputService) :
+	MouseFollowerComponent(GameObject* owner, const IViewport& camera, IInputService& inputService) :
 		Component(owner), viewPort(camera), InputService(inputService)
 	{}
 
@@ -19,6 +19,6 @@ public:
 	std::string ToString() const override;
 
 private:
-	IViewport& viewPort;
+	const IViewport& viewPort;
 	IInputService& InputService;
 };

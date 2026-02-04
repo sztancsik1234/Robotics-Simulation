@@ -9,6 +9,7 @@
 #include "Component.h"
 
 class ComponentNotFoundException;
+class DuplicateComponentException;
 
 template<typename T>
 concept ComponentDerived = std::is_base_of_v<Component, T>;
@@ -45,6 +46,19 @@ public:
 		throw ComponentNotFoundException();
 	}
 
+	template <ComponentDerived T>
+	bool HasComponent() const
+	{
+		for (const auto& component : componentList)
+		{
+			if (dynamic_cast<T*>(component.get()) != nullptr)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	int GetId() const { return id; }
 	std::string GetName() const { return name; }
 
@@ -57,10 +71,15 @@ public:
 	/// <returns>Raw pointer to the component created</returns>
 	template<ComponentDerived ComponentType, typename ...Args>
 		requires requires(GameObject* owner, Args&&... args) {
-		ComponentType{ owner, std::forward<Args>(args)... };
+		ComponentType { owner, std::forward<Args>(args)... };		// TODO: check out std::is_constructible_v
 	}
 	ComponentType* EmplaceComponent(Args && ...args)
 	{
+		if (HasComponent<ComponentType>())
+		{
+			Logger.Log("Attempted to add duplicate component of type " + std::string(typeid(ComponentType).name()) + ". Operation aborted.", LogLevel::WARNING);
+			throw DuplicateComponentException();
+		}
 		auto component = std::make_unique<ComponentType>(this, std::forward<Args>(args)...);
 		ComponentType* rawPtr = component.get();
 		component->OnAdd();
@@ -100,4 +119,11 @@ class ComponentNotFoundException : public std::runtime_error
 	public:
 	ComponentNotFoundException()
 		: std::runtime_error("Component not found!") {}
+};
+
+class DuplicateComponentException : public std::runtime_error
+{
+public:
+	DuplicateComponentException()
+		: std::runtime_error("Added component already exists!") {}
 };
