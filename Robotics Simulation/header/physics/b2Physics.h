@@ -15,6 +15,7 @@ public:
 	// Inherited via IPhysicsEngine
 	void Initialize() override;
 	void Shutdown() override;
+	bool IsInitialized() const override;
 	void simulateStep(float deltaSeconds) override;
 	BodyId createBody(const BodyDefinition& body) override;
 	void destroyBody(BodyId id) override;
@@ -61,4 +62,9 @@ private:
 	} bodyrepository;
 
 	ILogger& logger;
+#ifdef _DEBUG
+	bool isWorldInitialized = false;
+	void VerifyWorldInitialized() const;
+#endif // _DEBUG
+
 };

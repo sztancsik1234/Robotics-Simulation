@@ -12,6 +12,7 @@ public:
     void Initialize() override;
     void Shutdown() override;
     void simulateStep(float deltaSeconds) override;
+	bool IsInitialized() const override;
 
     // IBodyManager
     BodyId createBody(const BodyDefinition& body) override;

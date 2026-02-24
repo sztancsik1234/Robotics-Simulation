@@ -8,10 +8,26 @@ void b2Physics::Initialize()
     logger.Log(std::format("[b2Physics] World:{} initialized.", worldId.index1), LogLevel::INFO);
 }
 
+#ifdef _DEBUG
+void b2Physics::VerifyWorldInitialized() const
+{
+	if (!isWorldInitialized)
+	{
+		logger.Log("[b2Physics] Attempted to use physics world before initialization.", LogLevel::ERROR);
+		throw WorldNotInitializedException("Attempted to use physics world before initialization.");
+	}
+}
+#endif // _DEBUG
+
 void b2Physics::Shutdown()
 {
     logger.Log(std::format("[b2Physics] World:{} is shutting down.", worldId.index1), LogLevel::INFO);
 	b2DestroyWorld(worldId);
+}
+
+bool b2Physics::IsInitialized() const
+{
+	return isWorldInitialized;
 }
 
 void b2Physics::simulateStep(float deltaSeconds)
