@@ -26,9 +26,9 @@ public:
 
 private:
 	b2WorldId worldId;
-	b2::Body::Params bodydefToB2Params(BodyDefinition bodydef) const;
-	b2::Shape::Params bodydefToB2ShapeParams(const BodyDefinition& bodyDef) const;
-	[[nodiscard]] b2BodyType nativeToB2Bodytype(BodyType inType) const;
+	b2BodyDef bodydefToB2BodyDef(const BodyDefinition& def) const;
+	b2ShapeDef bodydefToB2ShapeDef(const BodyDefinition& bodyDef) const;
+	[[nodiscard]] constexpr static b2BodyType nativeToB2Bodytype(const BodyType inType);
 	b2ShapeId CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const;
 	b2ShapeId CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const;
 	[[nodiscard]] inline BodyId registerBodyId(b2BodyId b2Id);
@@ -37,23 +37,26 @@ private:
 	struct
 	{
 		std::vector<b2BodyId> bodies;
-		std::queue<BodyId> freeIds;
+		std::list<BodyId> freeIds;
+
 		BodyId _registerNewBody(b2BodyId id) {
-			BodyId idToReturn;
+			BodyId returnId;
 			if (!freeIds.empty()) {
-				idToReturn = freeIds.front();
-				freeIds.pop();
-				bodies[idToReturn] = id;
+				returnId = freeIds.front();
+				freeIds.pop_front();
+				bodies[returnId] = id;
 			}
 			else {
-				idToReturn = static_cast<BodyId>(bodies.size());
+				returnId = static_cast<BodyId>(bodies.size());
 				bodies.push_back(id);
 			}
-			return idToReturn;
+			return returnId;
 		}
-		void _freeBody(BodyId id) {
+
+		void _freeBody(BodyId id)
+		{
 			bodies[id] = b2BodyId{ 0 };
-			freeIds.push(id);
+			freeIds.push_back(id);
 		}
 
 		const b2BodyId& operator[](BodyId id) const {
