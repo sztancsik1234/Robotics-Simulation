@@ -28,6 +28,7 @@ struct BodyDefinition {
 	/* Body definition */
 	Vector2 position = { 0, 0 };
 	Radian rotation = 0.f;
+	Vector2 anchor = { 0.5f, 0.5f };
 	Vector2 initialVelocity = { 0, 0 };
 	const char name[32] = "RigidBody";
 
@@ -55,11 +56,10 @@ struct BodyDefinition {
 	// TODO: separate into src file
 	void SetShapeCircle(float radius) {
 		shapeType = ShapeType::CIRCLE;
-		shape.circle.radius = radius;
+		shape = { .circle = { radius } };
 	}
 	void SetShapeRectangle(Vector2 size) {
 		shapeType = ShapeType::RECTANGLE;
-		shape.rectangle.width = size.x;
-		shape.rectangle.height = size.y;
+		shape = { .rectangle = { size.x, size.y } };
 	}
 };
