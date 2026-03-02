@@ -151,6 +151,11 @@ void MockPhysicsEngine::simulateStep(float deltaSeconds)
     }
 }
 
+bool MockPhysicsEngine::IsInitialized() const
+{
+    return isInitialized_;
+}
+
 BodyId MockPhysicsEngine::createBody(const BodyDefinition& bodyDef)
 {
     createBodyCalled = true;

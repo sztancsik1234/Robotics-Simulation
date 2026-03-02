@@ -40,6 +40,7 @@
     <ClCompile Include="Viewport-TEST.cpp">
       <Filter>Unit Test Files</Filter>
     </ClCompile>
+    <ClCompile Include="BallPhysicsComponent-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MockGameObject.h">

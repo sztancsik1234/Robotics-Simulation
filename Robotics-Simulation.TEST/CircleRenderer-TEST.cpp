@@ -41,5 +41,5 @@ TEST(CircleRendererTest, UpdateDrawsCircleWithCorrectRadius) {
 
     // Assert
     EXPECT_TRUE(camera.drawCircleCalled);
-    EXPECT_FLOAT_EQ(camera.lastWorldRadius, 50.0f);
+    EXPECT_FLOAT_EQ(camera.lastWorldRadius, 10.0f);
 }

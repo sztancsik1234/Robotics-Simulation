@@ -71,15 +71,13 @@ TEST(GameObjectTest, ResourceCleanup) {
         
         // Add components that should be cleaned up when gameObject goes out of scope
         gameObject->EmplaceComponent<MockComponent>();
-        gameObject->EmplaceComponent<MockComponent>();
-        gameObject->EmplaceComponent<MockComponent>();
         
         // At this point, no components should be destroyed yet
         EXPECT_EQ(destructorCallCount, 0);
     } // GameObject goes out of scope here
     
     // After GameObject goes out of scope, all components should be destroyed
-    EXPECT_EQ(destructorCallCount, 3);
+    EXPECT_EQ(destructorCallCount, 1);
 }
 
 TEST(GameObjectTest, EmplaceComponent)
@@ -199,20 +197,13 @@ TEST(GameObjectTest, AddMultipleComponentsOfSameType)
     MockLogger logger;
     GameObject gameObject(logger);
     
-    // Act
-    auto* first = gameObject.EmplaceComponent<MockComponent>();
-    auto* second = gameObject.EmplaceComponent<MockComponent>();
-    
-    // Assert
-    EXPECT_NE(first, nullptr);
-    EXPECT_NE(second, nullptr);
-    EXPECT_NE(first, second);
-    EXPECT_TRUE(first->wasAdded);
-    EXPECT_TRUE(second->wasAdded);
-    
-    // GetComponent should return the second one added
-    auto* retrieved = gameObject.GetComponent<MockComponent>();
-    EXPECT_EQ(retrieved, second);
+    // assert
+    EXPECT_THROW(
+        {
+            auto* first = gameObject.EmplaceComponent<MockComponent>();
+            auto* second = gameObject.EmplaceComponent<MockComponent>();
+        },
+        DuplicateComponentException);
 }
 
 TEST(GameObjectTest, AddComponentDirectly)

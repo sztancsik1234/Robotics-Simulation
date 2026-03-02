@@ -167,19 +167,14 @@ TEST_F(EmplaceComponentTest, EmplaceWithMoveOnlyParam) {
     EXPECT_EQ(component->GetOwner(), gameObject.get());
 }
 
-TEST_F(EmplaceComponentTest, EmplaceMultipleComponentsSameType) {
-    // Act
-    auto* first = gameObject->EmplaceComponent<SingleParamComponent>(10);
-    auto* second = gameObject->EmplaceComponent<SingleParamComponent>(20);
-
+TEST_F(EmplaceComponentTest, EmplaceMultipleComponentsSameTypeThrows) {
     // Assert
-    EXPECT_NE(first, nullptr);
-    EXPECT_NE(second, nullptr);
-    EXPECT_NE(first, second);
-    EXPECT_EQ(first->value, 10);
-    EXPECT_EQ(second->value, 20);
-    EXPECT_TRUE(first->wasAdded);
-    EXPECT_TRUE(second->wasAdded);
+    EXPECT_THROW(
+        {
+            auto* first = gameObject->EmplaceComponent<SingleParamComponent>(10);
+            auto* second = gameObject->EmplaceComponent<SingleParamComponent>(20);
+        }, 
+        DuplicateComponentException);
 }
 
 TEST_F(EmplaceComponentTest, EmplaceComponentReturnsCorrectType) {
