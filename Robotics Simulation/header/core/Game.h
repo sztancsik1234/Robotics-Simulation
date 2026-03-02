@@ -40,7 +40,7 @@ public:
 	bool IsRunning() const;
 
 	// Verify if the game can start running and set the running flag accordingly.
-	void VerifyState();
+	void AssertGameReady();
 
 	// get camera
 	CameraRenderer& GetCamera() { return mainCamera; }

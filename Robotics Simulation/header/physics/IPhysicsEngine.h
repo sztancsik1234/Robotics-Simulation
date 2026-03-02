@@ -17,6 +17,7 @@ struct IWorldManager : IPhysicsEngineBase
 	virtual void Initialize() = 0;
 	virtual void Shutdown() = 0;
 	virtual void simulateStep(float deltaSeconds) = 0;
+	virtual bool IsInitialized() const = 0;
 };
 
 struct IBodyManager : IPhysicsEngineBase

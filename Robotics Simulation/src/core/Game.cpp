@@ -6,6 +6,8 @@
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
 
+// #define FIXED_DELTA_TIME
+
 /// <summary>
 /// Constructs a Game object with the required dependencies.
 /// </summary>
@@ -90,6 +92,10 @@ void Game::StartMainLoop()
 		UpdateGameObjects();
 		updatePhysics();
 		DisplayFrame();
+#ifdef _DEBUG
+		Logger.Log(std::format("\n-----------------------\n[Game] Frame completed. Delta time: {:.4f} seconds\n-----------------------", deltaSeconds), LogLevel::TRACE);
+#endif // _DEBUG
+
 	}
 }
 
@@ -129,10 +135,15 @@ void Game::UpdateGameObjects()
 
 void Game::updatePhysics()
 {
+	// 0 for debug purposes. Change to 1 when in running nominally
+#ifdef FIXED_DELTA_TIME
+	PhysicsEngine.simulateStep(0.2f);
+#else
 	PhysicsEngine.simulateStep(deltaSeconds);
+#endif
 }
 
-void Game::VerifyState()
+void Game::AssertGameReady()
 {
 	// verify Renderer and scene are initialized
 	if (!Renderer.IsInitialized())
@@ -141,12 +152,21 @@ void Game::VerifyState()
 		Running = false;
 		throw GameInitializationException("Renderer not initialized.");
 	}
+
+	if (!PhysicsEngine.IsInitialized())
+	{
+		Logger.Log("[Game] Physics engine not initialized.", LogLevel::ERROR);
+		Running = false;
+		throw GameInitializationException("Physics engine not initialized.");
+	}
+
 	if (!activeScene)
 	{
 		Logger.Log("[Game] No active scene loaded.", LogLevel::ERROR);
 		Running = false;
 		throw GameInitializationException("No active scene loaded.");
 	}
+
 	Logger.Log("[Game] Game is ready to run.", LogLevel::INFO);
 	Running = true;
 	return;
@@ -164,9 +184,9 @@ void Game::DisplayFrame()
 
 void Game::UpdateDeltaTime()
 {
-	using clock = std::chrono::steady_clock;
-	const auto now = clock::now();
-	deltaSeconds = std::chrono::duration<float>(now - lastFrameTime).count();
+	using namespace std::chrono; 
+	const auto now = steady_clock::now();
+	deltaSeconds = duration<float>(now - lastFrameTime).count();
 	lastFrameTime = now;
 }
 
