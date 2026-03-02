@@ -33,6 +33,7 @@ private:
 	b2ShapeId CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyDef) const;
 	[[nodiscard]] inline BodyId registerBodyId(b2BodyId b2Id);
 	[[nodiscard]] inline const b2BodyId& getB2BodyId(BodyId nativeId) const;
+	void VerifyWorldInitialized() const;
 
 	struct
 	{
@@ -65,9 +66,8 @@ private:
 	} bodyrepository;
 
 	ILogger& logger;
-#ifdef _DEBUG
+
 	bool isWorldInitialized = false;
-	void VerifyWorldInitialized() const;
-#endif // _DEBUG
+
 
 };
