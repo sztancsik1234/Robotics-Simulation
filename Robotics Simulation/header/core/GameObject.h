@@ -18,17 +18,19 @@ class GameObject
 {
 public:
 	// TODO: Pass transform by const reference
-	explicit GameObject(ILogger& logger, int id = 0, Transform transform = Transform{}, const std::string& name = "Unnamed") :
-		id(id), name(name), transform(transform), Logger(logger) {}
+	explicit GameObject(ILogger& logger, int id = 0, Transform transform = Transform{}, const std::string& name = "Unnamed", Vector2 anchor = { 0.5f, 0.5f }) :
+		id(id), name(name), transform(transform), anchor(anchor), Logger(logger) {}
 	~GameObject();
 	GameObject(GameObject&& other) noexcept;
 
 	Vector2 GetPosition() const		{ return transform.position; }
 	Radian GetRotation() const		{ return transform.rotation; }
 	Transform GetTransform() const	{ return transform; }
+	Vector2 GetAnchor() const		{ return anchor; }
 	void SetPosition(const Vector2& position);
 	void SetRotation(const Radian& rotation);
 	void SetTransform(const Transform& transform);
+	void SetAnchor(const Vector2& newAnchor);
 
 	template <ComponentDerived T>
 	T* GetComponent()
@@ -109,6 +111,7 @@ private:
 	int id;
 	std::string name;
 	Transform transform;
+	Vector2 anchor;
 	std::forward_list<std::unique_ptr<Component>> componentList;
 
 	ILogger& Logger;

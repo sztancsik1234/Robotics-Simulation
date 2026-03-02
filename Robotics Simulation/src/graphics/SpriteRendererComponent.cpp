@@ -26,7 +26,7 @@ void SpriteRenderComponent::Update()
 #endif // _DEBUG
 
 	
-	camera.DrawSprite(GetOwner()->GetTransform(), TextureId, SpriteAnchor);
+	camera.DrawSprite(GetOwner()->GetTransform(), TextureId, GetOwner()->GetAnchor());
 }
 
 void SpriteRenderComponent::OnRemove()

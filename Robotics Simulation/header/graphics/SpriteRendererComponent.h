@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderComponent.h"
 #include "core/ComponentDTOs.h"
+#include "core/GameObject.h"
 
 class SpriteRenderComponent final : public RenderComponent
 {
@@ -13,8 +14,7 @@ public:
 		Vector2 anchor = { 0.f,0.f }) :
 		RenderComponent(owner, logger, camera),
 		Renderer(renderer),
-		TexturePath(texturePath),
-		SpriteAnchor(anchor)
+		TexturePath(texturePath)
 	{
 	}
 
@@ -25,8 +25,7 @@ public:
 		const SpriteRenderComponentDTO& DTO) :
 		RenderComponent(owner, logger, camera),
 		Renderer(renderer),
-		TexturePath(DTO.texturePath),
-		SpriteAnchor(DTO.anchor)
+		TexturePath(DTO.texturePath)
 	{
 	}
 
@@ -42,5 +41,4 @@ private:
 	ISpriteRenderer& Renderer;
 	TextureId TextureId = 0;
 	const std::string TexturePath;
-	Vector2 SpriteAnchor; // default top-left corner
 };

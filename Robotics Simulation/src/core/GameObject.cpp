@@ -25,12 +25,14 @@ GameObject::GameObject(GameObject&& other) noexcept
     : id(other.id),
       name(std::move(other.name)),
       transform(other.transform),
+      anchor(other.anchor),
       componentList(std::move(other.componentList)),
 	Logger(other.Logger)
 {
     // Reset the moved-from object to a valid state
     other.id = 0;
     other.transform = Transform();
+	other.anchor = { 0.5f, 0.5f };
     other.name = "Unnamed";
     // componentList is already moved from (empty)
     for (auto& component : componentList) {
@@ -55,6 +57,12 @@ void GameObject::SetTransform(const Transform& newTransform)
 {
     transform = newTransform;
 	Logger.Log("[GameObject] GameObject transform set. Position: (" + std::to_string(transform.position.x) + ", " + std::to_string(transform.position.y) + "), Rotation: " + std::to_string((float)transform.rotation) + " radians", LogLevel::TRACE);
+}
+
+void GameObject::SetAnchor(const Vector2& newAnchor)
+{
+	anchor = newAnchor;
+	Logger.Log(std::format("[GameObject] GameObject anchor set to: ({}, {})", std::to_string(anchor.x), std::to_string(anchor.y)), LogLevel::TRACE);
 }
 
 void GameObject::AddComponent(std::unique_ptr<Component> component)
