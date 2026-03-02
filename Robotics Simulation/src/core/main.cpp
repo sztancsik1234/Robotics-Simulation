@@ -22,7 +22,7 @@ int main()
 
 	try
 	{
-		game.VerifyState();
+		game.AssertGameReady();
 
 	}
 	catch (const GameInitializationException&)
