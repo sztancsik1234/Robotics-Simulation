@@ -35,6 +35,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
+			object.SetAnchor(dto.anchor);
 
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding SpriteRendererComponent to {} with texture '{}'", object.ToString(), dto.texturePath), LogLevel::TRACE);
 			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetCamera(),
@@ -71,6 +72,7 @@ void SceneLoader::RegisterDefaultComponents()
 		{
 
 			// TODO: how are the dimentions and positions extracted from this? looked up from the gameobject?
+			// TODO: Take anchor into account when calculating the position of the box collider. Currently, the position of the gameobject is used as the center of the box, which is not correct if the anchor is not {0.5, 0.5}.
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding StaticBoxComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<StaticBoxComponent>(mainGame.Logger, mainGame.PhysicsEngine);
 		}
