@@ -13,10 +13,12 @@ void BallPhysicsComponent::OnAdd()
 		.density = 3.328694f,
 		.friction = 0.75f,
 		.restitution = 0.75f,
+		.shapeType = ShapeType::CIRCLE,
+		.shape = {.circle = { (transform.size.x + transform.size.y) / 4.0f } } // ( x + y / 2) / 2 to get the average, then divide again the radius
 	};
 
-	float radius = (transform.size.x + transform.size.y) / 4.0f; // ( x + y / 2) / 2 to get the average, then divide again the radius
-	bodyDef.SetShapeCircle(radius);
+	//float radius = (transform.size.x + transform.size.y) / 4.0f; 
+	//bodyDef.SetShapeCircle(radius);
 
 	bodyId = PhysicsEngine.createBody(bodyDef);
 }
