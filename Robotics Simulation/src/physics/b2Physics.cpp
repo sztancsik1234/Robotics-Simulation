@@ -2,9 +2,14 @@
 
 void b2Physics::Initialize()
 {
+	if (isWorldInitialized) logger.Log("[b2Physics] initialize() called when World is already initialized!", LogLevel::WARNING);
+
     b2WorldDef worldParameters = b2DefaultWorldDef();
     worldParameters.gravity = { 0.f,  -9.8f };
     worldId = b2CreateWorld(&worldParameters);
+
+	isWorldInitialized = true;
+
     logger.Log(std::format("[b2Physics] World:{} initialized.", worldId.index1), LogLevel::INFO);
 }
 
@@ -21,8 +26,14 @@ void b2Physics::VerifyWorldInitialized() const
 
 void b2Physics::Shutdown()
 {
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
     logger.Log(std::format("[b2Physics] World:{} is shutting down.", worldId.index1), LogLevel::INFO);
 	b2DestroyWorld(worldId);
+
+	isWorldInitialized = false;
+
 }
 
 bool b2Physics::IsInitialized() const
@@ -32,13 +43,18 @@ bool b2Physics::IsInitialized() const
 
 void b2Physics::simulateStep(float deltaSeconds)
 {
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
     b2World_Step(worldId, deltaSeconds, 4);
 }
 
 BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 {
-	auto bodyparams = bodydefToB2Params(bodyDef);
-	auto bodyId = b2CreateBody(worldId, &bodyparams);
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
+
 	//create body
 	const b2BodyDef bodydef = bodydefToB2BodyDef(bodyDef);
 	const b2BodyId bodyId = b2CreateBody(worldId, &bodydef);
@@ -67,7 +83,9 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 
 void b2Physics::destroyBody(BodyId id)
 {
-	const b2BodyId& b2id = getB2BodyId(id);
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
 	try
 	{
 		const b2BodyId b2id = getB2BodyId(id);
@@ -83,7 +101,9 @@ void b2Physics::destroyBody(BodyId id)
 
 Vector2 b2Physics::getBodyPosition(BodyId id) const
 {
-	b2Vec2 position = b2Body_GetPosition(getB2BodyId(id));
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
 	b2BodyId b2id = getB2BodyId(id);
 	b2Vec2 position = b2Body_GetPosition(b2id);
 	const Vector2 vecPosition{ position.x, position.y };
@@ -93,6 +113,9 @@ Vector2 b2Physics::getBodyPosition(BodyId id) const
 
 Radian b2Physics::getBodyRotation(BodyId id) const
 {
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
 	b2Rot rotation = b2Body_GetRotation(getB2BodyId(id));
 	float angleInRadians = b2Rot_GetAngle(rotation);
 	logger.Log(std::format("[b2Physics] Retrieved rotation={} radians for body id={}", angleInRadians, id), LogLevel::TRACE);
@@ -102,6 +125,9 @@ Radian b2Physics::getBodyRotation(BodyId id) const
 // TODO: timeWindow is currently ignored, as Box2D applies forces immediately. We can implement a more complex force application system in the future if needed.
 void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float timeWindow)
 {
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
     logger.Log(std::format("[b2Physics] Applying force={} to body id={} over time window={}",
         std::string(force),
         id,
@@ -111,6 +137,9 @@ void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float ti
 
 void b2Physics::setSpeed(const BodyId id, const Vector2 & impulse)
 {
+#ifdef _DEBUG
+	VerifyWorldInitialized();
+#endif // _DEBUG
     logger.Log(std::format("[b2Physics] Setting speed={} for body id={}",
         std::string(impulse),
 		id), LogLevel::TRACE);
@@ -173,6 +202,7 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 {
 
 #ifdef _DEBUG
+	VerifyWorldInitialized();
     if (bodyDef.shapeType != ShapeType::CIRCLE)
     {
 		logger.Log("[b2Physics] Error: Attempted to create circle shape with non-circle BodyDefinition", LogLevel::ERROR);
@@ -196,12 +226,14 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
 {
 
 #ifdef _DEBUG
+	VerifyWorldInitialized();
     if (bodyDef.shapeType != ShapeType::RECTANGLE)
     {
         logger.Log("[b2Physics] Error: Attempted to create rectangle shape with non-rectangle BodyDefinition", LogLevel::ERROR);
         throw PhysicsObjectCreationFailedException("Attempted to create a rectangle, but BodyDefinition shape type is not Rectangle");
     }
 #endif
+
     logger.Log(std::format("[b2Physics] Creating rectangle at location=({}, {}), size=({}, {})", bodyDef.position.x, bodyDef.position.y, bodyDef.shape.rectangle.width, bodyDef.shape.rectangle.height), LogLevel::INFO);
 
     const float halfWidth = 0.5f * bodyDef.shape.rectangle.width;
@@ -229,5 +261,18 @@ BodyId b2Physics::registerBodyId(b2BodyId b2Id)
 
 inline const b2BodyId& b2Physics::getB2BodyId(const BodyId nativeId) const
 {
+#ifdef _DEBUG
+	for (const auto& freeId : bodyrepository.freeIds)
+	{
+		if (freeId == nativeId)
+		{
+			throw std::out_of_range(std::format("Attempted to access body with id={} that does not exist", nativeId));
+		}
+	}
+	if (nativeId > bodyrepository.bodies.size())
+	{
+		throw std::out_of_range(std::format("Attempted to access body with id={} that does not exist", nativeId));
+	}
+#endif // _DEBUG
 	return bodyrepository[nativeId];
 }
