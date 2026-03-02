@@ -45,8 +45,32 @@ struct IPhysicsEngine :
 
 };
 
-class PhysicsObjectCreationFailedException : public std::runtime_error
+class PhysicsException : public std::runtime_error
 {
 public:
 	using std::runtime_error::runtime_error;
+};
+
+class PhysicsObjectCreationFailedException : public PhysicsException
+{
+public:
+	using PhysicsException::PhysicsException;
+};
+
+class InvalidBodyIdException : public PhysicsException
+{
+public:
+	using PhysicsException::PhysicsException;
+};
+
+class WorldNotInitializedException : public PhysicsException
+{
+public:
+	using PhysicsException::PhysicsException;
+};
+
+class WorldAlreadyInitializedException : public PhysicsException
+{
+public:
+	using PhysicsException::PhysicsException;
 };
