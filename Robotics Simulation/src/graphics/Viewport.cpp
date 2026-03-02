@@ -77,7 +77,14 @@ inline Transform WorldToScreenTransform(const Transform& worldTransform,
 	Vector2 screenSizePixels) noexcept
 {
 	Transform screen {};
-	screen.rotation = worldTransform.rotation; // TODO: object's rotation is opposite of camera rotation
+	if constexpr (WORLDYUP)
+	{
+		screen.rotation = Radian(-worldTransform.rotation.toRadian());
+	}
+	else
+	{
+		screen.rotation = worldTransform.rotation;
+	}
 	screen.position = WorldPosToScreen(worldTransform.position, viewCenter, viewSize, screenSizePixels);
 	screen.size = WorldSizeToPixelSize(worldTransform.size, viewSize, screenSizePixels);
 	return screen;
