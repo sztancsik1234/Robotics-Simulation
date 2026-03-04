@@ -20,13 +20,13 @@ void BallPhysicsComponent::OnAdd()
 	//float radius = (transform.size.x + transform.size.y) / 4.0f; 
 	//bodyDef.SetShapeCircle(radius);
 
-	bodyId = PhysicsEngine.createBody(bodyDef);
+	bodyId = PhysicsEngine.CreateBody(bodyDef);
 }
 
 void BallPhysicsComponent::Update()
 {
-	const Vector2 position = PhysicsEngine.getBodyPosition(bodyId);
-	const Radian rotation = PhysicsEngine.getBodyRotation(bodyId);
+	const Vector2 position = PhysicsEngine.GetBodyPosition(bodyId);
+	const Radian rotation = PhysicsEngine.GetBodyRotation(bodyId);
 	logger.Log(std::format("[BallPhysicsComponent] Updating ball physics body id={} to position=({}, {}), rotation={}",
 		bodyId,
 		position.x,
@@ -39,7 +39,7 @@ void BallPhysicsComponent::Update()
 void BallPhysicsComponent::OnRemove()
 {
 	logger.Log(std::format("[BallPhysicsComponent] Destroying ball physics body with id={}", bodyId), LogLevel::INFO);
-	PhysicsEngine.destroyBody(bodyId);
+	PhysicsEngine.DestroyBody(bodyId);
 }
 
 std::string BallPhysicsComponent::ToString() const

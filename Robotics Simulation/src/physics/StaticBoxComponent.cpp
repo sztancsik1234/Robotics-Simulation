@@ -22,7 +22,7 @@ void StaticBoxComponent::OnAdd()
 		.shape = {.rectangle = { transform.size.x, transform.size.y } }
 	};
 #endif
-	BodyId = PhysicsEngine.createBody(bodyDef);
+	BodyId = PhysicsEngine.CreateBody(bodyDef);
 
 	logger.Log(std::format("[StaticBoxComponent] Created static box body with id={} at position=({}, {}), size=({}, {})",
 		BodyId,
@@ -40,7 +40,7 @@ void StaticBoxComponent::Update()
 void StaticBoxComponent::OnRemove()
 {
 	logger.Log(std::format("[StaticBoxComponent] Destroying static box body with id={}", BodyId), LogLevel::INFO);
-	PhysicsEngine.destroyBody(BodyId);
+	PhysicsEngine.DestroyBody(BodyId);
 }
 
 std::string StaticBoxComponent::ToString() const

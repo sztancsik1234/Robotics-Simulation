@@ -345,7 +345,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 
 	if constexpr (TRACE_LOG) {
 		mainGame.Logger.Log("[Sceneloader] secondPass over...");
-		scene.logGameObjects(mainGame.Logger, true);
+		scene.LogGameObjects(mainGame.Logger, true);
 	}
 
 	prefabMap.clear();
@@ -395,13 +395,13 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 											std::to_string(instance.GetId()), 
 											instance.GetName()),
 								LogLevel::INFO);
-			scene->addGameObject(std::move(instance));
+			scene->AddGameObject(std::move(instance));
 		}
 		else if (nodeTag == "gameObject")
 		{
 
 			GameObject object = CreateGameObjectFromXML(childNode);
-			scene->addGameObject(std::move(object));
+			scene->AddGameObject(std::move(object));
 		}
 		else
 		{

@@ -1,8 +1,9 @@
 #pragma once
 #include "core/Component.h"
-#include "util/ILogger.h"
-#include "graphics/IRenderer.h"
 #include "graphics/ICameraRenderer.h"
+#include "util/ILogger.h"
+#include "core/GameObject.h"
+#include <string>
 
 
 class RenderComponent : public Component
@@ -16,8 +17,7 @@ public:
 		Component(owner),
 		Logger(logger),
 		camera(camera)
-	{
-	}
+	{}
 
 	~RenderComponent() override = default;
 

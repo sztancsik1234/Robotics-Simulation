@@ -2,7 +2,8 @@
 
 #include "core/Vector2.h"
 #include "input/IInputService.h"
-#include "graphics/SfmlRenderer.h"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 /// <summary>
 /// Easy input service to use if an SFML renderer is used.
@@ -22,7 +23,7 @@ public:
 	bool ShouldTerminate() override;
 
 private:
-	void verifyWindowInitialized();
+	void VerifyWindowInitialized();
 	sf::RenderWindow& Window; // Reference to the SFML window
 	sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key) const;
 	bool ShouldClose = false;

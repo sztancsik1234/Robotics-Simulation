@@ -1,8 +1,9 @@
 #pragma once
-#include "input/IInputService.h"
 #include "core/GameObject.h"
-#include "core/ComponentDTOs.h"
 #include "graphics/IViewport.h"
+#include "input/IInputService.h"
+#include "core/Component.h"
+#include <string>
 
 class MouseFollowerComponent final : public Component
 {

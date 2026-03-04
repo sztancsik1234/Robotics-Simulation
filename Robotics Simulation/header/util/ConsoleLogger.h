@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>
 #include "util/ILogger.h"
+#include <iostream>
 
 class ConsoleLogger : public ILogger
 {
@@ -13,11 +13,11 @@ public:
 		if (level < MinLogLevel)
 			return;
 
-		
-		std::cout 
-			<< LogLevelToString(level) << "\t" 
-			<< GetTimestamp() << ": " 
+
+		std::cout
+			<< LogLevelToString(level) << "\t"
+			<< GetTimestamp() << ": "
 			<< message << std::endl;
-		
+
 	}
 };

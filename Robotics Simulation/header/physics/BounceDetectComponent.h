@@ -3,6 +3,8 @@
 #include "core/Component.h"
 #include "core/Vector2.h"
 #include "util/ILogger.h"
+#include "core/GameObject.h"
+#include <string>
 
 /// <summary>
 /// A debug component, that calculates the direction of movement and logs a message if a sufficently big change is detected.

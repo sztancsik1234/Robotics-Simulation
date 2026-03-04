@@ -156,7 +156,7 @@ bool MockPhysicsEngine::IsInitialized() const
     return isInitialized_;
 }
 
-BodyId MockPhysicsEngine::createBody(const BodyDefinition& bodyDef)
+BodyId MockPhysicsEngine::CreateBody(const BodyDefinition& bodyDef)
 {
     createBodyCalled = true;
 
@@ -172,14 +172,14 @@ BodyId MockPhysicsEngine::createBody(const BodyDefinition& bodyDef)
     return id;
 }
 
-void MockPhysicsEngine::destroyBody(BodyId id)
+void MockPhysicsEngine::DestroyBody(BodyId id)
 {
     destroyBodyCalled = true;
     lastBodyId = id;
     bodies_.erase(id);
 }
 
-Vector2 MockPhysicsEngine::getBodyPosition(BodyId id) const
+Vector2 MockPhysicsEngine::GetBodyPosition(BodyId id) const
 {
     if (auto it = bodies_.find(id); it != bodies_.end())
     {
@@ -188,7 +188,7 @@ Vector2 MockPhysicsEngine::getBodyPosition(BodyId id) const
     return Vector2{ 0.f, 0.f };
 }
 
-Radian MockPhysicsEngine::getBodyRotation(BodyId id) const
+Radian MockPhysicsEngine::GetBodyRotation(BodyId id) const
 {
     if (auto it = bodies_.find(id); it != bodies_.end())
     {
@@ -197,7 +197,7 @@ Radian MockPhysicsEngine::getBodyRotation(BodyId id) const
     return Radian(0.f);
 }
 
-void MockPhysicsEngine::applyForceToBody(BodyId id, const Vector2& force, float timeWindow)
+void MockPhysicsEngine::ApplyForceToBody(BodyId id, const Vector2& force, float timeWindow)
 {
     applyForceCalled = true;
     lastBodyId = id;
@@ -213,7 +213,7 @@ void MockPhysicsEngine::applyForceToBody(BodyId id, const Vector2& force, float 
     it->second.velocity.y += force.y * timeWindow;
 }
 
-void MockPhysicsEngine::setSpeed(BodyId id, const Vector2& impulse)
+void MockPhysicsEngine::SetSpeed(BodyId id, const Vector2& impulse)
 {
     setSpeedCalled = true;
     lastBodyId = id;

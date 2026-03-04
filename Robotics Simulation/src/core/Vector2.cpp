@@ -1,8 +1,11 @@
 #include "core/Vector2.h"
+#include "util/Exceptions.h"
 #include <format>
+#include <string>
 
 // Overload addition operator
-Vector2 operator+(Vector2 const& left, Vector2 const& right) {
+Vector2 operator+(Vector2 const& left, Vector2 const& right)
+{
 	Vector2 result = left;
 	result.x += right.x;
 	result.y += right.y;
@@ -10,7 +13,8 @@ Vector2 operator+(Vector2 const& left, Vector2 const& right) {
 }
 
 // Overload subtraction operator
-Vector2 operator-(Vector2 const& left, Vector2 const& right) {
+Vector2 operator-(Vector2 const& left, Vector2 const& right)
+{
 	Vector2 result = left;
 	result.x -= right.x;
 	result.y -= right.y;
@@ -18,7 +22,8 @@ Vector2 operator-(Vector2 const& left, Vector2 const& right) {
 }
 
 // Overload for scalar multiplication
-Vector2 operator*(Vector2 const& vec, float scalar) {
+Vector2 operator*(Vector2 const& vec, float scalar)
+{
 	Vector2 result = vec;
 	result.x *= scalar;
 	result.y *= scalar;
@@ -26,8 +31,10 @@ Vector2 operator*(Vector2 const& vec, float scalar) {
 }
 
 // Overload for scalar division operator
-Vector2 operator/(Vector2 const& vec, float scalar) {
-	if (scalar == 0.0f) {
+Vector2 operator/(Vector2 const& vec, float scalar)
+{
+	if (scalar == 0.0f)
+	{
 		throw DivisionByZeroException();
 	}
 	Vector2 result = vec;

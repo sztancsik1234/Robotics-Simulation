@@ -15,14 +15,14 @@ public:
 	bool IsInitialized() const override;
 
     // IBodyManager
-    BodyId createBody(const BodyDefinition& body) override;
-    void destroyBody(BodyId id) override;
+    BodyId CreateBody(const BodyDefinition& body) override;
+    void DestroyBody(BodyId id) override;
 
-    Vector2 getBodyPosition(BodyId id) const override;
-    Radian getBodyRotation(BodyId id) const override;
+    Vector2 GetBodyPosition(BodyId id) const override;
+    Radian GetBodyRotation(BodyId id) const override;
 
-    void applyForceToBody(BodyId id, const Vector2& force, float timeWindow) override;
-    void setSpeed(BodyId id, const Vector2& impulse) override;
+    void ApplyForceToBody(BodyId id, const Vector2& force, float timeWindow) override;
+    void SetSpeed(BodyId id, const Vector2& impulse) override;
 
     // Test inspection flags/state
     bool initializeCalled{ false };

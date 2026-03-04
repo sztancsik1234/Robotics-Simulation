@@ -1,11 +1,11 @@
 #pragma once
 #include "core/Component.h"
-#include "physics/IPhysicsEngine.h"
 #include "core/Transform.h"
+#include "physics/IPhysicsEngine.h"
 #include "util/ILogger.h"
 
 // Inherits the owner's transform to create a static box in the physics engine.
-class StaticBoxComponent final : public Component 
+class StaticBoxComponent final : public Component
 {
 public:
 	StaticBoxComponent(GameObject* owner, ILogger& logger, IBodyManager& physicsEngine) :

@@ -1,7 +1,12 @@
 #pragma once
-#include "RenderComponent.h"
 #include "core/ComponentDTOs.h"
 #include "core/GameObject.h"
+#include "ICameraRenderer.h"
+#include "IRenderer.h"
+#include "RenderComponent.h"
+#include "core/Vector2.h"
+#include <string>
+#include "util/ILogger.h"
 
 class SpriteRenderComponent final : public RenderComponent
 {
@@ -15,8 +20,7 @@ public:
 		RenderComponent(owner, logger, camera),
 		Renderer(renderer),
 		TexturePath(texturePath)
-	{
-	}
+	{}
 
 	SpriteRenderComponent(GameObject* owner,
 		ICameraRenderer& camera,
@@ -26,8 +30,7 @@ public:
 		RenderComponent(owner, logger, camera),
 		Renderer(renderer),
 		TexturePath(DTO.texturePath)
-	{
-	}
+	{}
 
 	void OnAdd() override;
 	void Update() override;

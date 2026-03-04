@@ -1,15 +1,18 @@
 #pragma once
 
-#include <forward_list>
-#include "graphics/IRenderer.h"
-#include "input/IInputService.h"
-#include "util/ILogger.h"
 #include "core/GameObject.h"
 #include "core/SceneLoader.h"
 #include "core/Scene.h"
 #include "graphics/CameraRenderer.h" 
+#include "graphics/IRenderer.h"
+#include "input/IInputService.h"
 #include "physics/IPhysicsEngine.h"
+#include "util/ILogger.h"
+#include "Vector2.h"
 #include <chrono>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 class Game
 {
@@ -62,9 +65,9 @@ private:
 	// -- members --
 	CameraRenderer mainCamera;
 	std::unique_ptr<Scene> activeScene;
-	
+
 	// -- timing --
-	std::chrono::steady_clock::time_point lastFrameTime{};
+	std::chrono::steady_clock::time_point lastFrameTime {};
 	float deltaSeconds = 0.0f;
 
 	// -- Helper classes --
@@ -84,7 +87,7 @@ private:
 	/// </summary>
 	/// <remark> The method uese move scemantics to move a valid gameobject into the buffer.</remark>
 	/// <param name="gameObject"></param>
-	void addGameObject(GameObject&& gameObject);
+	void AddGameObject(GameObject&& gameObject);
 
 	/// <summary>
 	/// Handles input events by delegating to the input service.
@@ -101,7 +104,7 @@ private:
 	// go over all game objects and call their update method
 	void UpdateGameObjects();
 
-	void updatePhysics();
+	void UpdatePhysics();
 
 	// clear the frame by clearing the renderer
 	void ClearFrame();
@@ -113,11 +116,11 @@ private:
 	void UpdateDeltaTime();
 
 	// A test function to load a simple component with a circleRenderer
-	void addTestGameObject();
+	void AddTestGameObject();
 };
 
 class GameInitializationException : public std::runtime_error
 {
-	public:
-		using std::runtime_error::runtime_error;
+public:
+	using std::runtime_error::runtime_error;
 };

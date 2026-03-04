@@ -23,7 +23,7 @@ Scene& Scene::operator=(Scene&& other) noexcept
     return *this;
 }
 
-void Scene::logGameObjects(ILogger& logger, bool logComonents) const
+void Scene::LogGameObjects(ILogger& logger, bool logComonents) const
 {
     std::string msgToLog = "[Scene] Active gameobjects:\n";
     for (auto it = gameObjects.begin(); it != gameObjects.end(); it++)
@@ -42,7 +42,7 @@ void Scene::OnUnload()
 {
     // If OnSceneUnload is implemented for components, call it here for each component of each game object.
 
-	clearGameObjects();
+	ClearGameObjects();
 }
 
 void Scene::Unload()
@@ -51,12 +51,12 @@ void Scene::Unload()
 	gameObjects.clear();
 }
 
-void Scene::addGameObject(GameObject&& gameObject)
+void Scene::AddGameObject(GameObject&& gameObject)
 {
     gameObjects.push_front(std::move(gameObject));
 }
 
-void Scene::clearGameObjects()
+void Scene::ClearGameObjects()
 {
     gameObjects.clear();
 }

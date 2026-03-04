@@ -1,8 +1,10 @@
 #pragma once
 #include "core/Component.h"
 #include "physics/IPhysicsEngine.h"
-#include "core/Transform.h"
 #include "util/ILogger.h"
+#include "core/GameObject.h"
+#include "core/Vector2.h"
+#include <string>
 
 // Inherits the owner's transform to create a static box in the physics engine.
 class BallPhysicsComponent final : public Component
@@ -12,8 +14,7 @@ public:
 		Component(owner),
 		logger(logger),
 		PhysicsEngine(physicsEngine)
-	{
-	}
+	{}
 
 	void OnAdd() override;
 	void Update() override;

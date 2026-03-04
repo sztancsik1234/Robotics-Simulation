@@ -38,7 +38,7 @@ TEST_F(B2PhysicsTest, CreateCircleBodyDoesNotThrow) {
     def.shape.circle.radius = 1.0f;
 
     EXPECT_NO_THROW({
-        auto id = physics.createBody(def);
+        auto id = physics.CreateBody(def);
         (void)id;
         });
 
@@ -54,7 +54,7 @@ TEST_F(B2PhysicsTest, CreateRectangleBodyDoesNotThrow) {
     def.shape.rectangle.height = 1.0f;
 
     EXPECT_NO_THROW({
-        auto id = physics.createBody(def);
+        auto id = physics.CreateBody(def);
         (void)id;
         });
 
@@ -71,8 +71,8 @@ TEST_F(B2PhysicsTest, CreateRectangleBodyUsesInitialPosition) {
     def.shape.rectangle.height = 1.5f;
 
     // Act
-    auto id = physics.createBody(def);
-    Vector2 pos = physics.getBodyPosition(id);
+    auto id = physics.CreateBody(def);
+    Vector2 pos = physics.GetBodyPosition(id);
 
     // Assert
     EXPECT_NEAR(pos.x, def.position.x, 0.001f);
@@ -86,7 +86,7 @@ TEST_F(B2PhysicsTest, CreateBodyWithInvalidShapeThrows) {
     def.rotation = Radian(0.0f);
     def.shapeType = ShapeType::NONE; // invalid for creation
 
-    EXPECT_THROW(physics.createBody(def), PhysicsObjectCreationFailedException);
+    EXPECT_THROW(physics.CreateBody(def), PhysicsObjectCreationFailedException);
 
 }
 
@@ -104,13 +104,13 @@ TEST_F(B2PhysicsTest, SimulationTest)
 	def.SetShapeCircle(1.0f); // Set shape to circle with radius 1.0f
     def.shape.circle.radius = 1.0f;
 	def.density = 1.0f; // Give it some mass so gravity affects it
-    auto bodyId = physics.createBody(def);
+    auto bodyId = physics.CreateBody(def);
     // Simulate for 1 second in 60 steps
     for (int i = 0; i < 60; ++i) {
         physics.simulateStep(1.0f / 60.0f);
     }
     // Get the final position of the body
-    Vector2 finalPosition = physics.getBodyPosition(bodyId);
+    Vector2 finalPosition = physics.GetBodyPosition(bodyId);
     // The body should have fallen down, so its y position should be less than the initial position
     EXPECT_LT(finalPosition.y, def.position.y);
 }
@@ -129,7 +129,7 @@ TEST_F(B2PhysicsTest, AccuracyTest)
     };
 	def.SetShapeCircle(1.0f); // Set shape to circle with radius 1.0f
     
-    auto bodyId = physics.createBody(def);
+    auto bodyId = physics.CreateBody(def);
 
     // Simulate for 1 second in 60 steps
     for (int i = 0; i < 60; ++i) {
@@ -137,7 +137,7 @@ TEST_F(B2PhysicsTest, AccuracyTest)
     }
 
     // Get the final position of the body
-    Vector2 finalPosition = physics.getBodyPosition(bodyId);
+    Vector2 finalPosition = physics.GetBodyPosition(bodyId);
 
     // The body should have fallen down approximately 4.9 units under gravity
 	EXPECT_NEAR(finalPosition.y, -4.9f, 0.1f); // Allow a small margin of error
@@ -167,7 +167,7 @@ TEST_F(B2PhysicsTest, MultipleObjectsSimulatedTest)
 			.density = 1.0f
 		};
 		def.SetShapeCircle(1.0f); // Set shape to circle with radius 1.0f
-		bodyIds[i] = physics.createBody(def);
+		bodyIds[i] = physics.CreateBody(def);
     }
 
 	// Simulate for 1 second in 60 steps
@@ -178,7 +178,7 @@ TEST_F(B2PhysicsTest, MultipleObjectsSimulatedTest)
     // Get the final position of each body and check if it's close to the expected position
     for (int i = 0; i < 10; i++)
     {
-        Vector2 finalPosition = physics.getBodyPosition(bodyIds[i]);
+        Vector2 finalPosition = physics.GetBodyPosition(bodyIds[i]);
         EXPECT_NEAR(finalPosition.x, expectedPositions[i].x, 0.1f);
         EXPECT_NEAR(finalPosition.y, expectedPositions[i].y, 0.1f); 
 	}
@@ -221,7 +221,7 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
         .shape = { .rectangle = { 10.0f, 0.5f } }
     };
 
-    physics.createBody(platformDef);
+    physics.CreateBody(platformDef);
 
     // Arrange: dynamic ball
     const BodyDefinition ballDef {
@@ -242,7 +242,7 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
     platformDef.SetShapeRectangle(Vector2(10.f, 0.5f));
     platformDef.density = 0.0f;
 
-    physics.createBody(platformDef);
+    physics.CreateBody(platformDef);
 
     // Arrange: dynamic ball
     BodyDefinition ballDef;
@@ -253,14 +253,14 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
     ballDef.density = 1.0f;
 #endif
 
-    const auto ballId = physics.createBody(ballDef);
+    const auto ballId = physics.CreateBody(ballDef);
 
     // Act: simulate 3 seconds and track minimum y
     float minY = ballDef.position.y;
     for (int i = 0; i < 180; ++i)
     {
         physics.simulateStep(1.0f / 60.0f);
-        Vector2 pos = physics.getBodyPosition(ballId);
+        Vector2 pos = physics.GetBodyPosition(ballId);
         if (pos.y < minY) minY = pos.y;
     }
 
@@ -280,8 +280,8 @@ TEST_F(B2PhysicsTest, StaticBoxCreatedAtCorrectPosition)
     def.shape.rectangle.height = 1.0f;
 
     // Act
-    auto id = physics.createBody(def);
-    Vector2 pos = physics.getBodyPosition(id);
+    auto id = physics.CreateBody(def);
+    Vector2 pos = physics.GetBodyPosition(id);
 
     // Assert
     EXPECT_NEAR(pos.x, def.position.x, 0.001f);
@@ -299,11 +299,11 @@ TEST_F(B2PhysicsTest, StaticBoxStaysAtPositionAfterStep)
     def.shape.rectangle.width = 2.0f;
     def.shape.rectangle.height = 1.0f;
 
-    auto id = physics.createBody(def);
+    auto id = physics.CreateBody(def);
 
     // Act
     physics.simulateStep(1.0f / 60.0f);
-    Vector2 pos = physics.getBodyPosition(id);
+    Vector2 pos = physics.GetBodyPosition(id);
 
     // Assert
     EXPECT_NEAR(pos.x, def.position.x, 0.001f);

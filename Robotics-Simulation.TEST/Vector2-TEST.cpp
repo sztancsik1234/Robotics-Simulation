@@ -5,7 +5,7 @@
 TEST(Vector2ConversionTest, ExplicitConversionToSfmlVector2f) {
     Vector2 v(3.5f, 4.2f);
     
-    sf::Vector2f sfmlVec = v.convertTo<sf::Vector2f>();
+    sf::Vector2f sfmlVec = v.ConvertTo<sf::Vector2f>();
     
     EXPECT_FLOAT_EQ(sfmlVec.x, 3.5f);
     EXPECT_FLOAT_EQ(sfmlVec.y, 4.2f);
@@ -14,7 +14,7 @@ TEST(Vector2ConversionTest, ExplicitConversionToSfmlVector2f) {
 TEST(Vector2ConversionTest, ExplicitConversionToSfmlVector2i) {
     Vector2 v(3.7f, 4.2f);
     
-    sf::Vector2i sfmlVec = v.convertTo<sf::Vector2i>();
+    sf::Vector2i sfmlVec = v.ConvertTo<sf::Vector2i>();
     
     EXPECT_EQ(sfmlVec.x, 3);  // Truncated to int
     EXPECT_EQ(sfmlVec.y, 4);  // Truncated to int
@@ -23,7 +23,7 @@ TEST(Vector2ConversionTest, ExplicitConversionToSfmlVector2i) {
 TEST(Vector2ConversionTest, ExplicitConversionToSfmlVector2u) {
     Vector2 v(3.7f, 4.2f);
     
-    sf::Vector2u sfmlVec = v.convertTo<sf::Vector2u>();
+    sf::Vector2u sfmlVec = v.ConvertTo<sf::Vector2u>();
     
     EXPECT_EQ(sfmlVec.x, 3u);
     EXPECT_EQ(sfmlVec.y, 4u);
@@ -104,7 +104,7 @@ TEST(Vector2ConversionTest, LargeValuesConversion) {
 TEST(Vector2ConversionTest, PrecisionPreservation) {
     Vector2 v(3.14159f, 2.71828f);
     
-    sf::Vector2f sfmlVec = v.convertTo<sf::Vector2f>();
+    sf::Vector2f sfmlVec = v.ConvertTo<sf::Vector2f>();
     
     EXPECT_FLOAT_EQ(sfmlVec.x, 3.14159f);
     EXPECT_FLOAT_EQ(sfmlVec.y, 2.71828f);
@@ -172,7 +172,7 @@ TEST(Vector2ConversionTest, ConstexprConversion) {
     Vector2 v(5.0f, 10.0f);
     
     // This should compile as constexpr
-    auto sfmlVec = v.convertTo<sf::Vector2f>();
+    auto sfmlVec = v.ConvertTo<sf::Vector2f>();
     
     EXPECT_FLOAT_EQ(sfmlVec.x, 5.0f);
     EXPECT_FLOAT_EQ(sfmlVec.y, 10.0f);

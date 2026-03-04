@@ -1,4 +1,6 @@
 #include "physics/b2Physics.h"
+#include <box2d/box2d.h>
+#include <stdexcept>
 
 void b2Physics::Initialize()
 {
@@ -51,14 +53,14 @@ void b2Physics::simulateStep(float deltaSeconds)
 	b2World_Step(worldId, deltaSeconds, 4);
 }
 
-BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
+BodyId b2Physics::CreateBody(const BodyDefinition& bodyDef)
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
 #endif // _DEBUG
 
 	//create body
-	const b2BodyDef bodydef = bodydefToB2BodyDef(bodyDef);
+	const b2BodyDef bodydef = BodydefToB2BodyDef(bodyDef);
 	const b2BodyId bodyId = b2CreateBody(worldId, &bodydef);
 
 	// create shape
@@ -75,7 +77,7 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 	}
 
 	// Create and track external ID
-	BodyId returnId = registerBodyId(bodyId);
+	BodyId returnId = RegisterBodyId(bodyId);
 	logger.Log(std::format("[b2Physics] Created body with id={} at position={}",
 		returnId,
 		std::string(bodyDef.position)), LogLevel::INFO);
@@ -83,49 +85,49 @@ BodyId b2Physics::createBody(const BodyDefinition& bodyDef)
 	return returnId;
 }
 
-void b2Physics::destroyBody(BodyId id)
+void b2Physics::DestroyBody(BodyId id)
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
 #endif // _DEBUG
 	try
 	{
-		const b2BodyId b2id = getB2BodyId(id);
+		const b2BodyId b2id = GetB2BodyId(id);
 		b2DestroyBody(b2id);
 		bodyrepository._freeBody(id);
 		logger.Log(std::format("[b2Physics] Destroyed body with id={}", id), LogLevel::INFO);
 	}
-	catch (const std::out_of_range& e)
+	catch (const std::out_of_range)
 	{
 		logger.Log("Attempted to destroy a body that is not tracked: " + std::to_string(id) + " b2DestroyBody not called.", LogLevel::ERROR);
 	}
 }
 
-Vector2 b2Physics::getBodyPosition(BodyId id) const
+Vector2 b2Physics::GetBodyPosition(BodyId id) const
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
 #endif // _DEBUG
-	b2BodyId b2id = getB2BodyId(id);
+	b2BodyId b2id = GetB2BodyId(id);
 	b2Vec2 position = b2Body_GetPosition(b2id);
 	const Vector2 vecPosition{ position.x, position.y };
 	logger.Log(std::format("[b2Physics] Retrieved position={} for body id={}", std::string(vecPosition), id), LogLevel::TRACE);
 	return vecPosition;
 }
 
-Radian b2Physics::getBodyRotation(BodyId id) const
+Radian b2Physics::GetBodyRotation(BodyId id) const
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
 #endif // _DEBUG
-	b2Rot rotation = b2Body_GetRotation(getB2BodyId(id));
+	b2Rot rotation = b2Body_GetRotation(GetB2BodyId(id));
 	float angleInRadians = b2Rot_GetAngle(rotation);
 	logger.Log(std::format("[b2Physics] Retrieved rotation={} radians for body id={}", angleInRadians, id), LogLevel::TRACE);
 	return Radian(angleInRadians);
 }
 
 // TODO: timeWindow is currently ignored, as Box2D applies forces immediately. We can implement a more complex force application system in the future if needed.
-void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float timeWindow)
+void b2Physics::ApplyForceToBody(const BodyId id, const Vector2& force, float timeWindow)
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
@@ -134,10 +136,10 @@ void b2Physics::applyForceToBody(const BodyId id, const Vector2& force, float ti
 		std::string(force),
 		id,
 		timeWindow), LogLevel::TRACE);
-	b2Body_ApplyForceToCenter(getB2BodyId(id), b2Vec2 { force.x, force.y }, true);
+	b2Body_ApplyForceToCenter(GetB2BodyId(id), b2Vec2 { force.x, force.y }, true);
 }
 
-void b2Physics::setSpeed(const BodyId id, const Vector2 & impulse)
+void b2Physics::SetSpeed(const BodyId id, const Vector2 & impulse)
 {
 #ifdef _DEBUG
 	VerifyWorldInitialized();
@@ -145,11 +147,11 @@ void b2Physics::setSpeed(const BodyId id, const Vector2 & impulse)
 	logger.Log(std::format("[b2Physics] Setting speed={} for body id={}",
 		std::string(impulse),
 		id), LogLevel::TRACE);
-	b2Body_SetLinearVelocity(getB2BodyId(id), b2Vec2 { impulse.x, impulse.y });
+	b2Body_SetLinearVelocity(GetB2BodyId(id), b2Vec2 { impulse.x, impulse.y });
 }
 
 // TODO: Make const return.
-b2BodyDef b2Physics::bodydefToB2BodyDef(const BodyDefinition& inDef) const
+b2BodyDef b2Physics::BodydefToB2BodyDef(const BodyDefinition& inDef) const
 {
 	b2BodyDef outDef = b2DefaultBodyDef();
 	outDef.allowFastRotation    = inDef.Wheel;
@@ -163,13 +165,13 @@ b2BodyDef b2Physics::bodydefToB2BodyDef(const BodyDefinition& inDef) const
 	outDef.rotation             = { .c = float(inDef.rotation.cosine()),  // TODO: Rotation is mirrored in Box2D
 									.s = float(inDef.rotation.sine()) };
 	outDef.sleepThreshold       = inDef.sleepTreshold;
-	outDef.type                 = nativeToB2Bodytype(inDef.type);
+	outDef.type                 = NativeToB2Bodytype(inDef.type);
 
 	return outDef;
 }
 
 // TODO: Make const return.
-b2ShapeDef b2Physics::bodydefToB2ShapeDef(const BodyDefinition& bodyDef) const
+b2ShapeDef b2Physics::BodydefToB2ShapeDef(const BodyDefinition& bodyDef) const
 {
 	b2ShapeDef shapeDef = b2DefaultShapeDef();
 	shapeDef.density           = bodyDef.density;
@@ -180,7 +182,7 @@ b2ShapeDef b2Physics::bodydefToB2ShapeDef(const BodyDefinition& bodyDef) const
 	return shapeDef;
 }
 
-constexpr b2BodyType b2Physics::nativeToB2Bodytype(const BodyType inType)
+constexpr b2BodyType b2Physics::NativeToB2Bodytype(const BodyType inType)
 {
 #if 0
 	switch (inType)
@@ -218,7 +220,7 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 		.radius = bodyDef.shape.circle.radius
 	};
 
-	b2ShapeDef shapeDef = bodydefToB2ShapeDef(bodyDef);
+	b2ShapeDef shapeDef = BodydefToB2ShapeDef(bodyDef);
 	auto returnId = b2CreateCircleShape(bodyId, &shapeDef, &circle);
 	logger.Log(std::format("[b2Physics] Creating circle at location={}", std::string(bodyDef.position)), LogLevel::INFO);
 	return returnId;
@@ -249,18 +251,18 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
 	// TODO: Check up how anchor works in box2d
 	b2Polygon poly = b2MakeOffsetBox(halfWidth, halfHeight, bodyDef.anchor, rot);
 
-	const b2ShapeDef shapeDef = bodydefToB2ShapeDef(bodyDef);
+	const b2ShapeDef shapeDef = BodydefToB2ShapeDef(bodyDef);
 	auto returnId = b2CreatePolygonShape(bodyId, &shapeDef, &poly);
 	return returnId;
 }
 
 // Register the b2BodyId and return the corresponding BodyId for external use.
-BodyId b2Physics::registerBodyId(b2BodyId b2Id)
+BodyId b2Physics::RegisterBodyId(b2BodyId b2Id)
 {
 	return bodyrepository._registerNewBody(b2Id);
 }
 
-inline const b2BodyId& b2Physics::getB2BodyId(const BodyId nativeId) const
+inline const b2BodyId& b2Physics::GetB2BodyId(const BodyId nativeId) const
 {
 #ifdef _DEBUG
 	for (const auto& freeId : bodyrepository.freeIds)

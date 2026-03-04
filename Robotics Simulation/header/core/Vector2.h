@@ -1,16 +1,15 @@
 #pragma once
-#include "util/Exceptions.h"
-#include <concepts>
 #include <string>
 
 // Concept to check if a type has accessible x and y members
 template<typename T>
-concept HasXYMembers = requires(T t) {
+concept HasXYMembers = requires(T t)
+{
 	t.x;  // Must have an x member
 	t.y;  // Must have an y member
 	// Check that x and y are assignable from float
-	{ t.x = float{} };
-	{ t.y = float{} };
+	{ t.x = float {} };
+	{ t.y = float {} };
 };
 
 struct Vector2
@@ -29,14 +28,14 @@ struct Vector2
 	friend Vector2 operator*(Vector2 const& vec, float scalar);
 	// Overload for scalar division operator
 	friend Vector2 operator/(Vector2 const& vec, float scalar);
-	
+
 	operator std::string() const;
 
 	// Template for converting to any class that has x and y properties
 	template<HasXYMembers T>
-	constexpr T convertTo() const
+	constexpr T ConvertTo() const
 	{
-		T result{};
+		T result {};
 		result.x = static_cast<decltype(result.x)>(this->x);
 		result.y = static_cast<decltype(result.y)>(this->y);
 		return result;
@@ -46,6 +45,6 @@ struct Vector2
 	template<HasXYMembers T>
 	constexpr operator T() const
 	{
-		return convertTo<T>();
+		return ConvertTo<T>();
 	}
 };

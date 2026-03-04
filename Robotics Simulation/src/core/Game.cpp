@@ -90,7 +90,7 @@ void Game::StartMainLoop()
 		HandleEvents();
 		HandleInput();
 		UpdateGameObjects();
-		updatePhysics();
+		UpdatePhysics();
 		DisplayFrame();
 #ifdef _DEBUG
 		Logger.Log(std::format("\n-----------------------\n[Game] Frame completed. Delta time: {:.4f} seconds\n-----------------------", deltaSeconds), LogLevel::TRACE);
@@ -124,7 +124,7 @@ void Game::UpdateGameObjects()
 {
 	//iterate through game objects and update them
 	// TODO: Investigate if this is a copy or not. Concider using references if it is.
-	auto& gameobjects = activeScene->getGameObjects();
+	auto& gameobjects = activeScene->GetGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
 		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
@@ -133,7 +133,7 @@ void Game::UpdateGameObjects()
 
 }
 
-void Game::updatePhysics()
+void Game::UpdatePhysics()
 {
 	// 0 for debug purposes. Change to 1 when in running nominally
 #ifdef FIXED_DELTA_TIME
@@ -190,9 +190,9 @@ void Game::UpdateDeltaTime()
 	lastFrameTime = now;
 }
 
-void Game::addGameObject(GameObject&& gameObject)
+void Game::AddGameObject(GameObject&& gameObject)
 {
-	activeScene->addGameObject(std::move(gameObject));
+	activeScene->AddGameObject(std::move(gameObject));
 	Logger.Log("[Game] GameObject added with move semantics.");
 }
 
@@ -209,11 +209,11 @@ void Game::Shutdown()
 }
 
 
-void Game::addTestGameObject()
+void Game::AddTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
 	testObject.EmplaceComponent<CircleRendererComponent>(mainCamera, Logger);
 	testObject.EmplaceComponent<MouseFollowerComponent>(static_cast<const IViewport&>(mainCamera.GetViewport()), InputService);
-	addGameObject(std::move(testObject));
+	AddGameObject(std::move(testObject));
 }

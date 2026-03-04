@@ -72,7 +72,7 @@ TEST_F(BallPhysicsComponentMockTest, CreateBodyUsesGameObjectCoordinates)
     gameObject.EmplaceComponent<BallPhysicsComponent>(logger, physics);
 
     // Assert
-    Vector2 createdPosition = physics.getBodyPosition(physics.lastBodyId);
+    Vector2 createdPosition = physics.GetBodyPosition(physics.lastBodyId);
     EXPECT_FLOAT_EQ(createdPosition.x, transform.position.x);
     EXPECT_FLOAT_EQ(createdPosition.y, transform.position.y);
 }

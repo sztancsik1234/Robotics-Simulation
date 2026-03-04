@@ -1,39 +1,40 @@
 #pragma once
 
-#include <forward_list>
-#include <utility>
 #include "core/GameObject.h"
+#include <forward_list>
+#include <string>
+#include <util/ILogger.h>
 
 // A simple scene holding game objects and a Box2D physics world.
 class Scene
 {
 public:
-    Scene(std::string path);
+	Scene(std::string path);
 
-    // Move-only type.
-    Scene(Scene&& other) noexcept;
-    Scene& operator=(Scene&& other) noexcept;
+	// Move-only type.
+	Scene(Scene&& other) noexcept;
+	Scene& operator=(Scene&& other) noexcept;
 
-    Scene(const Scene&) = delete;
-    Scene& operator=(const Scene&) = delete;
+	Scene(const Scene&) = delete;
+	Scene& operator=(const Scene&) = delete;
 
-    void Unload();
+	void Unload();
 
-    // GameObject management.
-    void addGameObject(GameObject&& gameObject);
-    void clearGameObjects();
+	// GameObject management.
+	void AddGameObject(GameObject&& gameObject);
+	void ClearGameObjects();
 
-    // Access to the underlying container if needed.
-    std::forward_list<GameObject>&       getGameObjects()       { return gameObjects; }
-    const std::forward_list<GameObject>& getGameObjects() const { return gameObjects; }
+	// Access to the underlying container if needed.
+	std::forward_list<GameObject>& GetGameObjects() { return gameObjects; }
+	const std::forward_list<GameObject>& GetGameObjects() const { return gameObjects; }
 
 	// helper for debugging
-	void logGameObjects(ILogger& logger, bool logComonents = false) const;
+	void LogGameObjects(ILogger& logger, bool logComonents = false) const;
 
 private:
-    std::string SceneFilePath;
-    std::forward_list<GameObject> gameObjects;
+	std::string SceneFilePath;
+	std::forward_list<GameObject> gameObjects;
 
-    void OnLoad();
-    void OnUnload();
+	void OnLoad();
+	void OnUnload();
 };

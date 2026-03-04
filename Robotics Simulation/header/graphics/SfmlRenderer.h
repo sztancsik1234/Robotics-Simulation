@@ -1,11 +1,15 @@
 #pragma once
-#include <unordered_map>
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include "graphics/IRenderer.h"
 #include "core/Color.inl"
+#include "graphics/IRenderer.h"
 #include "util/ILogger.h"
+#include "core/Transform.h"
+#include "core/Vector2.h"
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Clock.hpp>
+#include <string>
+#include <unordered_map>
 
 // TODO: Implement camera for translating game coordinates to screen coordinates
 class SfmlRenderer : public IRenderer
@@ -86,7 +90,7 @@ public:
 	/// <param name="scale">The size of the drawn sprite in pixels.</param>
 	/// <param name="SpriteAnchor">The anchor point for the sprite's origin, specified as a normalized vector. {0,0} for top left corner, {1,1} for bottom right</param>
 	void DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor = { 0.f,0.f }) final;
-	
+
 	/// <summary>
 	/// Unloads a texture from memory safely.
 	/// </summary>
@@ -103,9 +107,9 @@ private:
 
 	unsigned int TextureKeyCounter = 0;
 	std::unordered_map<TextureId, sf::Texture> textures;	// conciderations have been made for the type of container used here. In the end, unordered_map was chosen for its simplicity and overhead. 
-															// If performance becomes an issue, raw memory addresses could be used as id, but I pity the guy, who would need to debug that.
+	// If performance becomes an issue, raw memory addresses could be used as id, but I pity the guy, who would need to debug that.
 
-	// color to sf::color
+// color to sf::color
 	sf::Color ConvertColor(Color color) const;
 };
 

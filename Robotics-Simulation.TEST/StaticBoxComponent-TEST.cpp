@@ -108,9 +108,9 @@ TEST(StaticBoxComponentTests, PhysicsBodyTransformIsOwnerTransform)
     sut.OnAdd();
 
     // Assert
-    Vector2 bodyPosition = physics.getBodyPosition(physics.lastBodyId);
+    Vector2 bodyPosition = physics.GetBodyPosition(physics.lastBodyId);
     EXPECT_FLOAT_EQ(bodyPosition.x, expectedPosition.x);
     EXPECT_FLOAT_EQ(bodyPosition.y, expectedPosition.y);
-    EXPECT_DOUBLE_EQ(physics.getBodyRotation(physics.lastBodyId).toRadian(), expectedRotation.toRadian());
+    EXPECT_DOUBLE_EQ(physics.GetBodyRotation(physics.lastBodyId).toRadian(), expectedRotation.toRadian());
 	physics.Shutdown();
 }

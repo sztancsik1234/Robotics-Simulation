@@ -1,12 +1,14 @@
 #pragma once
-#include <type_traits>
-#include <concepts>
+#include "Angle.h"
+#include "Component.h"
 #include "Transform.h"
+#include "util/ILogger.h"
+#include "Vector2.h"
 #include <forward_list>
 #include <memory>
-#include "util/ILogger.h"
-#include "util/Exceptions.h"
-#include "Component.h"
+#include <stdexcept>
+#include <string>
+#include <type_traits>
 
 class ComponentNotFoundException;
 class DuplicateComponentException;
@@ -18,15 +20,16 @@ class GameObject
 {
 public:
 	// TODO: Pass transform by const reference
-	explicit GameObject(ILogger& logger, int id = 0, Transform transform = Transform{}, const std::string& name = "Unnamed", Vector2 anchor = { 0.5f, 0.5f }) :
-		id(id), name(name), transform(transform), anchor(anchor), Logger(logger) {}
+	explicit GameObject(ILogger& logger, int id = 0, Transform transform = Transform {}, const std::string& name = "Unnamed", Vector2 anchor = { 0.5f, 0.5f }) :
+		id(id), name(name), transform(transform), anchor(anchor), Logger(logger)
+	{}
 	~GameObject();
 	GameObject(GameObject&& other) noexcept;
 
-	Vector2 GetPosition() const		{ return transform.position; }
-	Radian GetRotation() const		{ return transform.rotation; }
-	Transform GetTransform() const	{ return transform; }
-	Vector2 GetAnchor() const		{ return anchor; }
+	Vector2 GetPosition() const { return transform.position; }
+	Radian GetRotation() const { return transform.rotation; }
+	Transform GetTransform() const { return transform; }
+	Vector2 GetAnchor() const { return anchor; }
 	void SetPosition(const Vector2& position);
 	void SetRotation(const Radian& rotation);
 	void SetTransform(const Transform& transform);
@@ -72,7 +75,8 @@ public:
 	/// <param name="...args">Arguments for the constructor of the component, except the pointer to owner, which is passed automatically</param>
 	/// <returns>Raw pointer to the component created</returns>
 	template<ComponentDerived ComponentType, typename ...Args>
-		requires requires(GameObject* owner, Args&&... args) {
+		requires requires(GameObject* owner, Args&&... args)
+	{
 		ComponentType { owner, std::forward<Args>(args)... };		// TODO: check out std::is_constructible_v
 	}
 	ComponentType* EmplaceComponent(Args && ...args)
@@ -89,7 +93,7 @@ public:
 		Logger.Log("Component added with emplace.", LogLevel::INFO);
 		return rawPtr;
 	}
-	
+
 	/// <summary>
 	/// Adds a component to the gameobject. Avoid using this component. EmplaceComponent is preferred.
 	/// </summary>
@@ -97,7 +101,7 @@ public:
 	void AddComponent(std::unique_ptr<Component> component);
 
 	void RemoveComponent(Component* component);
-	
+
 	/// <summary>
 	/// Updates the game object by calling Update on each component. Called from the Game class. If a derived class wants to implement it's own update logic, it should just add a component that implements it.
 	/// </summary>
@@ -106,7 +110,7 @@ public:
 	// tostring method for debugging
 	std::string ToString(bool components = false) const;
 
-	void logComponents() const;
+	void LogComponents() const;
 private:
 	int id;
 	std::string name;
@@ -119,7 +123,7 @@ private:
 
 class ComponentNotFoundException : public std::runtime_error
 {
-	public:
+public:
 	ComponentNotFoundException()
 		: std::runtime_error("Component not found!") {}
 };

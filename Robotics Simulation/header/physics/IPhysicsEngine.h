@@ -1,15 +1,16 @@
 #pragma once
-#include "physics/World.h"
 #include "physics/BodyDefinition.h"
-#include "box2d/box2cpp.h"
+#include "core/Angle.h"
+#include "core/Vector2.h"
+#include <stdexcept>
 
 // Interface for a physics engine
 
 using BodyId = unsigned int;
 
 struct IPhysicsEngineBase
-{ 
-	virtual ~IPhysicsEngineBase() = default; 
+{
+	virtual ~IPhysicsEngineBase() = default;
 };
 
 struct IWorldManager : IPhysicsEngineBase
@@ -22,14 +23,14 @@ struct IWorldManager : IPhysicsEngineBase
 
 struct IBodyManager : IPhysicsEngineBase
 {
-	virtual BodyId createBody(const BodyDefinition& body) = 0;
-	virtual void destroyBody(BodyId id) = 0;
+	virtual BodyId CreateBody(const BodyDefinition& body) = 0;
+	virtual void DestroyBody(BodyId id) = 0;
 
-	virtual Vector2 getBodyPosition(BodyId id) const = 0;
-	virtual Radian getBodyRotation(BodyId id) const = 0;
+	virtual Vector2 GetBodyPosition(BodyId id) const = 0;
+	virtual Radian GetBodyRotation(BodyId id) const = 0;
 
-	virtual void applyForceToBody(BodyId id, const Vector2& force, float timeWindow) = 0;
-	virtual void setSpeed(BodyId id, const Vector2& impulse) = 0;
+	virtual void ApplyForceToBody(BodyId id, const Vector2& force, float timeWindow) = 0;
+	virtual void SetSpeed(BodyId id, const Vector2& impulse) = 0;
 };
 
 struct IJointManager : IPhysicsEngineBase
