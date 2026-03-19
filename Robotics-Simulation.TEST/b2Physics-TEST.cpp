@@ -209,48 +209,55 @@ TEST_F(B2PhysicsTest, SetShapeRectangleTest)
 
 TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
 {
+    const     Vector2 platformPosition  = { 0.0f, -2.25f };
+    const     Vector2 ballPosition      = { 0.0f,  2.0f  };
+    constexpr float   platformWidth     = 10.0f;
+    constexpr float   platformHeight    = 0.5f;
+    constexpr float   ballRadius        = 0.5f;
+    constexpr float   minYThreshold     = -2.23f;
 
-#if 1   // This one works:
+#if 0   // This one works:
     // Arrange: static platform
     const BodyDefinition platformDef {
-        .position = Vector2(0.0f, -2.25f),
-        .rotation = Radian(0.0f),
-        .type = BodyType::STATIC,
-        .density = 0.0f,
+        .position  = platformPosition,
+        .rotation  = Radian(0.0f),
+        .type      = BodyType::STATIC,
+        .density   = 0.0f,
         .shapeType = ShapeType::RECTANGLE,
-        .shape = { .rectangle = { 10.0f, 0.5f } }
+        .shape     = { .rectangle = { platformWidth, platformHeight } }
     };
 
     physics.CreateBody(platformDef);
 
     // Arrange: dynamic ball
     const BodyDefinition ballDef {
-        .position = Vector2(0.0f, 2.f),
-        .rotation = Radian(0.0f),
-        .type = BodyType::DYNAMIC,
-        .density = 0.0f,
+        .position  = ballPosition,
+        .rotation  = Radian(0.0f),
+        .type      = BodyType::DYNAMIC,
+        .density   = 1.0f,
         .shapeType = ShapeType::CIRCLE,
-        .shape = {.circle = { 0.5f } }
+        .shape     = { .circle = { ballRadius } }
     };
 
 #else   // This one doesn't:
+    // 03-19-20:28 - NVM, it works again
     // Arrange: static platform
     BodyDefinition platformDef {};
-    platformDef.type = BodyType::STATIC;
-    platformDef.position = Vector2(0.0f, -0.25f);
+    platformDef.type     = BodyType::STATIC;
+    platformDef.position = platformPosition;
     platformDef.rotation = Radian(0.0f);
-    platformDef.SetShapeRectangle(Vector2(10.f, 0.5f));
-    platformDef.density = 0.0f;
+    platformDef.SetShapeRectangle(Vector2(platformWidth, platformHeight));
+    platformDef.density  = 0.0f;
 
     physics.CreateBody(platformDef);
 
     // Arrange: dynamic ball
     BodyDefinition ballDef;
-    ballDef.type = BodyType::DYNAMIC;
-    ballDef.position = Vector2(0.0f, 2.0f);
+    ballDef.type     = BodyType::DYNAMIC;
+    ballDef.position = ballPosition;
     ballDef.rotation = Radian(0.0f);
-    ballDef.SetShapeCircle(0.5f);
-    ballDef.density = 1.0f;
+    ballDef.SetShapeCircle(ballRadius);
+    ballDef.density  = 1.0f;
 #endif
 
     const auto ballId = physics.CreateBody(ballDef);
@@ -264,8 +271,8 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
         if (pos.y < minY) minY = pos.y;
     }
 
-    // Assert: ball doesn't go below 0.23
-    EXPECT_GE(minY, -2.23f);
+    // Assert: ball doesn't go below minYThreshold
+    EXPECT_GE(minY, minYThreshold);
 }
 
 TEST_F(B2PhysicsTest, StaticBoxCreatedAtCorrectPosition)
