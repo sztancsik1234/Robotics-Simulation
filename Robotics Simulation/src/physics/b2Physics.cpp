@@ -216,7 +216,7 @@ b2ShapeId b2Physics::CreateCircleShape(b2BodyId bodyId, const BodyDefinition& bo
 
 	const b2Circle circle
 	{
-		.center = bodyDef.position, // If another position is desired--for example at non-centered anchors--don't use this function
+		.center = {0.0f, 0.0f},
 		.radius = bodyDef.shape.circle.radius
 	};
 
@@ -249,7 +249,7 @@ b2ShapeId b2Physics::CreateBoxShape(b2BodyId bodyId, const BodyDefinition& bodyD
 	};
 
 	// TODO: Check up how anchor works in box2d
-	b2Polygon poly = b2MakeOffsetBox(halfWidth, halfHeight, bodyDef.anchor, rot);
+	b2Polygon poly = b2MakeOffsetBox(halfWidth, halfHeight, b2Vec2{0.0f, 0.0f}, rot);
 
 	const b2ShapeDef shapeDef = BodydefToB2ShapeDef(bodyDef);
 	auto returnId = b2CreatePolygonShape(bodyId, &shapeDef, &poly);

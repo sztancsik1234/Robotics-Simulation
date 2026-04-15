@@ -26,6 +26,24 @@
 				</BounceDetectComponent>
 			</components>
 		</gameObject>
+		<gameObject name="ball" id="4">
+			<transform>
+				<position x="1" y="3"></position>
+				<!--<size x="2" y="2"></size>-->
+				<size x="1" y="1"></size>
+			</transform>
+			<components>
+				<CircleRendererComponent></CircleRendererComponent>
+				<SpriteRendererComponent>
+					<texturePath>assets/basketball.png</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</SpriteRendererComponent>
+				<BallPhysicsComponent></BallPhysicsComponent>
+				<BounceDetectComponent>
+					<tresholdAcceleration>0.1</tresholdAcceleration>
+				</BounceDetectComponent>
+			</components>
+		</gameObject>
 		<gameObject name="platform" id="3">
 			<transform>
 				<rotation angle="0"></rotation>

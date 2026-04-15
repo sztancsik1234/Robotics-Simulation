@@ -214,7 +214,13 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
     constexpr float   platformWidth     = 10.0f;
     constexpr float   platformHeight    = 0.5f;
     constexpr float   ballRadius        = 0.5f;
-    constexpr float   minYThreshold     = -2.23f;
+
+    // The ball should come to rest on the platform surface.
+    // Platform top edge = platformPosition.y + platformHeight / 2 = -2.0
+    // Ball resting on top  => ball center = platform top + ballRadius = -2.0 + 0.5 = -1.5
+    // Allow a small tolerance below platform top for physics solver margin.
+    const float   platformTopY      = platformPosition.y + platformHeight / 2.0f; // -2.0
+    const float   minYThreshold     = platformTopY - 0.25f;                        // -2.25
 
 #if 0   // This one works:
     // Arrange: static platform
@@ -262,17 +268,37 @@ TEST_F(B2PhysicsTest, BallPlatformCollisionMinYTest)
 
     const auto ballId = physics.CreateBody(ballDef);
 
-    // Act: simulate 3 seconds and track minimum y
+    // Act: simulate 3 seconds, track minimum y and detect bounce
     float minY = ballDef.position.y;
+    bool  ballReachedPlatform = false;   // ball y dropped near/below platform top
+    bool  ballBouncedBack     = false;   // ball y started rising after reaching platform
+
     for (int i = 0; i < 180; ++i)
     {
         physics.simulateStep(1.0f / 60.0f);
         Vector2 pos = physics.GetBodyPosition(ballId);
-        if (pos.y < minY) minY = pos.y;
+
+        if (pos.y < minY)
+            minY = pos.y;
+
+        // Detect that the ball centre got close to the platform top
+        // (within ballRadius + small tolerance)
+        if (pos.y <= platformTopY + ballRadius + 0.1f)
+            ballReachedPlatform = true;
+
+        // Once the ball has descended past its start and is now rising, it bounced
+        if (ballReachedPlatform && pos.y > minY + 0.05f)
+            ballBouncedBack = true;
     }
 
-    // Assert: ball doesn't go below minYThreshold
-    EXPECT_GE(minY, minYThreshold);
+    // Assert: ball actually reached the platform and bounced
+    EXPECT_TRUE(ballReachedPlatform) << "Ball never reached the platform – no collision occurred";
+    EXPECT_TRUE(ballBouncedBack)     << "Ball reached the platform but never bounced back";
+
+    // Assert: ball doesn't penetrate below threshold
+    EXPECT_GE(minY, minYThreshold)
+        << "Ball penetrated too far below the platform (minY=" << minY
+        << ", threshold=" << minYThreshold << ")";
 }
 
 TEST_F(B2PhysicsTest, StaticBoxCreatedAtCorrectPosition)
