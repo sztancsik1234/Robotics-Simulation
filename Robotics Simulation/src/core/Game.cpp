@@ -6,6 +6,11 @@
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
 
+#ifdef _DEBUG
+#define FIXED_DELTA_TIME
+#endif // _DEBUG
+
+
 // #define FIXED_DELTA_TIME
 
 /// <summary>

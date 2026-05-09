@@ -55,7 +55,6 @@ private:
 	const float DEFAULT_CAMERA_FOV = 20;	// meters
 
 	// -- Dependencies --
-	bool Running;
 	IPhysicsEngine& PhysicsEngine;
 	IRenderer& Renderer;
 	IInputService& InputService;
@@ -63,6 +62,7 @@ private:
 
 
 	// -- members --
+	bool Running;
 	CameraRenderer mainCamera;
 	std::unique_ptr<Scene> activeScene;
 
