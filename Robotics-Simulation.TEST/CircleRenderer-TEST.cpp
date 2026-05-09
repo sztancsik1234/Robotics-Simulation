@@ -3,33 +3,43 @@
 #include "gtest/gtest.h"
 #include <memory>
 #include "MockLogger.h"
-#include "MockRenderer.h"
+#include "MockCameraRenderer.h"
 #include "MockGameObject.h"
-
-
 
 TEST(CircleRendererTest, UpdateDrawsCircleAtCorrectPosition) {
     // Arrange
     MockLogger logger;
-    MockRenderer renderer;
+    MockCameraRenderer camera;
     auto gameObject = std::make_unique<MockGameObject>(logger);
-	Camera camera(renderer, logger, { 0, 0 }, { 800, 600 }, { 800, 600 });
-    
-    Vector2 testPosition(0, 0);
 
-    // manually calculate testposition in pixel-space
-	Vector2 EcpectedPixelPosition = camera.PixelToWorldPos(testPosition);
-
+    Vector2 testPosition(10, 15);
     gameObject->SetPosition(testPosition);
-    
+
     CircleRendererComponent circleRenderer(gameObject.get(), camera, logger);
-    
+    circleRenderer.OnAdd();
+
     // Act
     circleRenderer.Update();
-    
+
     // Assert
-    EXPECT_TRUE(renderer.drawCircleCalled);
-    EXPECT_FLOAT_EQ(renderer.lastPosition.x, EcpectedPixelPosition.x);
-    EXPECT_FLOAT_EQ(renderer.lastPosition.y, EcpectedPixelPosition.y);
-    EXPECT_FLOAT_EQ(renderer.lastRadius, 50.0f);
+    EXPECT_TRUE(camera.drawCircleCalled);
+    EXPECT_FLOAT_EQ(camera.lastWorldCenter.x, testPosition.x);
+    EXPECT_FLOAT_EQ(camera.lastWorldCenter.y, testPosition.y);
+}
+
+TEST(CircleRendererTest, UpdateDrawsCircleWithCorrectRadius) {
+    // Arrange
+    MockLogger logger;
+    MockCameraRenderer camera;
+    auto gameObject = std::make_unique<MockGameObject>(logger);
+
+    CircleRendererComponent circleRenderer(gameObject.get(), camera, logger);
+    circleRenderer.OnAdd();
+
+    // Act
+    circleRenderer.Update();
+
+    // Assert
+    EXPECT_TRUE(camera.drawCircleCalled);
+    EXPECT_FLOAT_EQ(camera.lastWorldRadius, 10.0f);
 }

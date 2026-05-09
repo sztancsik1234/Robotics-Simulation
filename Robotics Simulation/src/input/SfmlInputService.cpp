@@ -45,7 +45,7 @@ Vector2 SfmlInputService::GetMousePosition()
 // querry the window for events and handle them. Window close event is the only one handled for now
 void SfmlInputService::HandleEvents()
 {
-	verifyWindowInitialized();
+	VerifyWindowInitialized();
 	while (const std::optional event = Window.pollEvent())
 	{
 		if (event.value().is<sf::Event::Closed>())
@@ -62,7 +62,7 @@ bool SfmlInputService::ShouldTerminate()
 }
 
 // not implemented, empty for now
-void SfmlInputService::verifyWindowInitialized()
+void SfmlInputService::VerifyWindowInitialized()
 {
 
 }

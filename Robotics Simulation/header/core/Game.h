@@ -1,19 +1,25 @@
 #pragma once
 
-#include <forward_list>
-#include "graphics/IRenderer.h"
-#include "input/IInputService.h"
-#include "util/ILogger.h"
 #include "core/GameObject.h"
 #include "core/SceneLoader.h"
 #include "core/Scene.h"
-#include "graphics/Camera.h" 
+#include "graphics/CameraRenderer.h" 
+#include "graphics/IRenderer.h"
+#include "input/IInputService.h"
+#include "physics/IPhysicsEngine.h"
+#include "util/ILogger.h"
+#include "Vector2.h"
+#include <chrono>
+#include <memory>
+#include <stdexcept>
+#include <string>
 
 class Game
 {
 	friend class SceneLoader;
 public:
 	Game(
+		IPhysicsEngine& physicsEngine,
 		IRenderer& renderer,
 		IInputService& inputService,
 		ILogger& logger);
@@ -37,10 +43,10 @@ public:
 	bool IsRunning() const;
 
 	// Verify if the game can start running and set the running flag accordingly.
-	void VerifyState();
+	void AssertGameReady();
 
 	// get camera
-	Camera& GetCamera() { return mainCamera; }
+	CameraRenderer& GetCamera() { return mainCamera; }
 
 private:
 	// -- constants --
@@ -50,21 +56,30 @@ private:
 
 	// -- Dependencies --
 	bool Running;
+	IPhysicsEngine& PhysicsEngine;
 	IRenderer& Renderer;
 	IInputService& InputService;
 	ILogger& Logger;
 
+
 	// -- members --
-	Camera mainCamera;
+	CameraRenderer mainCamera;
 	std::unique_ptr<Scene> activeScene;
-	
+
+	// -- timing --
+	std::chrono::steady_clock::time_point lastFrameTime {};
+	float deltaSeconds = 0.0f;
+
 	// -- Helper classes --
 	SceneLoader sceneLoader = SceneLoader(*this);
 
 	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();
 
-	// loads the starup scene. For now, hardcoded, but later use scenemanager.
+	// initialize physics engine
+	void InitializePhysicsEngine();
+
+	// loads the starup scene using scenemanager
 	void LoadInitialScene();
 
 	/// <summary>
@@ -72,7 +87,7 @@ private:
 	/// </summary>
 	/// <remark> The method uese move scemantics to move a valid gameobject into the buffer.</remark>
 	/// <param name="gameObject"></param>
-	void addGameObject(GameObject&& gameObject);
+	void AddGameObject(GameObject&& gameObject);
 
 	/// <summary>
 	/// Handles input events by delegating to the input service.
@@ -87,7 +102,9 @@ private:
 	void HandleInput();
 
 	// go over all game objects and call their update method
-	void Update();
+	void UpdateGameObjects();
+
+	void UpdatePhysics();
 
 	// clear the frame by clearing the renderer
 	void ClearFrame();
@@ -95,12 +112,15 @@ private:
 	// display what has been drawn so far in the current frame
 	void DisplayFrame();
 
+	// Updates deltaSeconds using chrono to measure time since the last frame.
+	void UpdateDeltaTime();
+
 	// A test function to load a simple component with a circleRenderer
-	void addTestGameObject();
+	void AddTestGameObject();
 };
 
 class GameInitializationException : public std::runtime_error
 {
-	public:
-		using std::runtime_error::runtime_error;
+public:
+	using std::runtime_error::runtime_error;
 };

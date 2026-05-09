@@ -1,30 +1,304 @@
-//www.plantuml.com/plantuml/png/VLBHIiGm47plL-HPo7s1bCCJfN0Ws2_Oszj294cFJKuH-l66dhfP6tpCp7Hdfim-PU1y3Rv33ocPPmZqSdeZpD_0OGwNELBCdL3cpjgAE3X6JwyKpyJ4vdufxEqbcZzlO-tILoTSpCGJ89dXaU43JdAlyMc_LTKNVh07IDJ2ZsuY_4Ilo2U6yE-rJZnLKsqtj4dnt2YqiMORFSSf-5_DRhVqTSADMpEYScm9fFo85Eaumrd_ao5UhdaaVdT8Qw8QkANI6XdNEYDZhLO8h3m5bP8hL0POJtLVoBBXBm00
-
 @startuml
-class GameObject
+
+exception TextureLoadException
+
+enum LogLevel
+{
+  TRACE
+  INFO
+  WARNING
+  ERROR
+}
+
+interface ILogger {
+  LogLevel MinLogLevel
+  std::chrono::time_point<std::chrono::steady_clock> startTime
+
+  ILogger(LogLevel minLevel)
+  void Log(const std::string message, LogLevel level)
+}
+ILogger --> LogLevel
+
+class ConsoleLogger
+ILogger <|.. ConsoleLogger 
+
+class FileLogger {
+  std::ofstream logFile
+
+  FileLogger(fs::path path, LogLevel minLevel)
+}
+FileLogger ..|> ILogger
+
+interface Angle {
+  double sine()
+  double cosine()
+  double tangent()
+  double toRadian()
+  double toDegree()
+  std::string toString()
+}
+
+class Radian {
+  Radian operator+(const Radian& rhs)
+  Radian operator-(const Radian& rhs)
+  Radian operator+(const Degree& rhs)
+  Radian operator-(const Degree& rhs)
+}
+Angle <|.. Radian
+
+class Degree {
+    Degree operator+(const Degree& rhs)
+    Degree operator-(const Degree& rhs)
+    Degree operator+(const Radian& rhs)
+    Degree operator-(const Radian& rhs)
+}
+Angle <|.. Degree
+Radian <..> Degree
+
+exception DivisionByZeroException
+exception NotImplementedException
+exception WrongKeyCodeException
+
+class Vector2 {
+  float x
+  float y
+
+  Vector2 operator+(Vector2 left, Vector2 right)
+  Vector2 operator-(Vector2 left, Vector2 right)
+  Vector2 operator*(Vector2 vec, float scalar)
+  Vector2 operator/(Vector2 vec, float scalar)
+  operator std::string()
+  T convertTo<T>()
+}
+Vector2 --> DivisionByZeroException
+
+struct Transform {
+  Vector2 position
+  Radian rotation
+  Vector2 size
+}
+Transform --> Vector2
+Transform --> Radian
+
 class Component
-GameObject *-- Component
-CircleRenderer <|-- RenderComponent
-RenderComponent --|> Component
+
+interface IRendererBase {
+  ~IRendererBase()
+}
+interface IRendererLifecycle {
+  void Initialize()
+  void Shutdown()
+  bool IsInitialized()
+}
+IRendererLifecycle --|> IRendererBase
+
+interface IFrameRenderer {
+  void Clear(Color color)
+  void DisplayFrame()
+}
+IFrameRenderer --|> IRendererBase
+
+interface IPrimitiveRenderer {
+  void DrawLine(Vector2 start, Vector2 end)
+  void DrawCircle(Vector2 center, float radius)
+  void DrawRectangle(Vector2 p1, Vector2 p2)
+  void DrawRectangle(Vector2 topLeft, float width, float height)
+}
+IPrimitiveRenderer --> Vector2
+IPrimitiveRenderer --|> IRendererBase
+
+interface ISpriteRenderer {
+  TextureId LoadTexture(const std::string filePath)
+  TextureId LoadTexture()
+  void DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor = { 0.f,0.f })
+  void UnloadTexture(TextureId textureId)
+}
+ISpriteRenderer --> Transform
+ISpriteRenderer --|> IRendererBase
+ISpriteRenderer --> TextureLoadException
+
 interface IDrawableRenderer
-RenderComponent --> IDrawableRenderer
-interface IRendererBase
-interface IRendererLifecycle
-interface IFrameRenderer
+IDrawableRenderer --|> ISpriteRenderer 
+IDrawableRenderer --|> IPrimitiveRenderer 
+
 interface IRenderer
-IDrawableRenderer <|-- IRendererBase
-IRenderer <|-- IRendererLifecycle
-IRenderer <|-- IFrameRenderer
-IRenderer <|-- IDrawableRenderer
+IRenderer --|> IRendererLifecycle
+IRenderer --|> IFrameRenderer
+IRenderer --|> IDrawableRenderer
+
+interface Component {
+  GameObject* Owner
+
+  Component(GameObject* owner)
+  void OnAdd()
+  void Update()
+  void OnRemove()
+  GameObject* GetOwner()
+  void SetOwner(GameObject* newOwner)
+}
+
+exception ComponentNotFoundException
+
+class GameObject {
+  int id
+  std::string name
+  Transform transform
+  std::forward_list<std::unique_ptr<Component>> componentList
+  ILogger& Logger
+
+  GameObject(ILogger& logger, int id, Transform transform, std::string& name)
+  GameObject(GameObject&& other)
+  Vector2 GetPosition()
+  Radian GetRotation()
+  Transform GetTransform()
+  void SetPosition(const Vector2& position)
+  void SetRotation(const Radian& rotation)
+  void SetTransform(const Transform& transform)
+  T* GetComponent<T>()
+  int GetId()
+  std::string GetName()
+  ComponentType* EmplaceComponent(Args && ...args)
+  void AddComponent(std::unique_ptr<Component> component)
+  void RemoveComponent(Component* component)
+  void Update()
+  std::string ToString(bool components)
+  void logComponents()
+}
+GameObject --* Transform
+GameObject --o ILogger
+GameObject <--* Component
+GameObject --> ComponentNotFoundException
+
+interface IViewport {
+  Vector2 GetViewCenter()
+  Vector2 GetViewSize()
+  Vector2 GetScreenResolution()
+  Vector2 PixelToWorldPos(Vector2 pixelCoords, bool snapToPixel)
+  Vector2 WorldToPixelPos(Vector2 worldPos, bool snapToPixel)
+  Transform ToScreenSpace(const Transform& world, bool snapToPixel)
+}
+IViewport --> Transform
+
+class Camera {
+  IDrawableRenderer& Renderer
+  ILogger& Logger
+  Vector2 ScreenResolution
+  Vector2 viewportCenter
+  Vector2 viewportSize
+
+  Camera(IDrawableRenderer& renderer, ILogger& logger, Vector2 viewCenterWorld, Vector2 screenSizePixels, Vector2 viewSizeWorld)
+  void SetViewCenter(Vector2 center)
+  void SetViewSize(Vector2 size)
+  void SetScreenSizePixels(Vector2 sizePixels)
+  void DrawCircle(Vector2 worldCenter, float worldRadius)
+  void DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
+  void DrawRectangle(Vector2 worldP1, Vector2 worldP2)
+  void DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor)
+}
+Camera ..|> IViewport
+
+class CameraRenderer {
+  IViewport& Viewport
+  IDrawableRenderer& Renderer
+  ILogger* Logger
+
+  CameraRenderer(IViewport& camera, IDrawableRenderer& renderer, ILogger* logger)
+  void DrawCircle(Vector2 worldCenter, float worldRadius)
+  void DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
+  void DrawRectangle(Vector2 worldP1, Vector2 worldP2)
+  void DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor)
+}
+CameraRenderer --o IDrawableRenderer
+CameraRenderer --o IViewport
+CameraRenderer ..o ILogger
+
+class RenderComponent {
+  ILogger& Logger
+  Camera& camera
+}
+RenderComponent --o Camera
+RenderComponent --o ILogger
+RenderComponent ..|> Component
+
+entity SpriteRenderComponentDTO
+
+class SpriteRenderComponent {
+  ISpriteRenderer& Renderer
+  TextureId TextureId
+  std::string TexturePath
+  Vector2 SpriteAnchor
+  
+  SpriteRenderComponent(GameObject* owner, Camera& camera, ISpriteRenderer& renderer, ILogger& logger, std::string& texturePath, Vector2 anchor)
+  SpriteRenderComponent(GameObject* owner, Camera& camera, ISpriteRenderer& renderer, ILogger& logger, const SpriteRenderComponentDTO& DTO)
+  std::string GetTexturePath()
+  TextureId GetTextureId()
+}
+SpriteRenderComponent --|> RenderComponent
+SpriteRenderComponent ..> SpriteRenderComponentDTO
+SpriteRenderComponent --o ISpriteRenderer
+
+class CircleRendererComponent {
+  
+}
+CircleRendererComponent --|> RenderComponent
+
+class MouseFollowerComponent {
+  IViewport& viewPort
+  IInputService& InputService
+}
+MouseFollowerComponent --|> Component
+MouseFollowerComponent --o IViewport
+MouseFollowerComponent --o IInputService
+
+class SfmlRenderer
 SfmlRenderer ..|> IRenderer
-IRendererLifecycle <|-- IRendererBase
-IFrameRenderer<|-- IRendererBase
-Interface ISceneLoader
+SfmlRenderer --o ILogger
+
+interface IPhysicsEngine
+
+class Scene {
+  std::string SceneFilePath
+  std::forward_list<GameObject> gameObjects
+  
+
+  Scene(std::string path)
+  Scene(Scene&& other)
+  Scene& operator=(Scene&& other)
+  Scene(const Scene&) = delete
+  Scene& operator=(const Scene&) = delete
+  void Unload()
+  void addGameObject(GameObject&& gameObject)
+  void clearGameObjects()
+  std::forward_list<GameObject>& getGameObjects()
+  void logGameObjects(ILogger& logger, bool logComonents)
+}
+Scene --> GameObject
+
+exception XMLException
+
+exception BadTagException
+
+class SceneLoader {
+  Game& mainGame
+  std::unordered_map<std::string, ComponentAddFn> componentFactories
+  std::unordered_map<int, const tinyxml2::XMLElement*> prefabMap
+  unsigned int nextGameObjectId
+
+  SceneLoader(Game& game)
+  Scene LoadScene(const std::string& path)
+}
+
 interface IInputService
+
 SfmlInputService ..|> IInputService
-class Game
-Game --> IInputService
-Game --> ISceneLoader
-Game --> IRenderer
-Game *-- GameObject
+
+class Game {
+
+}
+Game --o IInputService
+Game --o ISceneLoader
+Game --o IRenderer
+Game --o IPhysicsEngine
+Game --* Camera
+Game --* Scene
 @enduml

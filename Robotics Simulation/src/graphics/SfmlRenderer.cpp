@@ -14,10 +14,10 @@ SfmlRenderer::SfmlRenderer(ILogger& logger)
 /// </summary>
 SfmlRenderer::~SfmlRenderer() = default;
 
-void SfmlRenderer::Initialize()
+void SfmlRenderer::Initialize(Vector2 screenSize)
 {
 	// Create a window with a specific size and title
-	window.create(sf::VideoMode(sf::Vector2u(800, 600)), "SFML Renderer", sf::Style::Close);
+	window.create(sf::VideoMode(sf::Vector2u(screenSize.x, screenSize.y)), "SFML Renderer", sf::Style::Close);
 	window.setFramerateLimit(60); // Set the frame rate limit
 }
 
@@ -56,7 +56,7 @@ void SfmlRenderer::DrawCircle(Vector2 p, float radius)
 	circle.setOrigin(sf::Vector2f({ radius, radius }));
     // Now we can position it directly at the point without manual adjustment
     circle.setPosition(sf::Vector2f(p.x, p.y));
-    circle.setFillColor(sf::Color::Transparent);  
+    circle.setFillColor(sf::Color::Red);  
     circle.setOutlineColor(sf::Color::White);  
     circle.setOutlineThickness(1.0f);  
     window.draw(circle);  

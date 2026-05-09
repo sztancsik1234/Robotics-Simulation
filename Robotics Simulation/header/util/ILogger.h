@@ -1,7 +1,6 @@
 #pragma once
-#include <string>
-#include <format>
 #include <chrono>
+#include <string>
 
 enum class LogLevel : char
 {

@@ -3,31 +3,77 @@
 		<gameObject name="background" id = "1">
 			<components>
 				<SpriteRendererComponent>
-					<texturePath>assets/Concrete.jpg</texturePath>
+					<texturePath>assets/factory-background(blurred).jpg</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 			</components>
 		</gameObject>
-		<gameObject name="box" id="2">
+		<gameObject name="ball" id="2">
 			<transform>
-				<position x="0" y="0"></position>
-				<rotation angle="-25"></rotation>
-				<size x="2" y="2"></size>
+				<position x="0" y="5"></position>
+				<!--<size x="2" y="2"></size>-->
+				<size x="1" y="1"></size>
+			</transform>
+			<components>
+				<CircleRendererComponent></CircleRendererComponent>
+				<SpriteRendererComponent>
+					<texturePath>assets/basketball.png</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</SpriteRendererComponent>
+				<BallPhysicsComponent></BallPhysicsComponent>
+				<BounceDetectComponent>
+					<tresholdAcceleration>0.1</tresholdAcceleration>
+				</BounceDetectComponent>
+			</components>
+		</gameObject>
+		<gameObject name="ball" id="4">
+			<transform>
+				<position x="1" y="3"></position>
+				<!--<size x="2" y="2"></size>-->
+				<size x="1" y="1"></size>
+			</transform>
+			<components>
+				<CircleRendererComponent></CircleRendererComponent>
+				<SpriteRendererComponent>
+					<texturePath>assets/basketball.png</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</SpriteRendererComponent>
+				<BallPhysicsComponent></BallPhysicsComponent>
+				<BounceDetectComponent>
+					<tresholdAcceleration>0.1</tresholdAcceleration>
+				</BounceDetectComponent>
+			</components>
+		</gameObject>
+		<gameObject name="platform" id="3">
+			<transform>
+				<rotation angle="0"></rotation>
+				<size x="15" y="1"></size>
 			</transform>
 			<components>
 				<SpriteRendererComponent>
-					<texturePath>assets/Crate.png</texturePath>
-					<anchor x="0.5" y="0.5"></anchor>
+					<texturePath>assets/truss.png</texturePath>
+					<anchor x="0.5" y="0"></anchor>
 				</SpriteRendererComponent>
-				<MouseFollowerComponent></MouseFollowerComponent>
+				<CircleRendererComponent></CircleRendererComponent>
+				<StaticBoxComponent></StaticBoxComponent>
 			</components>
 		</gameObject>
 	</prefabs>
 	<gameObjects>
-		<prefab id = "2"></prefab>
-		<prefab id = "1">
+		<prefab id="3">
 			<transform>
-				<size x="50" y="50"></size>
+				<position x="0" y="0"></position>
+			</transform>
+		</prefab>
+		<prefab id="2">
+			<transform>
+				<position x="0" y="1"></position>
+			</transform>
+		</prefab>
+		
+		<prefab id="1">
+			<transform>
+				<size x="20" y="20"></size>
 			</transform>
 		</prefab>
   </gameObjects>

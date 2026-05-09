@@ -1,9 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\physics\b2Physics.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\Angle.cpp" />
     <ClCompile Include="src\core\Sceneloader.cpp" />
+    <ClCompile Include="src\graphics\Camera.cpp" />
+    <ClCompile Include="src\graphics\CameraRenderer.cpp" />
     <ClCompile Include="src\graphics\CircleRendererComponent.cpp" />
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
@@ -13,12 +16,14 @@
     <ClCompile Include="src\graphics\RenderComponent.cpp" />
     <ClCompile Include="src\graphics\SpriteRendererComponent.cpp" />
     <ClCompile Include="src\input\MouseFollowerComponent.cpp" />
+    <ClCompile Include="src\physics\StaticBoxComponent.cpp" />
     <ClCompile Include="src\util\FileLogger.cpp" />
     <ClCompile Include="src\util\ILogger.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
-    <ClCompile Include="src\graphics\Camera.cpp" />
-    <ClCompile Include="src\graphics\CameraRenderer.cpp" />
+    <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
+    <ClCompile Include="src\graphics\Viewport.cpp" />
+    <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -27,11 +32,18 @@
     <ClInclude Include="header\core\Scene.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\core\Transform.h" />
+    <ClInclude Include="header\graphics\Camera.h" />
+    <ClInclude Include="header\graphics\CameraRenderer.h" />
     <ClInclude Include="header\graphics\CircleRendererComponent.h" />
     <ClInclude Include="header\core\Component.h" />
+    <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
+    <ClInclude Include="header\physics\b2Physics.h" />
+    <ClInclude Include="header\physics\BodyDefinition.h" />
     <ClInclude Include="header\physics\IPhysicsEngine.h" />
+    <ClInclude Include="header\physics\StaticBoxComponent.h" />
+    <ClInclude Include="header\physics\World.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
     <ClInclude Include="header\util\FileLogger.h" />
@@ -43,22 +55,25 @@
     <ClInclude Include="header\graphics\IRenderer.h" />
     <ClInclude Include="header\input\SfmlInputService.h" />
     <ClInclude Include="header\graphics\SfmlRenderer.h" />
-    <ClInclude Include="header\physics\BodyDefinition.h" />
-    <ClInclude Include="header\physics\StaticBoxComponent.h" />
-    <ClInclude Include="header\physics\World.h" />
-    <ClInclude Include="header\graphics\Camera.h" />
-    <ClInclude Include="header\graphics\IViewport.h" />
-    <ClInclude Include="header\graphics\CameraRenderer.h" />
+    <ClInclude Include="header\physics\BallPhysicsComponent.h" />
+    <ClInclude Include="header\graphics\Viewport.h" />
+    <ClInclude Include="header\graphics\ICameraRenderer.h" />
+    <ClInclude Include="header\physics\BounceDetectComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />
     <Image Include="assets\Crate.png" />
     <Image Include="assets\Test texture.jpg" />
+    <Image Include="assets\truss.png" />
+    <Image Include="assets\basketball.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="header\core\Color.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\initialScene.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\anchortestScene.xml" />
   </ItemGroup>
 </Project>

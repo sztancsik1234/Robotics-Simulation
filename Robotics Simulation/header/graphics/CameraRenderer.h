@@ -1,21 +1,27 @@
 #pragma once
-#include "graphics/IViewport.h"
+#include "graphics/ICameraRenderer.h"
 #include "graphics/IRenderer.h"
+#include "graphics/Viewport.h"
 #include "util/ILogger.h"
+#include "core/Transform.h"
+#include "core/Vector2.h"
 
-class CameraRenderer
+class CameraRenderer final : public ICameraRenderer
 {
 public:
-    CameraRenderer(IViewport& camera, IDrawableRenderer& renderer, ILogger* logger = nullptr)
-        : Viewport(camera), Renderer(renderer), Logger(logger) {}
+	CameraRenderer(Viewport camera, IDrawableRenderer& renderer, ILogger* logger = nullptr)
+		: Viewport(camera), Renderer(renderer), Logger(logger)
+	{}
 
-    void DrawCircle(Vector2 worldCenter, float worldRadius);
-    void DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize);
-    void DrawRectangle(Vector2 worldP1, Vector2 worldP2);
-    void DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor = { 0.f, 0.f });
+	void DrawCircle(Vector2 worldCenter, float worldRadius) override;
+	void DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize) override;
+	void DrawRectangle(Vector2 worldP1, Vector2 worldP2) override;
+	void DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor = { 0.f, 0.f }) override;
+
+	const Viewport& GetViewport() const { return Viewport; }
 
 private:
-    IViewport& Viewport;
-    IDrawableRenderer& Renderer;
-    ILogger* Logger; // optional
+	Viewport Viewport;
+	IDrawableRenderer& Renderer;
+	ILogger* Logger; // optional
 };

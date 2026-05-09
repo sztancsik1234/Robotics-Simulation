@@ -8,30 +8,60 @@
 #include "MockRenderer.h"
 #include "MockLogger.h"
 #include "MockViewport.h"
+#include "MockPhysicsEngine.h"
+#include "MockCameraRenderer.h"
 
+/* MockCameraRenderer implementation */
+void MockCameraRenderer::DrawCircle(Vector2 worldCenter, float worldRadius)
+{
+    drawCircleCalled = true;
+    lastWorldCenter = worldCenter;
+    lastWorldRadius = worldRadius;
+}
 
+void MockCameraRenderer::DrawRectangleTopLeft(Vector2 worldTopLeft, Vector2 worldSize)
+{
+    drawRectangleTopLeftCalled = true;
+    lastWorldTopLeft = worldTopLeft;
+    lastWorldSize = worldSize;
+}
 
-// MockViewport implementation
+void MockCameraRenderer::DrawRectangle(Vector2 worldP1, Vector2 worldP2)
+{
+    drawRectangleCalled = true;
+    lastWorldP1 = worldP1;
+    lastWorldP2 = worldP2;
+}
+
+void MockCameraRenderer::DrawSprite(const Transform& worldTransform, TextureId textureId, const Vector2 spriteAnchor)
+{
+    drawSpriteCalled = true;
+    lastWorldTransform = worldTransform;
+    lastTextureId = textureId;
+    lastSpriteAnchor = spriteAnchor;
+}
+
+/* MockViewport implementation */
 Vector2 MockViewport::GetViewCenter() const { return viewCenter; }
 Vector2 MockViewport::GetViewSize() const { return viewSize; }
 Vector2 MockViewport::GetScreenResolution() const { return screenSize; }
 
-Vector2 MockViewport::PixelToWorldPos(Vector2 px, bool snapToPixel) const
+Vector2 MockViewport::PixelToWorldPos(Vector2 px) const
 {
     return px;
 }
 
-Vector2 MockViewport::WorldToPixelPos(Vector2 wp, bool snapToPixel) const
+Vector2 MockViewport::WorldToPixelPos(Vector2 wp) const
 {
     return wp;
 }
 
-Transform MockViewport::ToScreenSpace(const Transform& world, bool snapToPixel) const
+Transform MockViewport::ToScreenSpace(const Transform& world) const
 {
     return world;
 }
 
-// MockRenderer implementation
+/* MockRenderer implementation */
 void MockRenderer::DrawCircle(Vector2 position, float radius) {
     drawCircleCalled = true;
     lastPosition = position;
@@ -81,9 +111,117 @@ void MockRenderer::UnloadTexture(unsigned int textureId)
 	unloadTextureCalled = true;
 }
 
-// MockLogger implementation
+/* MockLogger implementation */
 void MockLogger::Log(const std::string message, LogLevel level) {
     lastMessage = message;
     lastLevel = level;
     logCalled = true;
+}
+
+/* MockPhysicsEngine implementation */
+void MockPhysicsEngine::Initialize()
+{
+    initializeCalled = true;
+    isInitialized_ = true;
+}
+
+void MockPhysicsEngine::Shutdown()
+{
+    shutdownCalled = true;
+    isInitialized_ = false;
+    bodies_.clear();
+    nextId_ = 1;
+}
+
+void MockPhysicsEngine::simulateStep(float deltaSeconds)
+{
+    simulateStepCalled = true;
+    lastDeltaSeconds = deltaSeconds;
+
+    for (auto& [id, body] : bodies_)
+    {
+        (void)id;
+        if (body.type == BodyType::STATIC)
+            continue;
+
+        // Simple Euler integration; mass = 1, no damping for simplicity.
+        body.position.x += body.velocity.x * deltaSeconds;
+        body.position.y += body.velocity.y * deltaSeconds;
+        // Rotation integration omitted unless needed by tests.
+    }
+}
+
+bool MockPhysicsEngine::IsInitialized() const
+{
+    return isInitialized_;
+}
+
+BodyId MockPhysicsEngine::CreateBody(const BodyDefinition& bodyDef)
+{
+    createBodyCalled = true;
+
+    const BodyId id = nextId_++;
+    BodyData data{};
+    data.position = bodyDef.position;
+    data.rotation = bodyDef.rotation;
+    data.velocity = bodyDef.initialVelocity;
+    data.type = bodyDef.type;
+
+    bodies_.try_emplace(id, data);
+    lastBodyId = id;
+    return id;
+}
+
+void MockPhysicsEngine::DestroyBody(BodyId id)
+{
+    destroyBodyCalled = true;
+    lastBodyId = id;
+    bodies_.erase(id);
+}
+
+Vector2 MockPhysicsEngine::GetBodyPosition(BodyId id) const
+{
+    if (auto it = bodies_.find(id); it != bodies_.end())
+    {
+        return it->second.position;
+    }
+    return Vector2{ 0.f, 0.f };
+}
+
+Radian MockPhysicsEngine::GetBodyRotation(BodyId id) const
+{
+    if (auto it = bodies_.find(id); it != bodies_.end())
+    {
+        return it->second.rotation;
+    }
+    return Radian(0.f);
+}
+
+void MockPhysicsEngine::ApplyForceToBody(BodyId id, const Vector2& force, float timeWindow)
+{
+    applyForceCalled = true;
+    lastBodyId = id;
+    lastAppliedForce = force;
+    lastTimeWindow = timeWindow;
+
+    auto it = bodies_.find(id);
+    if (it == bodies_.end())
+        return;
+
+    // Assume mass = 1; dv = a * dt = F/m * dt
+    it->second.velocity.x += force.x * timeWindow;
+    it->second.velocity.y += force.y * timeWindow;
+}
+
+void MockPhysicsEngine::SetSpeed(BodyId id, const Vector2& impulse)
+{
+    setSpeedCalled = true;
+    lastBodyId = id;
+    lastSetSpeed = impulse;
+
+    auto it = bodies_.find(id);
+    if (it == bodies_.end())
+        return;
+
+    it->second.velocity = impulse;
 }

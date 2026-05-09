@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include "core/Vector2.h"
+#include <string>
 
 // -----------------------------
 // SpriteRenderComponent
@@ -9,8 +9,8 @@
 // Data: texturePath, anchor
 struct SpriteRenderComponentDTO
 {
-    std::string texturePath;
-    Vector2     anchor {0.f, 0.f};
+	std::string texturePath;
+	Vector2     anchor { 0.f, 0.f };
 };
 
 // -----------------------------
@@ -21,7 +21,7 @@ struct SpriteRenderComponentDTO
 // If later you add visual parameters (radius, color, thickness, etc.), put them here.
 struct CircleRendererDTO
 {
-    // Intentionally empty: no construction-time data beyond services.
+	// Intentionally empty: no construction-time data beyond services.
 };
 
 // -----------------------------
@@ -32,5 +32,5 @@ struct CircleRendererDTO
 // Add configurable behaviour (e.g., smoothing factor) here later if needed.
 struct MouseFollowerComponentDTO
 {
-    // Intentionally empty: no data-only fields required.
+	// Intentionally empty: no data-only fields required.
 };

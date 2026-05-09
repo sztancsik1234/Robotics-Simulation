@@ -3,6 +3,7 @@
 #include "input/SfmlInputService.h"
 #include "util/ConsoleLogger.h"
 #include "util/FileLogger.h"
+#include "physics/b2Physics.h"
 
 int main()
 {
@@ -10,17 +11,18 @@ int main()
 	ConsoleLogger	 logger(LogLevel::INFO);
 	SfmlRenderer	 renderer(logger);
 	SfmlInputService inputService(renderer.GetWindow());
+	b2Physics		 physicsEngine(logger);
 	//FileLogger 		 fileLogger("logs", LogLevel::TRACE);
 
 	//create the game object with dependencies
-	Game game(renderer, inputService, logger);
+	Game game(physicsEngine, renderer, inputService, logger);
 
 	//initialize the game
 	game.Initialize();
 
 	try
 	{
-		game.VerifyState();
+		game.AssertGameReady();
 
 	}
 	catch (const GameInitializationException&)

@@ -29,13 +29,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -141,6 +141,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\Viewport.cpp" />
+    <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
+    <ClCompile Include="src\physics\b2Physics.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\Angle.cpp" />
     <ClCompile Include="src\core\Sceneloader.cpp" />
@@ -160,10 +163,15 @@
     <ClInclude Include="header\graphics\CameraRenderer.h" />
     <ClInclude Include="header\graphics\CircleRendererComponent.h" />
     <ClInclude Include="header\core\Component.h" />
+    <ClInclude Include="header\graphics\ICameraRenderer.h" />
     <ClInclude Include="header\graphics\IViewport.h" />
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
+    <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
+    <ClInclude Include="header\physics\b2Physics.h" />
+    <ClInclude Include="header\physics\BallPhysicsComponent.h" />
     <ClInclude Include="header\physics\BodyDefinition.h" />
+    <ClInclude Include="header\physics\BounceDetectComponent.h" />
     <ClInclude Include="header\physics\IPhysicsEngine.h" />
     <ClInclude Include="header\physics\StaticBoxComponent.h" />
     <ClInclude Include="header\physics\World.h" />
@@ -176,6 +184,8 @@
     <ClCompile Include="src\graphics\RenderComponent.cpp" />
     <ClCompile Include="src\graphics\SpriteRendererComponent.cpp" />
     <ClCompile Include="src\input\MouseFollowerComponent.cpp" />
+    <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
+    <ClCompile Include="src\physics\StaticBoxComponent.cpp" />
     <ClCompile Include="src\util\FileLogger.cpp" />
     <ClCompile Include="src\util\ILogger.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
@@ -194,14 +204,19 @@
     <None Include="header\core\Color.inl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\basketball.png" />
     <Image Include="assets\Concrete.jpg" />
     <Image Include="assets\Crate.png" />
     <Image Include="assets\Test texture.jpg">
       <DeploymentContent>false</DeploymentContent>
     </Image>
+    <Image Include="assets\truss.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\initialScene.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="assets\anchortestScene.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

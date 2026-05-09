@@ -6,6 +6,8 @@
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
 
+// #define FIXED_DELTA_TIME
+
 /// <summary>
 /// Constructs a Game object with the required dependencies.
 /// </summary>
@@ -13,25 +15,27 @@
 /// <param name="sceneLoader">Reference to the scene loader implementation.</param>
 /// <param name="inputService">Reference to the input service implementation.</param>
 /// <param name="logger">Reference to the logger implementation.</param>
-Game::Game(IRenderer& renderer,
+Game::Game(
+	IPhysicsEngine& physicsEngine,
+	IRenderer& renderer,
 	IInputService& inputService,
 	ILogger& logger) :
 	Running(false),
+	PhysicsEngine(physicsEngine),
 	Renderer(renderer),
 	InputService(inputService),
 	Logger(logger),
 	mainCamera(
+		Viewport( Vector2{0.f, 0.f}, DEFAULT_SCREEN_SIZE_PIXELS, Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) }),
 		static_cast<IDrawableRenderer&>(Renderer),
-		Logger,
-		Vector2{ 0.f, 0.f },
-		DEFAULT_SCREEN_SIZE_PIXELS,
-		Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) } // Maintain aspect ratio
+		&logger
 	)
 {
 }
 
 void Game::Initialize()
 {
+	InitializePhysicsEngine();
 	InitializeRenderer();
 	LoadInitialScene();
 }
@@ -40,12 +44,26 @@ void Game::InitializeRenderer()
 {
 	try
 	{
-		Renderer.Initialize();
-		Logger.Log("[Game] Renderer initialized.");
+		Renderer.Initialize(DEFAULT_SCREEN_SIZE_PIXELS);
 	}
 	catch (const std::exception& ex)
 	{
 		Logger.Log(std::string("[Game] Renderer initialization failed: ") + ex.what(), LogLevel::ERROR);
+		return;
+	}
+	Logger.Log("[Game] Renderer initialized.");
+}
+
+void Game::InitializePhysicsEngine()
+{
+	try
+	{
+		PhysicsEngine.Initialize();
+		Logger.Log("[Game] Physics engine initialized.");
+	}
+	catch (const std::exception& ex)
+	{
+		Logger.Log(std::string("[Game] Physics engine initialization failed: ") + ex.what(), LogLevel::ERROR);
 	}
 }
 
@@ -62,13 +80,22 @@ bool Game::IsRunning() const {
 
 void Game::StartMainLoop()
 {
+	// Initialize the frame timer
+	lastFrameTime = std::chrono::steady_clock::now();
+
 	while (Running)
 	{
+		UpdateDeltaTime();
 		ClearFrame();
 		HandleEvents();
 		HandleInput();
-		Update();
+		UpdateGameObjects();
+		UpdatePhysics();
 		DisplayFrame();
+#ifdef _DEBUG
+		Logger.Log(std::format("\n-----------------------\n[Game] Frame completed. Delta time: {:.4f} seconds\n-----------------------", deltaSeconds), LogLevel::TRACE);
+#endif // _DEBUG
+
 	}
 }
 
@@ -93,20 +120,30 @@ void Game::HandleInput()
 	}
 }
 
-void Game::Update()
+void Game::UpdateGameObjects()
 {
 	//iterate through game objects and update them
 	// TODO: Investigate if this is a copy or not. Concider using references if it is.
-	auto& gameobjects = activeScene->getGameObjects();
+	auto& gameobjects = activeScene->GetGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
-		Logger.Log(std::format("[Game] Updating gameobject'{}'", gameObject.ToString()), LogLevel::TRACE);
+		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
 		gameObject.Update();
 	}
 
 }
 
-void Game::VerifyState()
+void Game::UpdatePhysics()
+{
+	// 0 for debug purposes. Change to 1 when in running nominally
+#ifdef FIXED_DELTA_TIME
+	PhysicsEngine.simulateStep(0.2f);
+#else
+	PhysicsEngine.simulateStep(deltaSeconds);
+#endif
+}
+
+void Game::AssertGameReady()
 {
 	// verify Renderer and scene are initialized
 	if (!Renderer.IsInitialized())
@@ -115,12 +152,21 @@ void Game::VerifyState()
 		Running = false;
 		throw GameInitializationException("Renderer not initialized.");
 	}
+
+	if (!PhysicsEngine.IsInitialized())
+	{
+		Logger.Log("[Game] Physics engine not initialized.", LogLevel::ERROR);
+		Running = false;
+		throw GameInitializationException("Physics engine not initialized.");
+	}
+
 	if (!activeScene)
 	{
 		Logger.Log("[Game] No active scene loaded.", LogLevel::ERROR);
 		Running = false;
 		throw GameInitializationException("No active scene loaded.");
 	}
+
 	Logger.Log("[Game] Game is ready to run.", LogLevel::INFO);
 	Running = true;
 	return;
@@ -136,12 +182,19 @@ void Game::DisplayFrame()
 	Renderer.DisplayFrame();
 }
 
-void Game::addGameObject(GameObject&& gameObject)
+void Game::UpdateDeltaTime()
 {
-	activeScene->addGameObject(std::move(gameObject));
-	Logger.Log("[Game] GameObject added with move semantics.");
+	using namespace std::chrono; 
+	const auto now = steady_clock::now();
+	deltaSeconds = duration<float>(now - lastFrameTime).count();
+	lastFrameTime = now;
 }
 
+void Game::AddGameObject(GameObject&& gameObject)
+{
+	activeScene->AddGameObject(std::move(gameObject));
+	Logger.Log("[Game] GameObject added with move semantics.");
+}
 
 /// <summary>
 /// Shuts down the game by shutting down the renderer and logging the shutdown.
@@ -149,17 +202,18 @@ void Game::addGameObject(GameObject&& gameObject)
 void Game::Shutdown()
 {
 	activeScene->Unload(); // Unload scene to clear all game objects
+	PhysicsEngine.Shutdown();
 	Renderer.Shutdown();
 
 	Running = false;
 }
 
 
-void Game::addTestGameObject()
+void Game::AddTestGameObject()
 {
 	// add a test game object, add a circle renderer, and a mouseFollower component to it
 	GameObject testObject(Logger, 1, { 0.f, 0.f }, "TestObject");
 	testObject.EmplaceComponent<CircleRendererComponent>(mainCamera, Logger);
-	testObject.EmplaceComponent<MouseFollowerComponent>(mainCamera, InputService);
-	addGameObject(std::move(testObject));
+	testObject.EmplaceComponent<MouseFollowerComponent>(static_cast<const IViewport&>(mainCamera.GetViewport()), InputService);
+	AddGameObject(std::move(testObject));
 }

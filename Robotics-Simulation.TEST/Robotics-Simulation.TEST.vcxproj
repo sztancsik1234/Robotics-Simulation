@@ -64,7 +64,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>"$(SolutionDir)Robotics Simulation\$(Platform)\$(ConfigurationName)";$(SolutionDir)libraries\lib;$(SolutionDir)libraries\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Camera.obj;Angle.obj;Scene.obj;SceneLoader.obj;FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRendererComponent.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;box2dd-d.lib;tinyxml2-d.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BounceDetectComponent.obj;CameraRenderer.obj;Viewport.obj;BallPhysicsComponent.obj;StaticBoxComponent.obj;b2Physics.obj;Camera.obj;Angle.obj;Scene.obj;SceneLoader.obj;FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRendererComponent.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib;box2dd-d.lib;tinyxml2-d.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,19 +100,23 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalLibraryDirectories>"$(SolutionDir)Robotics Simulation\$(Platform)\$(ConfigurationName)";$(SolutionDir)libraries\lib;$(SolutionDir)libraries\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Camera.obj;Angle.obj;Scene.obj;SceneLoader.obj;FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRendererComponent.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;box2dd.lib;tinyxml2.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>BounceDetectComponent.obj;CameraRenderer.obj;Viewport.obj;BallPhysicsComponent.obj;StaticBoxComponent.obj;b2Physics.obj;Camera.obj;Angle.obj;Scene.obj;SceneLoader.obj;FileLogger.obj;ILogger.obj;SpriteRendererComponent.obj;MouseFollowerComponent.obj;CircleRendererComponent.obj;Vector2.obj;GameObject.obj;RenderComponent.obj;Game.obj;SfmlInputService.obj;SfmlRenderer.obj;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-audio.lib;box2dd.lib;tinyxml2.lib;*.obj;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MockViewport.h" />
+    <ClInclude Include="MockCameraRenderer.h" />
+    <ClInclude Include="MockPhysicsEngine.h" />
     <ClInclude Include="MockGameObject.h" />
     <ClInclude Include="MockInputService.h" />
     <ClInclude Include="MockLogger.h" />
     <ClInclude Include="MockRenderer.h" />
+    <ClInclude Include="MockViewPort.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Angles-TEST.cpp" />
+    <ClCompile Include="b2Physics-TEST.cpp" />
+    <ClCompile Include="BallPhysicsComponent-TEST.cpp" />
     <ClCompile Include="CircleRenderer-TEST.cpp" />
     <ClCompile Include="EmplaceComponent-TEST.cpp" />
     <ClCompile Include="GameObject-TEST.cpp" />
@@ -120,6 +124,7 @@
     <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
     <ClCompile Include="SfmlRendererer-TEST.cpp" />
     <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
+    <ClCompile Include="StaticBoxComponent-TEST.cpp" />
     <ClCompile Include="Vector2-TEST.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -127,6 +132,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Viewport-TEST.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Robotics Simulation\Robotics Simulation.vcxproj">
@@ -138,12 +144,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.7\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.7\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.7\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.7\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>

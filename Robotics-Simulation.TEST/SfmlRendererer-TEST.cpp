@@ -12,26 +12,26 @@ protected:
 };
 
 TEST_F(SfmlRendererTest, CanInitializeAndShutdown) {
-    EXPECT_NO_THROW(renderer.Initialize());
+    EXPECT_NO_THROW(renderer.Initialize({ 800, 600 }));
     EXPECT_NO_THROW(renderer.Shutdown());
 }
 
 TEST_F(SfmlRendererTest, CanClearAndRender) {
-    renderer.Initialize();
+    renderer.Initialize({ 800, 600 });
     EXPECT_NO_THROW(renderer.Clear(Color::Black));
     EXPECT_NO_THROW(renderer.DisplayFrame());
     renderer.Shutdown();
 }
 
 TEST_F(SfmlRendererTest, DrawCircleDoesNotThrow) {
-    renderer.Initialize();
+    renderer.Initialize({ 800, 600 });
     Vector2 center(100.0f, 100.0f);
     EXPECT_NO_THROW(renderer.DrawCircle(center, 20.0f));
     renderer.Shutdown();
 }
 
 TEST_F(SfmlRendererTest, LoadTextureAssignsUniqueIds) {
-    renderer.Initialize();
+    renderer.Initialize({ 800, 600 });
     unsigned int textureId1 = renderer.LoadTexture();
     unsigned int textureId2 = renderer.LoadTexture();
     EXPECT_NE(textureId1, textureId2);
