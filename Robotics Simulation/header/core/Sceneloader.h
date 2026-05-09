@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <optional>
 #include "core/GameObject.h"
 #include "core/ComponentDTOs.h"
 #include "core/Scene.h"
@@ -42,7 +43,9 @@ private:
     inline unsigned int RequestGameObjectId();
 
     // Single factory that creates a GameObject from a <gameObject> XML element.
-    GameObject CreateGameObjectFromXML(const tinyxml2::XMLElement* xmlNode);
+    GameObject CreateGameObjectFromXML(const tinyxml2::XMLElement* xmlNode,
+                                       std::optional<int> overrideId = std::nullopt,
+                                       std::optional<Transform> overrideTransform = std::nullopt);
 	inline Transform ParseTransformXML(const tinyxml2::XMLElement* xmlNode) const;
 
     void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,

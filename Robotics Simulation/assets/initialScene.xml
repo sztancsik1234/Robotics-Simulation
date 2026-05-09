@@ -65,16 +65,14 @@
 				<position x="0" y="0"></position>
 			</transform>
 		</prefab>
-		<prefab id="4">
+		<prefab id="2">
 			<transform>
-				<transform>
-					<position x="0" y="4"></position>
-				</transform>
+				<position x="-1" y="4"></position>
 			</transform>
 		</prefab>
 		<prefab id="2">
 			<transform>
-				<position x="0" y="1"></position>
+				<position x="1" y="1"></position>
 			</transform>
 		</prefab>
 		

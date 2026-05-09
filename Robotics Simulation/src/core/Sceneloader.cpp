@@ -191,14 +191,17 @@ inline unsigned int SceneLoader::RequestGameObjectId()
 	return nextGameObjectId++;
 }
 
-GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode)
+GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode, std::optional<int> overrideId, std::optional<Transform> overrideTransform)
 {
 	const char* nameAttr = xmlNode->Attribute("name");
 	std::string name = nameAttr ? nameAttr : "Unnamed";
 
-	// querry id attribute. If missing, use nextGameObjectId++;
 	int id = 0;
-	if (!xmlNode->QueryIntAttribute("id", &id))
+	if (overrideId.has_value())
+	{
+		id = overrideId.value();
+	}
+	else if (!xmlNode->QueryIntAttribute("id", &id))
 	{
 		id = RequestGameObjectId();
 	}
@@ -211,12 +214,16 @@ GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode)
 	else
 		transform = ParseTransformXML(transformNode);
 
+	// Apply the override transform before components are added,
+	// so components (e.g. BallPhysicsComponent) initialise at the correct position.
+	if (overrideTransform.has_value())
+		transform = overrideTransform.value();
 
 	GameObject go(mainGame.Logger, id, transform, name);
 
 	if (auto* compRoot = xmlNode->FirstChildElement("components"))
 		AddComponentsFromXML(go, compRoot);
-	else 
+	else
 		mainGame.Logger.Log(std::format("[Sceneloader] {} has no <components> section.", go.ToString()), LogLevel::WARNING);
 
 	return go;
@@ -375,15 +382,18 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 				continue;
 			}
 
-			GameObject instance = CreateGameObjectFromXML(it->second);
-
-
-			//querry transform node
+			std::optional<Transform> instanceTransform;
 			if (auto const* transformNode = childNode->FirstChildElement("transform"))
 			{
-				// BUG: if a new transform node here is partially written, then the omitted fields override the existing ones.
-				instance.SetTransform(MergeTransformFromXML(transformNode, instance.GetTransform()));
+				// Parse the prefab's base transform to merge into
+				Transform prefabBaseTransform;
+				if (auto* prefabTransformNode = it->second->FirstChildElement("transform"))
+					prefabBaseTransform = ParseTransformXML(prefabTransformNode);
+
+				instanceTransform = MergeTransformFromXML(transformNode, prefabBaseTransform);
 			}
+
+			GameObject instance = CreateGameObjectFromXML(it->second, static_cast<int>(RequestGameObjectId()), instanceTransform);
 
 			// querry components node
 			if (auto const* componentsNode = childNode->FirstChildElement("components"))
