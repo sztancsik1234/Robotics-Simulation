@@ -50,7 +50,8 @@ private:
 
     void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,
                                 SpriteRenderComponentDTO& dto);
-    const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene);
+    const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, bool isUi = false);
+	const void ThirdPass(tinyxml2::XMLElement* uiNode, Scene* scene);
 
 	std::unordered_map<std::string, ComponentAddFn> componentFactories; //TODO: stored functions should construct a component and return it. The caller should be resposible for adding it to the gameobject.
     std::unordered_map<int, const tinyxml2::XMLElement*> prefabMap;

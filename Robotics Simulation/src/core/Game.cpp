@@ -25,13 +25,18 @@ Game::Game(
 	IRenderer& renderer,
 	IInputService& inputService,
 	ILogger& logger) :
-	Running(false),
 	PhysicsEngine(physicsEngine),
 	Renderer(renderer),
 	InputService(inputService),
 	Logger(logger),
+	Running(false),
 	mainCamera(
 		Viewport( Vector2{0.f, 0.f}, DEFAULT_SCREEN_SIZE_PIXELS, Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) }),
+		static_cast<IDrawableRenderer&>(Renderer),
+		&logger
+	),
+	uiCamera(
+		IdentityViewport(),
 		static_cast<IDrawableRenderer&>(Renderer),
 		&logger
 	)
@@ -130,10 +135,17 @@ void Game::UpdateGameObjects()
 	//iterate through game objects and update them
 	// TODO: Investigate if this is a copy or not. Concider using references if it is.
 	auto& gameobjects = activeScene->GetGameObjects();
+	auto& uiElements = activeScene->GetUiGameObjects();
 	for (auto& gameObject : gameobjects)
 	{
 		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
 		gameObject.Update();
+	}
+
+	for (auto& uiGameObject : uiElements)
+	{
+		Logger.Log(std::format("[Game] Updating UI '{}'", uiGameObject.ToString()), LogLevel::TRACE);
+		uiGameObject.Update();
 	}
 
 }

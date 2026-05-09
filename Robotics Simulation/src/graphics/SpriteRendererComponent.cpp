@@ -24,9 +24,10 @@ void SpriteRenderComponent::Update()
 		return;
 	}
 #endif // _DEBUG
+	auto transform = GetOwner()->GetTransform();
+	auto anchor = GetOwner()->GetAnchor();
 
-	
-	camera.DrawSprite(GetOwner()->GetTransform(), TextureId, GetOwner()->GetAnchor());
+	camera.DrawSprite(transform, TextureId, anchor);
 }
 
 void SpriteRenderComponent::OnRemove()

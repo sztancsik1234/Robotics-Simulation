@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/GameObject.h"
-#include <forward_list>
+#include <list>
 #include <string>
 #include <util/ILogger.h>
 
@@ -22,18 +22,26 @@ public:
 
 	// GameObject management.
 	void AddGameObject(GameObject&& gameObject);
+	void AddUiGameObject(GameObject&& uiGameObject);
 	void ClearGameObjects();
 
+	
+
 	// Access to the underlying container if needed.
-	std::forward_list<GameObject>& GetGameObjects() { return gameObjects; }
-	const std::forward_list<GameObject>& GetGameObjects() const { return gameObjects; }
+	std::list<GameObject>& GetGameObjects() { return gameObjects; }
+	const std::list<GameObject>& GetGameObjects() const { return gameObjects; }
+
+	// Access to the underlying container if needed.
+	std::list<GameObject>& GetUiGameObjects() { return uiGameObjects; }
+	const std::list<GameObject>& GetUiGameObjects() const { return uiGameObjects; }
 
 	// helper for debugging
 	void LogGameObjects(ILogger& logger, bool logComonents = false) const;
 
 private:
 	std::string SceneFilePath;
-	std::forward_list<GameObject> gameObjects;
+	std::list<GameObject> gameObjects;
+	std::list<GameObject> uiGameObjects;
 
 	void OnLoad();
 	void OnUnload();

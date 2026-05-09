@@ -7,7 +7,8 @@ Scene::Scene(std::string path) :
 }
 
 Scene::Scene(Scene&& other) noexcept
-    : gameObjects(std::move(other.gameObjects))
+    : gameObjects(std::move(other.gameObjects)),
+    uiGameObjects(std::move(other.uiGameObjects))
     // b2World is not copyable; rebuild with the same gravity when moving.
 {
     // Note: Bodies/joints are not transferred. If needed, re-create them here.
@@ -30,17 +31,22 @@ void Scene::LogGameObjects(ILogger& logger, bool logComonents) const
     {
 		msgToLog += std::format("\t{}", it->ToString(logComonents));
     }
+    msgToLog += "\nActive UI elements:\n";
+    for (auto it = uiGameObjects.begin(); it != uiGameObjects.end(); it++)
+    {
+        msgToLog += std::format("\t{}", it->ToString(logComonents));
+    }
 	logger.Log(msgToLog, LogLevel::INFO);
 }
 
 void Scene::OnLoad()
 {
-	// If OnSceneLoad is implemented for components, call it here for each component of each game object.
+	// If OnSceneLoad is implemented for gameObjects, call it here for each component of each game object.
 }
 
 void Scene::OnUnload()
 {
-    // If OnSceneUnload is implemented for components, call it here for each component of each game object.
+    // If OnSceneUnload is implemented for gameObjects, call it here for each component of each game object.
 
 	ClearGameObjects();
 }
@@ -56,7 +62,13 @@ void Scene::AddGameObject(GameObject&& gameObject)
     gameObjects.push_front(std::move(gameObject));
 }
 
+void Scene::AddUiGameObject(GameObject&& uiGameObject)
+{
+	uiGameObjects.push_front(std::move(uiGameObject));
+}
+
 void Scene::ClearGameObjects()
 {
+	uiGameObjects.clear();
     gameObjects.clear();
 }

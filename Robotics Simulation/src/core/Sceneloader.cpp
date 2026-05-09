@@ -22,6 +22,26 @@ namespace tx2 = tinyxml2;
 
 void SceneLoader::RegisterDefaultComponents()
 {
+	// UiRenderComponent
+	componentFactories.try_emplace("UiRendererComponent",
+		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		{
+			auto* spriteIface = dynamic_cast<ISpriteRenderer*>(&mainGame.Renderer);
+			if (!spriteIface)
+			{
+				mainGame.Logger.Log("UiRenderComponent: Renderer does not implement ISpriteRenderer", LogLevel::ERROR);
+				return;
+			}
+
+			SpriteRenderComponentDTO dto;
+			ParseSpriteRendererXML(xmlElem, dto);
+
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding UiRenderComponent to {} with texture '{}'", object.ToString(), dto.texturePath), LogLevel::TRACE);
+			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetUiCamera(),	// If pasring UI, pass UiCamera.
+				*spriteIface,
+				mainGame.Logger,
+				dto);
+		});
 	// SpriteRenderComponent
 	componentFactories.try_emplace("SpriteRendererComponent",
 		[this](GameObject& object, const tx2::XMLElement& xmlElem)
@@ -35,7 +55,6 @@ void SceneLoader::RegisterDefaultComponents()
 
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
-			object.SetAnchor(dto.anchor);
 
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding SpriteRendererComponent to {} with texture '{}'", object.ToString(), dto.texturePath), LogLevel::TRACE);
 			object.EmplaceComponent<SpriteRenderComponent>(mainGame.GetCamera(),
@@ -355,12 +374,22 @@ Scene SceneLoader::LoadScene(const std::string& path)
 		scene.LogGameObjects(mainGame.Logger, true);
 	}
 
+	// Third pass: instantiate UI elements
+	if (auto* uiNode = root->FirstChildElement("uiElements"))
+	{
+		ThirdPass(uiNode, &scene);
+	}
+	else
+	{
+		mainGame.Logger.Log("[Sceneloader] Scene file has no <uiElements> section.", LogLevel::WARNING);
+	}
+
 	prefabMap.clear();
 	return scene;
 }
 
 // The prefabs are already registered, now instantiate the game objects
-const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
+const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, bool isUi)
 {
 	if constexpr (TRACE_LOG) mainGame.Logger.Log("[Sceneloader] Second pass: instantiating game objects...");
 	// Iterate over children, which can be <prefab> or <gameObject>
@@ -405,17 +434,28 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 											std::to_string(instance.GetId()), 
 											instance.GetName()),
 								LogLevel::INFO);
-			scene->AddGameObject(std::move(instance));
+			if (isUi)
+				scene->AddUiGameObject(std::move(instance));
+			else
+				scene->AddGameObject(std::move(instance));
 		}
 		else if (nodeTag == "gameObject")
 		{
 
 			GameObject object = CreateGameObjectFromXML(childNode);
-			scene->AddGameObject(std::move(object));
+			if (isUi)
+				scene->AddUiGameObject(std::move(object));
+			else
+				scene->AddGameObject(std::move(object));
 		}
 		else
 		{
 			mainGame.Logger.Log("[Sceneloader] Unknown tag inside <gameObjects>: " + nodeTag, LogLevel::WARNING);
 		}
 	}
+}
+
+const void SceneLoader::ThirdPass(tinyxml2::XMLElement* uiNode, Scene* scene)
+{
+	SecondPass(uiNode, scene, true);
 }

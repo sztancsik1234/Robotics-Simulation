@@ -82,4 +82,18 @@
 			</transform>
 		</prefab>
   </gameObjects>
+  <uiElements>
+	  <gameObject>
+		  <transform>
+			  <position x="0" y="0"></position>
+			  <size x="50" y="50"></size>
+		  </transform>
+		  <components>
+			  <UiRendererComponent>
+				  <texturePath>assets/Test texture.jpg</texturePath>
+				  <anchor x="0.5" y="0.5"></anchor>
+			  </UiRendererComponent>
+		  </components>
+	  </gameObject>
+  </uiElements>
 </scene>

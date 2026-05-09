@@ -13,6 +13,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <graphics/UiCameraRenderer.h>
 
 class Game
 {
@@ -47,6 +48,7 @@ public:
 
 	// get camera
 	CameraRenderer& GetCamera() { return mainCamera; }
+	UiCameraRenderer& GetUiCamera() { return uiCamera; }
 
 private:
 	// -- constants --
@@ -64,6 +66,7 @@ private:
 	// -- members --
 	bool Running;
 	CameraRenderer mainCamera;
+	UiCameraRenderer uiCamera;
 	std::unique_ptr<Scene> activeScene;
 
 	// -- timing --
