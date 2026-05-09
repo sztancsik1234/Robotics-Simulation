@@ -28,7 +28,7 @@
 		</gameObject>
 		<gameObject name="ball" id="4">
 			<transform>
-				<position x="1" y="3"></position>
+				<position x="0" y="3"></position>
 				<!--<size x="2" y="2"></size>-->
 				<size x="1" y="1"></size>
 			</transform>
@@ -63,6 +63,13 @@
 		<prefab id="3">
 			<transform>
 				<position x="0" y="0"></position>
+			</transform>
+		</prefab>
+		<prefab id="4">
+			<transform>
+				<transform>
+					<position x="0" y="4"></position>
+				</transform>
 			</transform>
 		</prefab>
 		<prefab id="2">

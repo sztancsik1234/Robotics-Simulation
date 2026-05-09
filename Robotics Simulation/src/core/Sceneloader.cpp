@@ -409,31 +409,3 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene)
 		}
 	}
 }
-
-/*
-#class:GameObject:350-3000 has recently been adjusted to use #class:sf\:\:Transform:1567-10143 instead of a simple #class:sf\:\:Vector2:1429-8400 . Consequently, so did it's constructor.
-
-Adjust 
-*/
-
-
-/*
-GitHub Copilot
-
-Short answer : you don’t move tinyxml2::XMLElement; you move GameObject.
-
-Details:
--std::move is just a cast. The actual move depends on the type.
-- tinyxml2::XMLElement is a non - owning, non - movable node type tied to its XMLDocument.You typically pass it as const XMLElement & or const XMLElement * .“Moving” an XMLElement isn’t supported; at best you copy / move a pointer, which is a trivial pointer assignment.
-- GameObject is movable(GameObject(GameObject&&) noexcept).Moving it is O(1) :
-	-id : copied trivially
-	- name : std::string move(pointer / size swap)
-	- transform : small POD - like copy / move
-	- componentList : std::forward_list<std::unique_ptr<Component>> move steals the head pointer; no deep copy, no allocations
-
-	Which is “faster” ? Copying / moving an XMLElement pointer is cheaper than moving a GameObject object, but in practice both are tiny constant - time operations.In your code, you already do the right thing :
--Prefabs map stores const tinyxml2::XMLElement * (cheap pointer copies)
-- Scene stores GameObject by value and moves them into the container(cheap O(1) moves)
-
-Note : ensure the XMLDocument outlives any stored XMLElement * in your prefabMap.
-*/

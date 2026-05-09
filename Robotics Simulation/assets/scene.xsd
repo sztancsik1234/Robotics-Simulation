@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+	<xs:simpleType name="decimalType">
+		<xs:restriction base="xs:decimal"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="positiveIdType">
+		<xs:restriction base="xs:positiveInteger"/>
+	</xs:simpleType>
+
+	<xs:complexType name="Vector2AttributesType">
+		<xs:attribute name="x" type="decimalType" use="optional"/>
+		<xs:attribute name="y" type="decimalType" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="RotationType">
+		<xs:attribute name="angle" type="decimalType" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="TransformType">
+		<xs:sequence>
+			<xs:element name="position" type="Vector2AttributesType" minOccurs="0"/>
+			<xs:element name="rotation" type="RotationType" minOccurs="0"/>
+			<xs:element name="size" type="Vector2AttributesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="AnchorLegacyType">
+		<xs:sequence>
+			<xs:element name="x" type="decimalType" minOccurs="0"/>
+			<xs:element name="y" type="decimalType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="x" type="decimalType" use="optional"/>
+		<xs:attribute name="y" type="decimalType" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="SpriteRendererComponentType">
+		<xs:sequence>
+			<xs:element name="texturePath" type="xs:string" minOccurs="0"/>
+			<xs:element name="anchor" type="AnchorLegacyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="BounceDetectComponentType">
+		<xs:sequence>
+			<xs:element name="tresholdAcceleration" type="decimalType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="EmptyComponentType">
+		<xs:sequence/>
+	</xs:complexType>
+
+	<xs:complexType name="ComponentsType">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="SpriteRendererComponent" type="SpriteRendererComponentType"/>
+				<xs:element name="CircleRendererComponent" type="EmptyComponentType"/>
+				<xs:element name="MouseFollowerComponent" type="EmptyComponentType"/>
+				<xs:element name="StaticBoxComponent" type="EmptyComponentType"/>
+				<xs:element name="BallPhysicsComponent" type="EmptyComponentType"/>
+				<xs:element name="BounceDetectComponent" type="BounceDetectComponentType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GameObjectType">
+		<xs:sequence>
+			<xs:element name="transform" type="TransformType" minOccurs="0"/>
+			<xs:element name="components" type="ComponentsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional"/>
+		<xs:attribute name="id" type="xs:integer" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="PrefabDefinitionType">
+		<xs:sequence>
+			<xs:element name="transform" type="TransformType" minOccurs="0"/>
+			<xs:element name="components" type="ComponentsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="name" type="xs:string" use="optional"/>
+		<xs:attribute name="id" type="positiveIdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="PrefabInstanceType">
+		<xs:sequence>
+			<xs:element name="transform" type="TransformType" minOccurs="0"/>
+			<xs:element name="components" type="ComponentsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="positiveIdType" use="required"/>
+	</xs:complexType>
+
+	<xs:complexType name="PrefabsType">
+		<xs:sequence>
+			<xs:element name="gameObject" type="PrefabDefinitionType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="GameObjectsType">
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="prefab" type="PrefabInstanceType"/>
+			<xs:element name="gameObject" type="GameObjectType"/>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:element name="scene">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="prefabs" type="PrefabsType" minOccurs="0"/>
+				<xs:element name="gameObjects" type="GameObjectsType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+
+		<xs:key name="prefabDefinitionIds">
+			<xs:selector xpath="prefabs/gameObject"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+
+		<xs:keyref name="prefabInstanceReferences" refer="prefabDefinitionIds">
+			<xs:selector xpath="gameObjects/prefab"/>
+			<xs:field xpath="@id"/>
+		</xs:keyref>
+	</xs:element>
+
+</xs:schema>
