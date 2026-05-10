@@ -5,6 +5,8 @@
 #include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
+#include <fstream>
+#include <sstream>
 
 #ifdef _DEBUG
 #define FIXED_DELTA_TIME
@@ -45,9 +47,50 @@ Game::Game(
 
 void Game::Initialize()
 {
+	InitializeSettings();
 	InitializePhysicsEngine();
 	InitializeRenderer();
 	LoadInitialScene();
+}
+
+void Game::InitializeSettings()
+{
+	std::ifstream file(settingsPath);
+
+	if (!file.is_open())
+	{
+		throw std::runtime_error("[Game] Failed to open settings file: " + settingsPath);
+	}
+
+	try
+	{
+		std::string line;
+		while (std::getline(file, line))
+		{
+			if (line.empty() || line[0] == '#')
+				continue;
+
+			const auto delimPos = line.find('=');
+			if (delimPos == std::string::npos)
+				continue;
+
+			const std::string key = line.substr(0, delimPos);
+			const std::string value = line.substr(delimPos + 1);
+
+			if (key == "initialScene")
+			{
+				initialScenePath = value;
+				Logger.Log("[Game] Initial scene path set to: " + initialScenePath);
+			}
+		}
+	}
+	catch (...)
+	{
+		file.close();
+		throw;
+	}
+
+	file.close();
 }
 
 void Game::InitializeRenderer()
@@ -79,7 +122,8 @@ void Game::InitializePhysicsEngine()
 
 void Game::LoadInitialScene()
 {
-	Scene scn = sceneLoader.LoadScene(INTIAL_SCENE_PATH);
+	// TODO: null-check initialscenepath
+	Scene scn = sceneLoader.LoadScene(initialScenePath);
 	activeScene = std::make_unique<Scene>(std::move(scn));
 }
 

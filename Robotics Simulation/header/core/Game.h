@@ -52,7 +52,7 @@ public:
 
 private:
 	// -- constants --
-	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+	const std::string settingsPath = "assets/gameSettings.cfg";
 	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
 	const float DEFAULT_CAMERA_FOV = 20;	// meters
 
@@ -64,6 +64,7 @@ private:
 
 
 	// -- members --
+	std::string initialScenePath;
 	bool Running;
 	CameraRenderer mainCamera;
 	UiCameraRenderer uiCamera;
@@ -75,6 +76,8 @@ private:
 
 	// -- Helper classes --
 	SceneLoader sceneLoader = SceneLoader(*this);
+
+	void InitializeSettings();
 
 	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();
