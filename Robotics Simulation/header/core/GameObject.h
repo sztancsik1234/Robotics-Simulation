@@ -4,7 +4,7 @@
 #include "Transform.h"
 #include "util/ILogger.h"
 #include "Vector2.h"
-#include <forward_list>
+#include <list>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -100,6 +100,23 @@ public:
 	/// <param name="component">A unique pointer to the component to be added.</param>
 	void AddComponent(std::unique_ptr<Component> component);
 
+	template<ComponentDerived ComponentType>
+	void RemoveComponent()
+	{
+		for (auto it = componentList.begin(); it != componentList.end(); ++it)
+		{
+			if (dynamic_cast<ComponentType*>(it->get()) != nullptr)
+			{
+				(*it)->OnRemove();
+				componentList.erase(it);
+				Logger.Log("Component of type " + std::string(typeid(ComponentType).name()) + " removed.", LogLevel::INFO);
+				return;
+			}
+		}
+		Logger.Log("Attempted to remove non-existent component of type " + std::string(typeid(ComponentType).name()) + ". Operation aborted.", LogLevel::WARNING);
+		throw ComponentNotFoundException();
+	}
+
 	void RemoveComponent(Component* component);
 
 	/// <summary>
@@ -116,7 +133,7 @@ private:
 	std::string name;
 	Transform transform;
 	Vector2 anchor;
-	std::forward_list<std::unique_ptr<Component>> componentList;
+	std::list<std::unique_ptr<Component>> componentList;
 
 	ILogger& Logger;
 };

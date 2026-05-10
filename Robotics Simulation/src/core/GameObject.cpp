@@ -75,21 +75,30 @@ void GameObject::SetAnchor(const Vector2& newAnchor)
 
 void GameObject::AddComponent(std::unique_ptr<Component> component)
 {
-	Logger.Log("[GameObject] Component added without emplace.", LogLevel::WARNING);
 	component->OnAdd(); // call OnAdd for the component
 	// add the component to the list
 	componentList.push_front(std::move(component));
+	Logger.Log("[GameObject] Component added without emplace.", LogLevel::WARNING);
 }
 
 // TODO: implement
 void GameObject::RemoveComponent(Component* component)
 {
-	throw NotImplementedException();
-	// find component
-		// when found, call OnRemove()
-		// remove
-		// return;
+	for (auto it = componentList.begin(); it != componentList.end(); ++it)
+	{
+		if (it->get() == component)
+		{
+			(*it)->OnRemove();
+			componentList.erase(it);
+			Logger.Log("Component removed.", LogLevel::INFO);
+			return;
+		}
+	}
+	Logger.Log("Attempted to remove non-existent component. Operation aborted.", LogLevel::WARNING);
+	throw ComponentNotFoundException();
 }
+
+
 
 void GameObject::Update()
 {
