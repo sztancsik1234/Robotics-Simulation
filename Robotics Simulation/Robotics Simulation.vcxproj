@@ -147,6 +147,7 @@
     <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
     <ClCompile Include="src\input\ButtonComponent.cpp" />
+    <ClCompile Include="src\input\GhostComponent.cpp" />
     <ClCompile Include="src\input\LoggerButton.cpp" />
     <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
     <ClCompile Include="src\input\ObjectPickerButton.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="header\core\Scene.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\core\Transform.h" />
+    <ClInclude Include="header\events\GhostCreatedEvent.h" />
     <ClInclude Include="header\events\GhostPlacedEvent.h" />
     <ClInclude Include="header\graphics\Camera.h" />
     <ClInclude Include="header\graphics\CameraRenderer.h" />
@@ -183,6 +185,7 @@
     <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\input\ButtonComponent.h" />
     <ClInclude Include="header\events\ClickEvent.h" />
+    <ClInclude Include="header\input\GhostComponent.h" />
     <ClInclude Include="header\input\LoggerButton.h" />
     <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />

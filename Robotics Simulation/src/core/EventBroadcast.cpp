@@ -1,5 +1,6 @@
 #include "core/EventBroadcast.h"
 #include "events/GhostPlacedEvent.h"
+#include <events/GhostCreatedEvent.h>
 
 template <Event_t E_t>
 void EventBroadcast<E_t>::subscribe(IObserver<E_t>* observer)
@@ -23,3 +24,4 @@ void EventBroadcast<E_t>::broadcast(E_t* e) const
 }
 
 template class EventBroadcast<GhostPlacedEvent>;
+template class EventBroadcast<GhostCreatedEvent>;

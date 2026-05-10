@@ -33,6 +33,7 @@
     <ClCompile Include="src\input\LoggerButton.cpp" />
     <ClCompile Include="src\core\MessageDispatcher.cpp" />
     <ClCompile Include="src\core\EventBroadcast.cpp" />
+    <ClCompile Include="src\input\GhostComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -82,6 +83,8 @@
     <ClInclude Include="header\core\MessageDispatcher.h" />
     <ClInclude Include="header\core\EventBroadcast.h" />
     <ClInclude Include="header\events\GhostPlacedEvent.h" />
+    <ClInclude Include="header\events\GhostCreatedEvent.h" />
+    <ClInclude Include="header\input\GhostComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />

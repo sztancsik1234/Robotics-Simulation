@@ -2,6 +2,7 @@
 #include "core/Game.h"
 #include "input/MouseClickLoggerComponent.h"
 #include "input/ButtonComponent.h"
+#include "input/GhostComponent.h"
 #include "graphics/SpriteRendererComponent.h"
 #include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
@@ -160,6 +161,17 @@ void SceneLoader::RegisterDefaultComponents()
 		}
 	);
 
+
+	// GhostComponent
+	componentFactories.try_emplace("GhostComponent",
+		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding GhostComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<GhostComponent>(
+				mainGame.GetCamera().GetViewport(),
+				mainGame.InputService,
+				mainGame.messageDispatcher);
+		});
 
 	/*
 	// ButtonComponent
@@ -383,7 +395,7 @@ Scene SceneLoader::LoadScene(const std::string& path)
 			objectNode->QueryIntAttribute("id", &prefabId);
 			if (prefabId == 0)
 			{
-				mainGame.Logger.Log("[Sceneloader] Prefab <gameObject> without valid id attribute.", LogLevel::WARNING);
+				mainGame.Logger.Log("[sceneloader] Prefab <gameObject> without valid id attribute.", LogLevel::WARNING);
 				continue;
 			}
 			prefabMap[prefabId] = objectNode;
