@@ -144,6 +144,9 @@
     <ClCompile Include="src\graphics\IdentityViewport.cpp" />
     <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
+    <ClCompile Include="src\input\ButtonComponent.cpp" />
+    <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
+    <ClCompile Include="src\input\ObjectPickerButton.cpp" />
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
     <ClCompile Include="src\physics\b2Physics.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
@@ -155,6 +158,7 @@
     <ClCompile Include="src\core\Component.cpp" />
     <ClCompile Include="src\core\Vector2.cpp" />
     <ClCompile Include="src\core\Game.cpp" />
+    <ClCompile Include="src\input\InputPublisher.cpp" />
     <ClInclude Include="header\core\Angle.h" />
     <ClInclude Include="header\core\ComponentDTOs.h" />
     <ClInclude Include="header\core\Game.h" />
@@ -171,7 +175,12 @@
     <ClInclude Include="header\graphics\SpriteRendererComponent.h" />
     <ClInclude Include="header\graphics\UiCameraRenderer.h" />
     <ClInclude Include="header\graphics\Viewport.h" />
+    <ClInclude Include="header\input\ButtonComponent.h" />
+    <ClInclude Include="header\input\ClickEvent.h" />
+    <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
+    <ClInclude Include="header\input\MouseMoveEvent.h" />
+    <ClInclude Include="header\input\ObjectPickerButton.h" />
     <ClInclude Include="header\physics\b2Physics.h" />
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
     <ClInclude Include="header\physics\BodyDefinition.h" />
@@ -181,6 +190,7 @@
     <ClInclude Include="header\physics\World.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
+    <ClInclude Include="header\util\Event.h" />
     <ClInclude Include="header\util\FileLogger.h" />
     <ClInclude Include="header\util\ILogger.h" />
     <ClCompile Include="src\core\GameObject.cpp" />
@@ -194,6 +204,8 @@
     <ClCompile Include="src\util\ILogger.cpp" />
     <ClCompile Include="src\input\SfmlInputService.cpp" />
     <ClCompile Include="src\graphics\SfmlRenderer.cpp" />
+    <ClInclude Include="header\util\IObserver.h" />
+    <ClInclude Include="header\input\InputPublisher.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\graphics\RenderComponent.h" />
@@ -217,7 +229,10 @@
     <Image Include="assets\truss.png" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="assets\ButtonTestScene.xml" />
+    <Xml Include="assets\ClickObserverTestScene.xml" />
     <Xml Include="assets\initialScene.xml" />
+    <Text Include="assets\gameSettings.cfg" />
     <Text Include="assets\uiOverlapTestScene.xml" />
   </ItemGroup>
   <ItemGroup>

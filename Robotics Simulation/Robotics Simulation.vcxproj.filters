@@ -26,6 +26,10 @@
     <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
     <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
     <ClCompile Include="src\graphics\IdentityViewport.cpp" />
+    <ClCompile Include="src\input\InputPublisher.cpp" />
+    <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
+    <ClCompile Include="src\input\ButtonComponent.cpp" />
+    <ClCompile Include="src\input\ObjectPickerButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -63,6 +67,14 @@
     <ClInclude Include="header\physics\BounceDetectComponent.h" />
     <ClInclude Include="header\graphics\UiCameraRenderer.h" />
     <ClInclude Include="header\graphics\IdentityViewport.h" />
+    <ClInclude Include="header\input\InputPublisher.h" />
+    <ClInclude Include="header\util\IObserver.h" />
+    <ClInclude Include="header\input\ClickEvent.h" />
+    <ClInclude Include="header\util\Event.h" />
+    <ClInclude Include="header\input\MouseMoveEvent.h" />
+    <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
+    <ClInclude Include="header\input\ButtonComponent.h" />
+    <ClInclude Include="header\input\ObjectPickerButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />
@@ -76,9 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\uiOverlapTestScene.xml" />
+    <Text Include="assets\gameSettings.cfg" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="assets\anchortestScene.xml" />
     <Xml Include="assets\initialScene.xml" />
+    <Xml Include="assets\ClickObserverTestScene.xml" />
+    <Xml Include="assets\ButtonTestScene.xml" />
   </ItemGroup>
 </Project>

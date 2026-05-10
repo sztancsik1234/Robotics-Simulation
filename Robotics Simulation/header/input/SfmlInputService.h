@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Vector2.h"
+#include "MouseMoveEvent.h"
 #include "input/IInputService.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -21,8 +21,17 @@ public:
 	Vector2 GetMousePosition() override;
 	void HandleEvents() override;
 	bool ShouldTerminate() override;
+	
+	// TODO: make subscribe and unsubscribe templates based on a concept for supported events
+	void subscribeToClick(IObserver<ClickEvent>* observer);
+	void unsubscribeFromClick(IObserver<ClickEvent>* observer);
+
+	void subscribeToMouseMove(IObserver<MouseMoveEvent>* observer);
+	void unsubscribeFromMouseMove(IObserver<MouseMoveEvent>* observer);
 
 private:
+	InputPublisher<ClickEvent> clickPublisher;
+	InputPublisher<MouseMoveEvent> mouseMovePublisher;
 	void VerifyWindowInitialized();
 	sf::RenderWindow& Window; // Reference to the SFML window
 	sf::Keyboard::Key KeyToSfmlKeycode(KeyCode key) const;

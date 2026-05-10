@@ -1,5 +1,7 @@
 #include "core/SceneLoader.h"
 #include "core/Game.h"
+#include "input/MouseClickLoggerComponent.h"
+#include "input/ButtonComponent.h"
 #include "graphics/SpriteRendererComponent.h"
 #include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
@@ -9,6 +11,7 @@
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
+#include <iostream>
 
 #define TRACE_LOG true
 
@@ -22,6 +25,16 @@ namespace tx2 = tinyxml2;
 
 void SceneLoader::RegisterDefaultComponents()
 {
+	// MouseClickLoggerComponent
+	componentFactories.try_emplace("MouseClickObserverComponent",
+		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		{
+			// cast mainGame.InputService to IInputService& 
+			auto* inputService = dynamic_cast<IInputService*>(&mainGame.InputService);
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseClickObserverComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<MouseClickLoggerComponent>(mainGame.Logger, *inputService);
+		});
+
 	// UiRenderComponent
 	componentFactories.try_emplace("UiRendererComponent",
 		[this](GameObject& object, const tx2::XMLElement& xmlElem)
@@ -136,6 +149,20 @@ void SceneLoader::RegisterDefaultComponents()
 			object.EmplaceComponent<BounceDetectComponent>(mainGame.Logger, threshold);
 		}
 	);
+
+
+	/*
+	// ButtonComponent
+	componentFactories.try_emplace("ButtonComponent",
+		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding ButtonComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<ButtonComponent>(mainGame.InputService, []()
+			{
+					std::cout << "Button clicked!" << std::endl;
+			});
+		});
+		*/
 }
 
 void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,

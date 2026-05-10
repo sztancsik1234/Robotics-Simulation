@@ -1,16 +1,18 @@
 #pragma once
 #include "core/Vector2.h"
+#include "input/InputPublisher.h"
 
 // enum for keycodes
-enum KeyCode : short
+enum class KeyCode : char
 {
-	UP,
+	UP = (char)1,
 	DOWN,
 	LEFT,
 	RIGHT,
 	SPACE,
 	ESCAPE,
 	ENTER,
+	LEFT_MOUSE_BUTTON,
 	// Add more key codes as needed
 };
 
@@ -26,4 +28,7 @@ struct IInputService
 	virtual bool ShouldTerminate() = 0;
 	// Handle events if needed
 	virtual void HandleEvents() = 0;
+
+	InputPublisher<ClickEvent> mouseClickSubject;
+	InputPublisher<MouseMoveEvent> mouseMoveSubject;
 };
