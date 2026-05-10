@@ -30,6 +30,7 @@
     <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
     <ClCompile Include="src\input\ButtonComponent.cpp" />
     <ClCompile Include="src\input\ObjectPickerButton.cpp" />
+    <ClCompile Include="src\input\LoggerButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -75,6 +76,7 @@
     <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\ButtonComponent.h" />
     <ClInclude Include="header\input\ObjectPickerButton.h" />
+    <ClInclude Include="header\input\LoggerButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />
@@ -82,6 +84,8 @@
     <Image Include="assets\Test texture.jpg" />
     <Image Include="assets\truss.png" />
     <Image Include="assets\basketball.png" />
+    <Image Include="assets\button_hovered.png" />
+    <Image Include="assets\button.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="header\core\Color.inl" />

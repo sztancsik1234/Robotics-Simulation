@@ -145,6 +145,7 @@
     <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
     <ClCompile Include="src\input\ButtonComponent.cpp" />
+    <ClCompile Include="src\input\LoggerButton.cpp" />
     <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
     <ClCompile Include="src\input\ObjectPickerButton.cpp" />
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\input\ButtonComponent.h" />
     <ClInclude Include="header\input\ClickEvent.h" />
+    <ClInclude Include="header\input\LoggerButton.h" />
     <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
     <ClInclude Include="header\input\MouseMoveEvent.h" />
@@ -221,6 +223,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\basketball.png" />
+    <Image Include="assets\button.png" />
+    <Image Include="assets\button_hovered.png" />
     <Image Include="assets\Concrete.jpg" />
     <Image Include="assets\Crate.png" />
     <Image Include="assets\Test texture.jpg">

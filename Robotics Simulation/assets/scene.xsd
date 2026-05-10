@@ -63,7 +63,7 @@
 	<xs:complexType name="ComponentsType">
 		<xs:sequence>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
-				<xs:element name="ButtonComponent" type="EmptyComponentType"/>
+				<xs:element name="LoggerButton" type="EmptyComponentType"/>
 				<xs:element name="SpriteRendererComponent" type="SpriteRendererComponentType"/>
 				<xs:element name="MouseClickObserverComponent" type="SpriteRendererComponentType"/>
 				<xs:element name="UiRendererComponent" type="UiRendererComponentType"/>

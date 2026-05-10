@@ -12,6 +12,7 @@
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
 #include <iostream>
+#include <input/LoggerButton.h>
 
 #define TRACE_LOG true
 
@@ -25,6 +26,15 @@ namespace tx2 = tinyxml2;
 
 void SceneLoader::RegisterDefaultComponents()
 {
+	// LoggerButton
+	componentFactories.try_emplace("LoggerButton",
+		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		{
+
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding LoggerButton to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<LoggerButton>(mainGame.InputService, mainGame.Logger);
+		});
+
 	// MouseClickLoggerComponent
 	componentFactories.try_emplace("MouseClickObserverComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
