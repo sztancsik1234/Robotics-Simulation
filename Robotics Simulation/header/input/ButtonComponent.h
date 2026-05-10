@@ -4,7 +4,8 @@
 #include "input/IInputService.h"
 #include <functional>
 #include <string>
-#include "MouseMoveEvent.h"
+#include "events/MouseMoveEvent.h"
+#include "events/ClickEvent.h"
 
 /// <summary>
 /// An abstract component that observes mouse click events and invokes a callback when

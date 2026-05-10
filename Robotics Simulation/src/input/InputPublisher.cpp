@@ -1,3 +1,5 @@
+// Deprecated. Use Eventpublisher for new events.
+
 #include "input/InputPublisher.h"
 
 template <Event_t E_t>

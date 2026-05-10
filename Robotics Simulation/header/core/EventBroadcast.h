@@ -1,27 +1,24 @@
 #pragma once
+
 #include <list>
 #include "util/IObserver.h"
-#include "events/ClickEvent.h"
-#include "events/MouseMoveEvent.h"
 
-// deprecated
 template <Event_t E_t>
-class InputPublisher
+class EventBroadcast
 {
 public:
-	InputPublisher() = default;
+	EventBroadcast() = default;
 
 	void subscribe(IObserver<E_t>* observer);
 	void unsubscribe(IObserver<E_t>* observer);
 
-
-private:
-	friend class SfmlInputService;
-
 	/// <summary>
 	/// notify the observers about an event.
 	/// </summary>
-	void notify(E_t* e) const;
-	std::list<IObserver<E_t>*> observers;
+	void broadcast(E_t* e) const;
+
+private:
+
+	std::list<IObserver<E_t>*> subscribers;
 };
 

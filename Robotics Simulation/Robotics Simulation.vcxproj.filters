@@ -31,6 +31,8 @@
     <ClCompile Include="src\input\ButtonComponent.cpp" />
     <ClCompile Include="src\input\ObjectPickerButton.cpp" />
     <ClCompile Include="src\input\LoggerButton.cpp" />
+    <ClCompile Include="src\core\MessageDispatcher.cpp" />
+    <ClCompile Include="src\core\EventBroadcast.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -70,13 +72,16 @@
     <ClInclude Include="header\graphics\IdentityViewport.h" />
     <ClInclude Include="header\input\InputPublisher.h" />
     <ClInclude Include="header\util\IObserver.h" />
-    <ClInclude Include="header\input\ClickEvent.h" />
-    <ClInclude Include="header\util\Event.h" />
-    <ClInclude Include="header\input\MouseMoveEvent.h" />
+    <ClInclude Include="header\events\ClickEvent.h" />
+    <ClInclude Include="header\events\Event.h" />
+    <ClInclude Include="header\events\MouseMoveEvent.h" />
     <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\ButtonComponent.h" />
     <ClInclude Include="header\input\ObjectPickerButton.h" />
     <ClInclude Include="header\input\LoggerButton.h" />
+    <ClInclude Include="header\core\MessageDispatcher.h" />
+    <ClInclude Include="header\core\EventBroadcast.h" />
+    <ClInclude Include="header\events\GhostPlacedEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />

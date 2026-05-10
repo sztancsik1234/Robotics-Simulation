@@ -10,12 +10,12 @@ void MouseClickLoggerComponent::onNotify(ClickEvent* event)
 
 void MouseClickLoggerComponent::OnAdd()
 {
-	inputService.mouseClickSubject.subscribe(this);
+	inputService.mouseClickBroadcast.subscribe(this);
 }
 
 void MouseClickLoggerComponent::OnRemove()
 {
-	inputService.mouseClickSubject.unsubscribe(this);
+	inputService.mouseClickBroadcast.unsubscribe(this);
 }
 
 std::string MouseClickLoggerComponent::ToString() const

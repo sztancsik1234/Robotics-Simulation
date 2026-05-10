@@ -29,6 +29,7 @@ struct IInputService
 	// Handle events if needed
 	virtual void HandleEvents() = 0;
 
-	InputPublisher<ClickEvent> mouseClickSubject;
-	InputPublisher<MouseMoveEvent> mouseMoveSubject;
+	// TODO: Take this to the CentralMessageDispatcher. ButtonComponent uses this.
+	InputPublisher<ClickEvent> mouseClickBroadcast;
+	InputPublisher<MouseMoveEvent> mouseMoveBroadcast;
 };

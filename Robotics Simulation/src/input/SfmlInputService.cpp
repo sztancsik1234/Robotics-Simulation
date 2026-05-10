@@ -1,6 +1,6 @@
 #include "input/SfmlInputService.h"
 #include "util/Exceptions.h"
-#include <input/MouseMoveEvent.h>
+#include <events/MouseMoveEvent.h>
 
 SfmlInputService::SfmlInputService(sf::RenderWindow& window) :
 	Window(window)
@@ -60,14 +60,14 @@ void SfmlInputService::HandleEvents()
 		else if (const auto* mouseMoved = event->getIf<sf::Event::MouseMoved>())
 		{
 			auto mouseEvent = MouseMoveEvent(Vector2 { static_cast<float>(mouseMoved->position.x), static_cast<float>(mouseMoved->position.y) });
-			mouseMoveSubject.notify(&mouseEvent);
+			mouseMoveBroadcast.notify(&mouseEvent);
 		}
 		else if (const auto* mouseButtonPressed = event->getIf<sf::Event::MouseButtonPressed>())
 		{
 			if (mouseButtonPressed->button != sf::Mouse::Button::Left)
 				continue; // only handle left mouse button for now
 			ClickEvent clickEvent { KeyCode::LEFT_MOUSE_BUTTON, Vector2(static_cast<float>(mouseButtonPressed->position.x), static_cast<float>(mouseButtonPressed->position.y)) };
-			mouseClickSubject.notify(&clickEvent);
+			mouseClickBroadcast.notify(&clickEvent);
 
 		}
 		// Handle other events as needed

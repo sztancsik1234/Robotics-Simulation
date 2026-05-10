@@ -1,6 +1,6 @@
 #pragma once
 #include "core/Vector2.h"
-#include "util/Event.h"
+#include "events/Event.h"
 
 enum class KeyCode : char;
 

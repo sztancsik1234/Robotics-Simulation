@@ -141,6 +141,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\EventBroadcast.cpp" />
+    <ClCompile Include="src\core\MessageDispatcher.cpp" />
     <ClCompile Include="src\graphics\IdentityViewport.cpp" />
     <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
@@ -162,10 +164,13 @@
     <ClCompile Include="src\input\InputPublisher.cpp" />
     <ClInclude Include="header\core\Angle.h" />
     <ClInclude Include="header\core\ComponentDTOs.h" />
+    <ClInclude Include="header\core\EventBroadcast.h" />
     <ClInclude Include="header\core\Game.h" />
+    <ClInclude Include="header\core\MessageDispatcher.h" />
     <ClInclude Include="header\core\Scene.h" />
     <ClInclude Include="header\core\SceneLoader.h" />
     <ClInclude Include="header\core\Transform.h" />
+    <ClInclude Include="header\events\GhostPlacedEvent.h" />
     <ClInclude Include="header\graphics\Camera.h" />
     <ClInclude Include="header\graphics\CameraRenderer.h" />
     <ClInclude Include="header\graphics\CircleRendererComponent.h" />
@@ -177,11 +182,11 @@
     <ClInclude Include="header\graphics\UiCameraRenderer.h" />
     <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\input\ButtonComponent.h" />
-    <ClInclude Include="header\input\ClickEvent.h" />
+    <ClInclude Include="header\events\ClickEvent.h" />
     <ClInclude Include="header\input\LoggerButton.h" />
     <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
     <ClInclude Include="header\input\MouseFollowerComponent.h" />
-    <ClInclude Include="header\input\MouseMoveEvent.h" />
+    <ClInclude Include="header\events\MouseMoveEvent.h" />
     <ClInclude Include="header\input\ObjectPickerButton.h" />
     <ClInclude Include="header\physics\b2Physics.h" />
     <ClInclude Include="header\physics\BallPhysicsComponent.h" />
@@ -192,7 +197,7 @@
     <ClInclude Include="header\physics\World.h" />
     <ClInclude Include="header\util\ConsoleLogger.h" />
     <ClInclude Include="header\core\GameObject.h" />
-    <ClInclude Include="header\util\Event.h" />
+    <ClInclude Include="header\events\Event.h" />
     <ClInclude Include="header\util\FileLogger.h" />
     <ClInclude Include="header\util\ILogger.h" />
     <ClCompile Include="src\core\GameObject.cpp" />

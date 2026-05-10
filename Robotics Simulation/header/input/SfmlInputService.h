@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MouseMoveEvent.h"
+#include "events/MouseMoveEvent.h"
 #include "input/IInputService.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Keyboard.hpp>

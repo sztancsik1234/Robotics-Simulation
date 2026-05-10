@@ -41,7 +41,8 @@ Game::Game(
 		IdentityViewport(),
 		static_cast<IDrawableRenderer&>(Renderer),
 		&logger
-	)
+	),
+	messageDispatcher(CentralMessageDispatcher())
 {
 }
 

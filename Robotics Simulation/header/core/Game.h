@@ -14,6 +14,7 @@
 #include <stdexcept>
 #include <string>
 #include <graphics/UiCameraRenderer.h>
+#include "MessageDispatcher.h"
 
 class Game
 {
@@ -68,6 +69,7 @@ private:
 	bool Running;
 	CameraRenderer mainCamera;
 	UiCameraRenderer uiCamera;
+	CentralMessageDispatcher messageDispatcher;
 	std::unique_ptr<Scene> activeScene;
 
 	// -- timing --

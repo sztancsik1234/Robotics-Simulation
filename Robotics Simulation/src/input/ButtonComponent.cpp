@@ -1,5 +1,5 @@
 #include "input/ButtonComponent.h"
-#include "input/ClickEvent.h"
+#include "events/ClickEvent.h"
 #include "core/GameObject.h"
 #include "core/Transform.h"
 #include <format>
@@ -30,7 +30,7 @@ bool ButtonComponent::isInBounds(Vector2& mousePos)
 
 void ButtonComponent::OnAdd()
 {
-    inputService.mouseClickSubject.subscribe(this);
+    inputService.mouseClickBroadcast.subscribe(this);
 }
 
 void ButtonComponent::Update()
@@ -45,7 +45,7 @@ void ButtonComponent::Update()
 
 void ButtonComponent::OnRemove()
 {
-    inputService.mouseClickSubject.unsubscribe(this);
+    inputService.mouseClickBroadcast.unsubscribe(this);
 }
 
 std::string ButtonComponent::ToString() const
