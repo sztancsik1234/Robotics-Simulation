@@ -40,6 +40,17 @@ public:
 	/// </summary>
 	virtual void OnRemove() = 0;
 
+
+	/// <summary>
+	/// Disable functionality without freeing the underlying memory.
+	/// </summary>
+	virtual void Disable() = 0;
+
+	/// <summary>
+	/// Re-enable a disabled component
+	/// </summary>
+	virtual void Enable() = 0;
+
 	virtual std::string ToString() const = 0;
 
 	GameObject* GetOwner() const { return Owner; }

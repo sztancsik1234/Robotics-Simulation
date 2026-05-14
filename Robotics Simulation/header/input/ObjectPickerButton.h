@@ -6,23 +6,20 @@
 class ObjectPickerButton : public ButtonComponent
 {
 public:
-    ObjectPickerButton(GameObject* owner, IInputService& inputService, Scene& activeScene, GameObject&& targetObject)
-        : ButtonComponent(owner, inputService), currentScene(activeScene), targetObject(std::move(targetObject))
+    ObjectPickerButton(GameObject* owner, 
+                       IInputService& inputService,
+                       Scene& currentScene,
+                       GameObject&& targetObject)
+        : ButtonComponent(owner, inputService), currentScene(currentScene), targetObject(std::move(targetObject))
     {}
 
 protected:
-    void onClick() override
-    {
-        // Handle object picking logic here
-    }
+    void onClick() override;
 
-    void onHovered() override
-    {
-        // Handle hover logic here
-    }
+    void onHovered() override {}
 
 private:
-	Scene& currentScene;
+    Scene& currentScene;
     GameObject targetObject;
 
 };

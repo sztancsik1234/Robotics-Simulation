@@ -33,6 +33,16 @@ void BounceDetectComponent::Update()
 void BounceDetectComponent::OnRemove()
 {}
 
+void BounceDetectComponent::Disable()
+{
+	logger.Log("Disable called, but not implemented!", LogLevel::WARNING);
+}
+
+void BounceDetectComponent::Enable()
+{
+	logger.Log("Enable called, but not implemented!", LogLevel::WARNING);
+}
+
 std::string BounceDetectComponent::ToString() const
 {
 	return "BounceDetectComponent";

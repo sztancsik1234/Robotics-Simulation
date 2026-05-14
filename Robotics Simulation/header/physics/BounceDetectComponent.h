@@ -20,6 +20,8 @@ public:
 	void OnAdd() override;
 	void Update() override;
 	void OnRemove() override;
+	void Disable() override;
+	void Enable() override;
 	std::string ToString() const override;
 
 private:

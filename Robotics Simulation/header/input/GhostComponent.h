@@ -21,6 +21,7 @@ class GhostComponent final : public Component, public IObserver<ClickEvent>
 {
 public:
 	GhostComponent(GameObject* owner,
+				   ILogger& logger,
 				   const IViewport& viewport,
 				   IInputService& inputService,
 				   CentralMessageDispatcher& dispatcher);
@@ -30,21 +31,18 @@ public:
 	void OnAdd() override;
 	void Update() override {}
 	void OnRemove() override;
+	void Disable() override {}
+	void Enable() override {}
 	std::string ToString() const override;
 
 	// IObserver<ClickEvent>
 	void onNotify(ClickEvent* event) override;
 
 private:
+	ILogger& logger;
 	const IViewport& viewport;
 	IInputService& inputService;
 	CentralMessageDispatcher& dispatcher;
-
-	void ExtractNonRenderComponents();
-	void RestoreComponents();
-
-	/// Stored non-render components stripped on ghost activation.
-	std::list<std::unique_ptr<Component>> storedComponents;
 
 	bool placed = false;
 };

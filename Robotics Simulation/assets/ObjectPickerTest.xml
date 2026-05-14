@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+	<uiElements>
+		<gameObject name="PickerButton">
+			<transform>
+				<position x="300" y="200"/>
+				<size x="150" y="50"/>
+			</transform>
+			<components>
+				<UiRendererComponent>
+					<texturePath>assets/button.png</texturePath>
+					<anchor x="0.5" y="0.5"/>
+				</UiRendererComponent>
+				<ObjectPickerButton>
+					<gameObject name="basketball">
+						<transform>
+							<size x="1" y="1"/>
+						</transform>
+						<components>
+							<SpriteRendererComponent>
+								<texturePath>assets/basketball.png</texturePath>
+								<anchor x="0.5" y="0.5"/>
+							</SpriteRendererComponent>
+							<BallPhysicsComponent/>
+						</components>
+					</gameObject>
+				</ObjectPickerButton>
+			</components>
+		</gameObject>
+	</uiElements>
+</scene>

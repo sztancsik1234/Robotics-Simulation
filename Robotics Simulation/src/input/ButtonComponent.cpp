@@ -28,6 +28,12 @@ bool ButtonComponent::isInBounds(Vector2& mousePos)
         mousePos.y >= topLeft.y && mousePos.y <= bottomRight.y);
 }
 
+void ButtonComponent::GrayOut()
+{}
+
+void ButtonComponent::Reenable()
+{}
+
 void ButtonComponent::OnAdd()
 {
     inputService.mouseClickBroadcast.subscribe(this);
@@ -47,6 +53,13 @@ void ButtonComponent::OnRemove()
 {
     inputService.mouseClickBroadcast.unsubscribe(this);
 }
+
+void ButtonComponent::Disable()
+{
+}
+
+void ButtonComponent::Enable()
+{}
 
 std::string ButtonComponent::ToString() const
 {

@@ -36,6 +36,12 @@ void SpriteRenderComponent::OnRemove()
 	Logger.Log("[SpriteRenderComponent] Texture unloaded.", LogLevel::INFO);
 }
 
+void SpriteRenderComponent::Disable()
+{}
+
+void SpriteRenderComponent::Enable()
+{}
+
 std::string SpriteRenderComponent::ToString() const
 {
 	return std::format("<SpriteRenderComponent> image={}", TexturePath);

@@ -246,6 +246,7 @@
     <Xml Include="assets\initialScene.xml" />
     <Text Include="assets\gameSettings.cfg" />
     <Text Include="assets\uiOverlapTestScene.xml" />
+    <Xml Include="assets\ObjectPickerTest.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="assets\anchortestScene.xml" />

@@ -26,6 +26,8 @@ public:
     void OnAdd() final;
     void Update() final;
     void OnRemove() final;
+    void Disable() override;
+    void Enable() override;
     std::string ToString() const override;
 
 protected:
@@ -45,4 +47,6 @@ private:
     Vector2 lastPosition;
 	bool isHovered;
     bool clicked;
+    void GrayOut();
+    void Reenable();
 };

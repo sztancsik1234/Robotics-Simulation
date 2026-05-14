@@ -7,6 +7,10 @@ void MouseFollowerComponent::OnAdd()
 
 void MouseFollowerComponent::Update()
 {
+	if (disabled)
+	{
+		return;
+	}
 	// Get the current mouse position
 	Vector2 mousePosition = InputService.GetMousePosition();
 
@@ -21,6 +25,16 @@ void MouseFollowerComponent::OnRemove()
 {
 	// Cleanup logic if needed
 	// This could include resetting the position or state of the GameObject
+}
+
+void MouseFollowerComponent::Disable()
+{
+	disabled = true;
+}
+
+void MouseFollowerComponent::Enable()
+{
+	disabled = false;
 }
 
 std::string MouseFollowerComponent::ToString() const

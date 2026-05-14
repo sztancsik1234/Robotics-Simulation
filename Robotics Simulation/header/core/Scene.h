@@ -22,6 +22,7 @@ public:
 
 	// GameObject management.
 	void AddGameObject(GameObject&& gameObject);
+	void AddGameObject(GameObject gameObject);
 	void AddUiGameObject(GameObject&& uiGameObject);
 	void ClearGameObjects();
 

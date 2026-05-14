@@ -14,6 +14,7 @@
 #include "tinyxml/tinyxml2.h"
 #include <iostream>
 #include <input/LoggerButton.h>
+#include <input/ObjectPickerButton.h>
 
 #define TRACE_LOG true
 
@@ -25,8 +26,24 @@ SceneLoader::SceneLoader(Game& game)
 
 namespace tx2 = tinyxml2;
 
+
+
 void SceneLoader::RegisterDefaultComponents()
 {
+	componentFactories.try_emplace("ObjectPickerButton",
+		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		{
+			// Get the gameObject tag from inside this component tag
+			object.EmplaceComponent<ObjectPickerButton>(mainGame.InputService, *mainGame.activeScene, CreateGameObjectFromXML(&xmlElem));
+		});
+
+	componentFactories.try_emplace("LoggerButton",
+	// ObjectPickerButton
+		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		{
+			EmplaceGhostComponent(&object, &xmlElem);
+		});
+
 	// LoggerButton
 	componentFactories.try_emplace("LoggerButton",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
@@ -41,7 +58,7 @@ void SceneLoader::RegisterDefaultComponents()
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
 			// cast mainGame.InputService to IInputService& 
-			auto* inputService = dynamic_cast<IInputService*>(&mainGame.InputService);
+			auto* inputService = &mainGame.InputService;
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseClickObserverComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<MouseClickLoggerComponent>(mainGame.Logger, *inputService);
 		});
@@ -51,11 +68,7 @@ void SceneLoader::RegisterDefaultComponents()
 		[this](GameObject& object, const tx2::XMLElement& xmlElem)
 		{
 			auto* spriteIface = dynamic_cast<ISpriteRenderer*>(&mainGame.Renderer);
-			if (!spriteIface)
-			{
-				mainGame.Logger.Log("UiRenderComponent: Renderer does not implement ISpriteRenderer", LogLevel::ERROR);
-				return;
-			}
+
 
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
@@ -66,6 +79,7 @@ void SceneLoader::RegisterDefaultComponents()
 				mainGame.Logger,
 				dto);
 		});
+
 	// SpriteRenderComponent
 	componentFactories.try_emplace("SpriteRendererComponent",
 		[this](GameObject& object, const tx2::XMLElement& xmlElem)
@@ -161,30 +175,17 @@ void SceneLoader::RegisterDefaultComponents()
 		}
 	);
 
-
 	// GhostComponent
 	componentFactories.try_emplace("GhostComponent",
 		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding GhostComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<GhostComponent>(
+				mainGame.Logger,
 				mainGame.GetCamera().GetViewport(),
 				mainGame.InputService,
 				mainGame.messageDispatcher);
 		});
-
-	/*
-	// ButtonComponent
-	componentFactories.try_emplace("ButtonComponent",
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
-		{
-			mainGame.Logger.Log(std::format("[SceneLoader] Adding ButtonComponent to {}", object.ToString()), LogLevel::TRACE);
-			object.EmplaceComponent<ButtonComponent>(mainGame.InputService, []()
-			{
-					std::cout << "Button clicked!" << std::endl;
-			});
-		});
-		*/
 }
 
 void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,
@@ -264,12 +265,13 @@ GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode, 
 	const char* nameAttr = xmlNode->Attribute("name");
 	std::string name = nameAttr ? nameAttr : "Unnamed";
 
+
 	int id = 0;
 	if (overrideId.has_value())
 	{
 		id = overrideId.value();
 	}
-	else if (!xmlNode->QueryIntAttribute("id", &id))
+	else if (xmlNode->QueryIntAttribute("id", &id) != tinyxml2::XML_SUCCESS)
 	{
 		id = RequestGameObjectId();
 	}
@@ -278,7 +280,10 @@ GameObject SceneLoader::CreateGameObjectFromXML(const tx2::XMLElement* xmlNode, 
 	auto* transformNode = xmlNode->FirstChildElement("transform");
 
 	if (transformNode == nullptr)
+	{
 		mainGame.Logger.Log(std::format("[Sceneloader] {} has no <transform> section, using default.", name), LogLevel::WARNING);
+		transform = Transform();
+	}
 	else
 		transform = ParseTransformXML(transformNode);
 
@@ -507,4 +512,9 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, 
 const void SceneLoader::ThirdPass(tinyxml2::XMLElement* uiNode, Scene* scene)
 {
 	SecondPass(uiNode, scene, true);
+}
+
+void SceneLoader::EmplaceGhostComponent(GameObject* owner, const tx2::XMLElement* xmlElem)
+{
+	owner->EmplaceComponent<GhostComponent>(mainGame.Logger, mainGame.GetCamera().GetViewport(), mainGame.InputService, mainGame.messageDispatcher);
 }

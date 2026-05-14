@@ -107,5 +107,6 @@
     <Xml Include="assets\initialScene.xml" />
     <Xml Include="assets\ClickObserverTestScene.xml" />
     <Xml Include="assets\ButtonTestScene.xml" />
+    <Xml Include="assets\ObjectPickerTest.xml" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "core/GameObject.h"
 #include "core/ComponentDTOs.h"
 #include "core/Scene.h"
+#include <input/GhostComponent.h>
 
 // Forward declaration instead of including tinyxml2 header
 namespace tinyxml2 { class XMLElement; }
@@ -38,6 +39,7 @@ private:
     Game& mainGame;
     using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement&)>;
 
+    void EmplaceGhostComponent(GameObject* owner, const tinyxml2::XMLElement* xmlElem);
     void RegisterDefaultComponents();
     void AddComponentsFromXML(GameObject& go, const tinyxml2::XMLElement* componentRoot);
     inline unsigned int RequestGameObjectId();

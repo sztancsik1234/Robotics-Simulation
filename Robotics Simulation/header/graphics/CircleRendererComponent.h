@@ -15,4 +15,6 @@ public:
 	{}
 
 	void Update() override;
+	void Disable() override {}
+	void Enable() override {}
 };

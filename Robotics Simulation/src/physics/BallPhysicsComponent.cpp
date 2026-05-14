@@ -42,6 +42,16 @@ void BallPhysicsComponent::OnRemove()
 	PhysicsEngine.DestroyBody(bodyId);
 }
 
+void BallPhysicsComponent::Disable()
+{
+	logger.Log("Disable called, but not implemented!", LogLevel::WARNING);
+}
+
+void BallPhysicsComponent::Enable()
+{
+	logger.Log("Enable called, but not implemented!", LogLevel::WARNING);
+}
+
 std::string BallPhysicsComponent::ToString() const
 {
 	return "<BallPhysicsComponent>";
