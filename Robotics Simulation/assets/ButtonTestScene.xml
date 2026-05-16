@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene>
+	<uiElements>
+		<gameObject>
+			<transform>
+				<position x="300" y="200"/>
+				<size x="100" y="50"/>
+			</transform>
+			<components>
+				<LoggerButton></LoggerButton>
+				<UiRendererComponent>
+					<texturePath>assets/Test texture.jpg</texturePath>
+				</UiRendererComponent>
+			</components>
+		</gameObject>
+	</uiElements>
+</scene>

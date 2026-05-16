@@ -4,11 +4,13 @@
 #include "Transform.h"
 #include "util/ILogger.h"
 #include "Vector2.h"
-#include <forward_list>
+#include <list>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <type_traits>
+
+#include <algorithm>
 
 class ComponentNotFoundException;
 class DuplicateComponentException;
@@ -24,6 +26,8 @@ public:
 		id(id), name(name), transform(transform), anchor(anchor), Logger(logger)
 	{}
 	~GameObject();
+	void OnRemove();
+	GameObject(const GameObject& other);
 	GameObject(GameObject&& other) noexcept;
 
 	Vector2 GetPosition() const { return transform.position; }
@@ -81,17 +85,34 @@ public:
 	}
 	ComponentType* EmplaceComponent(Args && ...args)
 	{
+		auto rawPtr = PrepareComponent<ComponentType>(std::forward<Args>(args)...);
+		rawPtr->OnAdd();
+		return rawPtr;
+	}
+	/// <summary>
+	/// Adds a component to the gameobject without calling its OnAdd function
+	/// </summary>
+	/// <typeparam name="...Args"></typeparam>
+	/// <typeparam name="ComponentType"></typeparam>
+	/// <param name="...args"></param>
+	/// <returns></returns>
+	template<ComponentDerived ComponentType, typename ...Args>
+		requires requires(GameObject* owner, Args&&... args)
+	{
+		ComponentType { owner, std::forward<Args>(args)... };
+	}
+	ComponentType* PrepareComponent(Args && ...args)
+	{
 		if (HasComponent<ComponentType>())
 		{
 			Logger.Log("Attempted to add duplicate component of type " + std::string(typeid(ComponentType).name()) + ". Operation aborted.", LogLevel::WARNING);
 			throw DuplicateComponentException();
 		}
 		auto component = std::make_unique<ComponentType>(this, std::forward<Args>(args)...);
-		ComponentType* rawPtr = component.get();
-		component->OnAdd();
-		componentList.push_front(std::move(component));
+		componentList.push_back(std::move(component));
 		Logger.Log("Component added with emplace.", LogLevel::INFO);
-		return rawPtr;
+		ComponentType* movedPtr = static_cast<ComponentType*>(componentList.back().get());
+		return movedPtr;
 	}
 
 	/// <summary>
@@ -100,12 +121,30 @@ public:
 	/// <param name="component">A unique pointer to the component to be added.</param>
 	void AddComponent(std::unique_ptr<Component> component);
 
-	void RemoveComponent(Component* component);
+	template<ComponentDerived ComponentType>
+	void RemoveComponent()
+	{
+		for (auto it = componentList.begin(); it != componentList.end(); ++it)
+		{
+			if (dynamic_cast<ComponentType*>(it->get()) != nullptr)
+			{
+				(*it)->OnRemove();
+				componentsMarkedForRemoval.push_back(it);
+				return;
+			}
+		}
+		Logger.Log("Attempted to remove non-existent component of type " + std::string(typeid(ComponentType).name()) + ". Operation aborted.", LogLevel::WARNING);
+		throw ComponentNotFoundException();
+	}
+
+	void RemoveComponent(Component const* component);
 
 	/// <summary>
 	/// Updates the game object by calling Update on each component. Called from the Game class. If a derived class wants to implement it's own update logic, it should just add a component that implements it.
 	/// </summary>
 	void Update();
+
+	void DeleteComponents();
 
 	// tostring method for debugging
 	std::string ToString(bool components = false) const;
@@ -116,7 +155,8 @@ private:
 	std::string name;
 	Transform transform;
 	Vector2 anchor;
-	std::forward_list<std::unique_ptr<Component>> componentList;
+	std::list<std::unique_ptr<Component>> componentList;
+	std::vector <std::list<std::unique_ptr<Component>>::iterator> componentsMarkedForRemoval;
 
 	ILogger& Logger;
 };

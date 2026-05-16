@@ -13,6 +13,8 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <graphics/UiCameraRenderer.h>
+#include "MessageDispatcher.h"
 
 class Game
 {
@@ -47,10 +49,11 @@ public:
 
 	// get camera
 	CameraRenderer& GetCamera() { return mainCamera; }
+	UiCameraRenderer& GetUiCamera() { return uiCamera; }
 
 private:
 	// -- constants --
-	const std::string INTIAL_SCENE_PATH = "assets/initialScene.xml";
+	const std::string settingsPath = "assets/gameSettings.cfg";
 	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
 	const float DEFAULT_CAMERA_FOV = 20;	// meters
 
@@ -62,8 +65,11 @@ private:
 
 
 	// -- members --
+	std::string initialScenePath;
 	bool Running;
 	CameraRenderer mainCamera;
+	UiCameraRenderer uiCamera;
+	CentralMessageDispatcher messageDispatcher;
 	std::unique_ptr<Scene> activeScene;
 
 	// -- timing --
@@ -72,6 +78,8 @@ private:
 
 	// -- Helper classes --
 	SceneLoader sceneLoader = SceneLoader(*this);
+
+	void InitializeSettings();
 
 	// Initializes everything needed for rendering. Called on initialization.
 	void InitializeRenderer();

@@ -43,6 +43,13 @@
 		</xs:sequence>
 	</xs:complexType>
 
+	<xs:complexType name="UiRendererComponentType">
+		<xs:sequence>
+			<xs:element name="texturePath" type="xs:string" minOccurs="0"/>
+			<xs:element name="anchor" type="AnchorLegacyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
 	<xs:complexType name="BounceDetectComponentType">
 		<xs:sequence>
 			<xs:element name="tresholdAcceleration" type="decimalType" minOccurs="0"/>
@@ -56,13 +63,35 @@
 	<xs:complexType name="ComponentsType">
 		<xs:sequence>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="ObjectPickerButton" type="ObjectPickerButton"/>
+				<xs:element name="LoggerButton" type="EmptyComponentType"/>
 				<xs:element name="SpriteRendererComponent" type="SpriteRendererComponentType"/>
+				<xs:element name="MouseClickObserverComponent" type="SpriteRendererComponentType"/>
+				<xs:element name="UiRendererComponent" type="UiRendererComponentType"/>
 				<xs:element name="CircleRendererComponent" type="EmptyComponentType"/>
 				<xs:element name="MouseFollowerComponent" type="EmptyComponentType"/>
 				<xs:element name="StaticBoxComponent" type="EmptyComponentType"/>
 				<xs:element name="BallPhysicsComponent" type="EmptyComponentType"/>
 				<xs:element name="BounceDetectComponent" type="BounceDetectComponentType"/>
+				<xs:element name="GhostComponent" type="EmptyComponentType"/>
 			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="UiComponentsType">
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="UiRendererComponent" type="UiRendererComponentType"/>
+				<xs:element name="CircleRendererComponent" type="EmptyComponentType"/>
+				<xs:element name="MouseFollowerComponent" type="EmptyComponentType"/>
+				<xs:element name="GhostComponent" type="EmptyComponentType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ObjectPickerButton">
+		<xs:sequence>
+			<xs:element name="gameObject" type="GameObjectType" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
 
@@ -104,12 +133,13 @@
 			<xs:element name="gameObject" type="GameObjectType"/>
 		</xs:choice>
 	</xs:complexType>
-
+	
 	<xs:element name="scene">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="prefabs" type="PrefabsType" minOccurs="0"/>
 				<xs:element name="gameObjects" type="GameObjectsType" minOccurs="0"/>
+				<xs:element name="uiElements" type="GameObjectsType" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 
@@ -123,5 +153,4 @@
 			<xs:field xpath="@id"/>
 		</xs:keyref>
 	</xs:element>
-
 </xs:schema>

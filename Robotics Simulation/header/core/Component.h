@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 class GameObject;
@@ -40,13 +41,35 @@ public:
 	/// </summary>
 	virtual void OnRemove() = 0;
 
+
+	/// <summary>
+	/// Disable functionality without freeing the underlying memory.
+	/// </summary>
+	virtual void Disable() = 0;
+
+	/// <summary>
+	/// Re-enable a disabled component
+	/// </summary>
+	virtual void Enable() = 0;
+
 	virtual std::string ToString() const = 0;
+
+	/// <summary>
+	/// Creates a deep copy of this component, associating it with a new owner.
+	/// Derived classes must implement this using their own copy constructor.
+	/// </summary>
+	/// <param name="newOwner">The GameObject that will own the cloned component.</param>
+	/// <returns>A unique_ptr to the newly cloned component.</returns>
+	virtual std::unique_ptr<Component> Clone(GameObject* newOwner) const = 0;
 
 	GameObject* GetOwner() const { return Owner; }
 	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
+
+	bool isEnabled() const { return enabled; }
+	bool isDisabled() const { return !enabled; }
+protected:
+	bool enabled = false;
 private:
 	GameObject* Owner;
-
-
 };
 

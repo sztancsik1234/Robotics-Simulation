@@ -35,10 +35,14 @@ public:
 	void OnAdd() override;
 	void Update() override;
 	void OnRemove() override;
+	void Disable() override;
+	void Enable() override;
 	std::string ToString() const override;
 
 	std::string GetTexturePath() const { return TexturePath; }
 	TextureId GetTextureId() const { return TextureId; }
+
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
 
 private:
 	ISpriteRenderer& Renderer;

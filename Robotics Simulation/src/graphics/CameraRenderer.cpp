@@ -56,5 +56,5 @@ void CameraRenderer::DrawSprite(const Transform& worldTransform, TextureId textu
     }
 #endif
     const Transform screen = Viewport.ToScreenSpace(worldTransform);    
-	Renderer.DrawSprite(screen, textureId, spriteAnchor);   // Size is y=0 for some reason
+	Renderer.DrawSprite(screen, textureId, spriteAnchor);
 }

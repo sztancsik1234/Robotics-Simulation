@@ -24,9 +24,10 @@ void SpriteRenderComponent::Update()
 		return;
 	}
 #endif // _DEBUG
+	auto transform = GetOwner()->GetTransform();
+	auto anchor = GetOwner()->GetAnchor();
 
-	
-	camera.DrawSprite(GetOwner()->GetTransform(), TextureId, GetOwner()->GetAnchor());
+	camera.DrawSprite(transform, TextureId, anchor);
 }
 
 void SpriteRenderComponent::OnRemove()
@@ -35,7 +36,18 @@ void SpriteRenderComponent::OnRemove()
 	Logger.Log("[SpriteRenderComponent] Texture unloaded.", LogLevel::INFO);
 }
 
+void SpriteRenderComponent::Disable()
+{}
+
+void SpriteRenderComponent::Enable()
+{}
+
 std::string SpriteRenderComponent::ToString() const
 {
 	return std::format("<SpriteRenderComponent> image={}", TexturePath);
+}
+
+std::unique_ptr<Component> SpriteRenderComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<SpriteRenderComponent>(newOwner, camera, Renderer, Logger, TexturePath);
 }

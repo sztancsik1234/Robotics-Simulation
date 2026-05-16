@@ -5,6 +5,8 @@
 #include "graphics/CircleRendererComponent.h"
 #include "input/MouseFollowerComponent.h"
 #include "tinyxml/tinyxml2.h"
+#include <fstream>
+#include <sstream>
 
 #ifdef _DEBUG
 #define FIXED_DELTA_TIME
@@ -25,24 +27,71 @@ Game::Game(
 	IRenderer& renderer,
 	IInputService& inputService,
 	ILogger& logger) :
-	Running(false),
 	PhysicsEngine(physicsEngine),
 	Renderer(renderer),
 	InputService(inputService),
 	Logger(logger),
+	Running(false),
 	mainCamera(
 		Viewport( Vector2{0.f, 0.f}, DEFAULT_SCREEN_SIZE_PIXELS, Vector2{ DEFAULT_CAMERA_FOV, DEFAULT_CAMERA_FOV * (DEFAULT_SCREEN_SIZE_PIXELS.y / DEFAULT_SCREEN_SIZE_PIXELS.x) }),
 		static_cast<IDrawableRenderer&>(Renderer),
 		&logger
-	)
+	),
+	uiCamera(
+		IdentityViewport(),
+		static_cast<IDrawableRenderer&>(Renderer),
+		&logger
+	),
+	messageDispatcher(CentralMessageDispatcher())
 {
 }
 
 void Game::Initialize()
 {
+	InitializeSettings();
 	InitializePhysicsEngine();
 	InitializeRenderer();
 	LoadInitialScene();
+}
+
+void Game::InitializeSettings()
+{
+	std::ifstream file(settingsPath);
+
+	if (!file.is_open())
+	{
+		throw std::runtime_error("[Game] Failed to open settings file: " + settingsPath);
+	}
+
+	try
+	{
+		std::string line;
+		while (std::getline(file, line))
+		{
+			if (line.empty() || line[0] == '#')
+				continue;
+
+			const auto delimPos = line.find('=');
+			if (delimPos == std::string::npos)
+				continue;
+
+			const std::string key = line.substr(0, delimPos);
+			const std::string value = line.substr(delimPos + 1);
+
+			if (key == "initialScene")
+			{
+				initialScenePath = value;
+				Logger.Log("[Game] Initial scene path set to: " + initialScenePath);
+			}
+		}
+	}
+	catch (...)
+	{
+		file.close();
+		throw;
+	}
+
+	file.close();
 }
 
 void Game::InitializeRenderer()
@@ -74,7 +123,8 @@ void Game::InitializePhysicsEngine()
 
 void Game::LoadInitialScene()
 {
-	Scene scn = sceneLoader.LoadScene(INTIAL_SCENE_PATH);
+	// TODO: null-check initialscenepath
+	Scene scn = sceneLoader.LoadScene(initialScenePath);
 	activeScene = std::make_unique<Scene>(std::move(scn));
 }
 
@@ -127,15 +177,7 @@ void Game::HandleInput()
 
 void Game::UpdateGameObjects()
 {
-	//iterate through game objects and update them
-	// TODO: Investigate if this is a copy or not. Concider using references if it is.
-	auto& gameobjects = activeScene->GetGameObjects();
-	for (auto& gameObject : gameobjects)
-	{
-		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
-		gameObject.Update();
-	}
-
+	activeScene->UpdateGameObjects();
 }
 
 void Game::UpdatePhysics()
@@ -197,7 +239,7 @@ void Game::UpdateDeltaTime()
 
 void Game::AddGameObject(GameObject&& gameObject)
 {
-	activeScene->AddGameObject(std::move(gameObject));
+	activeScene->MoveGameObject(std::move(gameObject));
 	Logger.Log("[Game] GameObject added with move semantics.");
 }
 

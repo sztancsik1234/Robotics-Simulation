@@ -17,15 +17,33 @@
 
 GameObject::~GameObject()
 {
-	// iterate through the component list and call OnRemove for each component
+	// clear the component list
+	componentList.clear();
+	Logger.Log("[GameObject] GameObject with ID " + std::to_string(id) + " destroyed.");
+}
+
+// iterate through the component list and call OnRemove for each component
+void GameObject::OnRemove()
+{
 	for (auto const& component : componentList)
 	{
 		component->OnRemove();
 	}
+}
 
-	// clear the component list
-	componentList.clear();
-	Logger.Log("[GameObject] GameObject with ID " + std::to_string(id) + " destroyed.");
+GameObject::GameObject(const GameObject& other) :
+	id(other.id),
+	name(other.name),
+	transform(other.transform),
+	anchor(other.anchor),
+	Logger(other.Logger)
+{
+	for (const auto& component : other.componentList)
+	{
+		auto cloned = component->Clone(this);
+		cloned->OnAdd();
+		componentList.push_back(std::move(cloned));
+	}
 }
 
 GameObject::GameObject(GameObject&& other) noexcept
@@ -75,21 +93,29 @@ void GameObject::SetAnchor(const Vector2& newAnchor)
 
 void GameObject::AddComponent(std::unique_ptr<Component> component)
 {
-	Logger.Log("[GameObject] Component added without emplace.", LogLevel::WARNING);
 	component->OnAdd(); // call OnAdd for the component
 	// add the component to the list
 	componentList.push_front(std::move(component));
+	Logger.Log("[GameObject] Component added without emplace.", LogLevel::WARNING);
 }
 
-// TODO: implement
-void GameObject::RemoveComponent(Component* component)
+void GameObject::RemoveComponent(Component const* component)
 {
-	throw NotImplementedException();
-	// find component
-		// when found, call OnRemove()
-		// remove
-		// return;
+	for (auto it = componentList.begin(); it != componentList.end(); ++it)
+	{
+		if (it->get() == component)
+		{
+			(*it)->OnRemove();
+			Logger.Log("Component removed.", LogLevel::INFO);
+			componentsMarkedForRemoval.push_back(it);
+			return;
+		}
+	}
+	Logger.Log("Attempted to remove non-existent component. Operation aborted.", LogLevel::WARNING);
+	throw ComponentNotFoundException();
 }
+
+
 
 void GameObject::Update()
 {
@@ -100,6 +126,22 @@ void GameObject::Update()
 	{
 		component->Update();
 	}
+
+	DeleteComponents();
+}
+
+/// <summary>
+/// Frees removed component memory
+/// </summary>
+void GameObject::DeleteComponents()
+{
+	for (auto compIt : componentsMarkedForRemoval)
+	{
+		Logger.Log(compIt->get()->ToString() + " freed!", LogLevel::INFO);
+		componentList.erase(compIt);
+	}
+
+	componentsMarkedForRemoval.clear();
 }
 
 std::string GameObject::ToString(bool components) const

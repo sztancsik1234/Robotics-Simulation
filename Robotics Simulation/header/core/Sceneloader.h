@@ -6,6 +6,7 @@
 #include "core/GameObject.h"
 #include "core/ComponentDTOs.h"
 #include "core/Scene.h"
+#include <input/GhostComponent.h>
 
 // Forward declaration instead of including tinyxml2 header
 namespace tinyxml2 { class XMLElement; }
@@ -36,8 +37,9 @@ public:
 
 private:
     Game& mainGame;
-    using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement&)>;
+    using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement*)>;
 
+    void EmplaceGhostComponent(GameObject* owner, const tinyxml2::XMLElement* xmlElem);
     void RegisterDefaultComponents();
     void AddComponentsFromXML(GameObject& go, const tinyxml2::XMLElement* componentRoot);
     inline unsigned int RequestGameObjectId();
@@ -48,9 +50,10 @@ private:
                                        std::optional<Transform> overrideTransform = std::nullopt);
 	inline Transform ParseTransformXML(const tinyxml2::XMLElement* xmlNode) const;
 
-    void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,
+    void ParseSpriteRendererXML(const tinyxml2::XMLElement* elem,
                                 SpriteRenderComponentDTO& dto);
-    const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene);
+    const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, bool isUi = false);
+	const void ThirdPass(tinyxml2::XMLElement* uiNode, Scene* scene);
 
 	std::unordered_map<std::string, ComponentAddFn> componentFactories; //TODO: stored functions should construct a component and return it. The caller should be resposible for adding it to the gameobject.
     std::unordered_map<int, const tinyxml2::XMLElement*> prefabMap;

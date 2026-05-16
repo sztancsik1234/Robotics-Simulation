@@ -24,6 +24,16 @@
     <ClCompile Include="src\physics\BallPhysicsComponent.cpp" />
     <ClCompile Include="src\graphics\Viewport.cpp" />
     <ClCompile Include="src\physics\BounceDetectComponent.cpp" />
+    <ClCompile Include="src\graphics\UiCameraRenderer.cpp" />
+    <ClCompile Include="src\graphics\IdentityViewport.cpp" />
+    <ClCompile Include="src\input\InputPublisher.cpp" />
+    <ClCompile Include="src\input\MouseClickLoggerComponent.cpp" />
+    <ClCompile Include="src\input\ButtonComponent.cpp" />
+    <ClCompile Include="src\input\ObjectPickerButton.cpp" />
+    <ClCompile Include="src\input\LoggerButton.cpp" />
+    <ClCompile Include="src\core\MessageDispatcher.cpp" />
+    <ClCompile Include="src\core\EventBroadcast.cpp" />
+    <ClCompile Include="src\input\GhostComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />
@@ -59,6 +69,22 @@
     <ClInclude Include="header\graphics\Viewport.h" />
     <ClInclude Include="header\graphics\ICameraRenderer.h" />
     <ClInclude Include="header\physics\BounceDetectComponent.h" />
+    <ClInclude Include="header\graphics\UiCameraRenderer.h" />
+    <ClInclude Include="header\graphics\IdentityViewport.h" />
+    <ClInclude Include="header\input\InputPublisher.h" />
+    <ClInclude Include="header\util\IObserver.h" />
+    <ClInclude Include="header\events\ClickEvent.h" />
+    <ClInclude Include="header\events\Event.h" />
+    <ClInclude Include="header\events\MouseMoveEvent.h" />
+    <ClInclude Include="header\input\MouseClickLoggerComponent.h" />
+    <ClInclude Include="header\input\ButtonComponent.h" />
+    <ClInclude Include="header\input\ObjectPickerButton.h" />
+    <ClInclude Include="header\input\LoggerButton.h" />
+    <ClInclude Include="header\core\MessageDispatcher.h" />
+    <ClInclude Include="header\core\EventBroadcast.h" />
+    <ClInclude Include="header\events\GhostPlacedEvent.h" />
+    <ClInclude Include="header\events\GhostCreatedEvent.h" />
+    <ClInclude Include="header\input\GhostComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Concrete.jpg" />
@@ -66,14 +92,21 @@
     <Image Include="assets\Test texture.jpg" />
     <Image Include="assets\truss.png" />
     <Image Include="assets\basketball.png" />
+    <Image Include="assets\button_hovered.png" />
+    <Image Include="assets\button.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="header\core\Color.inl" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="assets\initialScene.xml" />
+    <Text Include="assets\uiOverlapTestScene.xml" />
+    <Text Include="assets\gameSettings.cfg" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="assets\anchortestScene.xml" />
+    <Xml Include="assets\initialScene.xml" />
+    <Xml Include="assets\ClickObserverTestScene.xml" />
+    <Xml Include="assets\ButtonTestScene.xml" />
+    <Xml Include="assets\ObjectPickerTest.xml" />
   </ItemGroup>
 </Project>

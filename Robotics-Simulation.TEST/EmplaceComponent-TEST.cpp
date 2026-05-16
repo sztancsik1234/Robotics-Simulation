@@ -14,7 +14,13 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override { wasUpdated = true; }
     void OnRemove() override {}
+    void Disable() override {}
+    void Enable() override {}
 	std::string ToString() const override { return "SimpleComponent"; }
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        return std::make_unique<SimpleComponent>(newOwner);
+    }
 };
 
 // Mock component with one parameter constructor
@@ -29,7 +35,13 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    void Disable() override {}
+    void Enable() override {}
     std::string ToString() const override { return "SingleParamComponent"; }
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        return std::make_unique<SingleParamComponent>(newOwner, value);
+    }
 };
 
 // Mock component with multiple parameter constructor
@@ -46,7 +58,13 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    void Disable() override {}
+    void Enable() override {}
     std::string ToString() const override { return "MultiParamComponent"; }
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        return std::make_unique<MultiParamComponent>(newOwner, intValue, stringValue, floatValue);
+    }
 };
 
 // Mock component with reference parameter
@@ -61,7 +79,13 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    void Disable() override {}
+    void Enable() override {}
     std::string ToString() const override { return "RefParamComponent"; }
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        return std::make_unique<RefParamComponent>(newOwner, stringRef);
+    }
 };
 
 // Mock component with move-only parameter
@@ -76,7 +100,14 @@ public:
     void OnAdd() override { wasAdded = true; }
     void Update() override {}
     void OnRemove() override {}
+    void Disable() override {}
+    void Enable() override {}
     std::string ToString() const override { return "MoveOnlyParamComponent"; }
+    // Cannot clone: holds a move-only unique_ptr with no way to duplicate the value.
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        throw std::logic_error("MoveOnlyParamComponent cannot be cloned.");
+    }
 };
 
 class EmplaceComponentTest : public ::testing::Test {

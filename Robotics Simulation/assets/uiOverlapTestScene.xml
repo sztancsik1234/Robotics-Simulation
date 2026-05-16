@@ -1,0 +1,35 @@
+<scene>
+	<prefabs>
+		
+	</prefabs>
+	<gameObjects>
+		<gameObject id="1">
+			<transform>
+				<position x="0" y="0" />
+				<rotation angle="0" />
+				<size x="2" y="2" />
+			</transform>
+			<components>
+				<SpriteRendererComponent>
+					<texturePath>assets/basketball.png</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</SpriteRendererComponent>
+			</components>
+		</gameObject>
+	</gameObjects>
+	<uiElements>
+		<gameObject>
+			<transform>
+				<position x="400" y="300" />
+				<rotation angle="0" />
+				<size x="50" y="50" />
+			</transform>
+			<components>
+				<UiRendererComponent>
+					<texturePath>assets/Test texture.jpg</texturePath>
+					<anchor x="0.5" y="0.5"></anchor>
+				</UiRendererComponent>
+			</components>
+		</gameObject>
+	</uiElements>
+</scene>

@@ -7,7 +7,8 @@ Scene::Scene(std::string path) :
 }
 
 Scene::Scene(Scene&& other) noexcept
-    : gameObjects(std::move(other.gameObjects))
+    : gameObjects(std::move(other.gameObjects)),
+    uiGameObjects(std::move(other.uiGameObjects))
     // b2World is not copyable; rebuild with the same gravity when moving.
 {
     // Note: Bodies/joints are not transferred. If needed, re-create them here.
@@ -30,17 +31,22 @@ void Scene::LogGameObjects(ILogger& logger, bool logComonents) const
     {
 		msgToLog += std::format("\t{}", it->ToString(logComonents));
     }
+    msgToLog += "\nActive UI elements:\n";
+    for (auto it = uiGameObjects.begin(); it != uiGameObjects.end(); it++)
+    {
+        msgToLog += std::format("\t{}", it->ToString(logComonents));
+    }
 	logger.Log(msgToLog, LogLevel::INFO);
 }
 
 void Scene::OnLoad()
 {
-	// If OnSceneLoad is implemented for components, call it here for each component of each game object.
+	// If OnSceneLoad is implemented for gameObjects, call it here for each component of each game object.
 }
 
 void Scene::OnUnload()
 {
-    // If OnSceneUnload is implemented for components, call it here for each component of each game object.
+    // If OnSceneUnload is implemented for gameObjects, call it here for each component of each game object.
 
 	ClearGameObjects();
 }
@@ -51,12 +57,77 @@ void Scene::Unload()
 	gameObjects.clear();
 }
 
-void Scene::AddGameObject(GameObject&& gameObject)
+GameObject* Scene::MoveGameObject(GameObject&& gameObject)
 {
-    gameObjects.push_front(std::move(gameObject));
+    gameObjects.push_back(std::move(gameObject));
+    return &gameObjects.back();
+}
+
+GameObject* Scene::AddGameObject(const GameObject& gameObject)
+{
+    gameObjects.push_back(gameObject);
+    return &gameObjects.back();
+}
+
+GameObject* Scene::AddUiGameObject(GameObject&& uiGameObject)
+{
+	uiGameObjects.push_back(std::move(uiGameObject));
+    return &uiGameObjects.back();
 }
 
 void Scene::ClearGameObjects()
 {
+	uiGameObjects.clear();
     gameObjects.clear();
+}
+
+void Scene::UpdateGameObjects()
+{
+    for (auto& gameObject : gameObjects)
+    {
+        gameObject.Update();
+    }
+    for (auto& uiElements : uiGameObjects)
+    {
+        uiElements.Update();
+    }
+    DestroyDeletedGameObjects();
+}
+
+void Scene::RemoveGameObject(GameObject* goPtr)
+{
+    for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+    {
+        if (std::to_address(it) == goPtr)
+        {
+            it->OnRemove();
+            markedForDelete.push_back(it);
+            return;
+        }
+    }
+    for (auto it = uiGameObjects.begin(); it != uiGameObjects.end(); ++it)
+    {
+        if (std::to_address(it) == goPtr)
+        {
+            it->OnRemove();
+            uiMarkedForDelete.push_back(it);
+            return;
+        }
+    }
+}
+
+void Scene::DestroyDeletedGameObjects()
+{
+    for (auto go : markedForDelete)
+    {
+        gameObjects.erase(go);
+    }
+
+    markedForDelete.clear();
+    for (auto go : markedForDelete)
+    {
+        uiGameObjects.erase(go);
+    }
+
+    uiMarkedForDelete.clear();
 }

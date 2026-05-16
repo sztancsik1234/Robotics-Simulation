@@ -39,9 +39,6 @@
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 				<BallPhysicsComponent></BallPhysicsComponent>
-				<BounceDetectComponent>
-					<tresholdAcceleration>0.1</tresholdAcceleration>
-				</BounceDetectComponent>
 			</components>
 		</gameObject>
 		<gameObject name="platform" id="3">
@@ -60,6 +57,12 @@
 		</gameObject>
 	</prefabs>
 	<gameObjects>
+
+		<prefab id="1">
+			<transform>
+				<size x="20" y="20"></size>
+			</transform>
+		</prefab>
 		<prefab id="3">
 			<transform>
 				<position x="0" y="0"></position>
@@ -75,11 +78,46 @@
 				<position x="1" y="1"></position>
 			</transform>
 		</prefab>
-		
-		<prefab id="1">
-			<transform>
-				<size x="20" y="20"></size>
-			</transform>
-		</prefab>
   </gameObjects>
+  <uiElements>
+	  <gameObject>
+		  <transform>
+			  <position x="0" y="0"></position>
+			  <size x="50" y="50"></size>
+		  </transform>
+		  <components>
+			  <UiRendererComponent>
+				  <texturePath>assets/Test texture.jpg</texturePath>
+				  <anchor x="0.5" y="0.5"></anchor>
+			  </UiRendererComponent>
+		  </components>
+	  </gameObject>
+	  <gameObject name="PickerButton">
+		  <transform>
+			  <position x="300" y="200"/>
+			  <size x="150" y="50"/>
+		  </transform>
+		  <components>
+			  <UiRendererComponent>
+				  <texturePath>assets/button.png</texturePath>
+				  <anchor x="0.5" y="0.5"/>
+			  </UiRendererComponent>
+			  <ObjectPickerButton>
+				  <gameObject name="basketball">
+					  <transform>
+						  <size x="1" y="1"/>
+					  </transform>
+					  <components>
+						  <SpriteRendererComponent>
+							  <texturePath>assets/basketball.png</texturePath>
+							  <anchor x="0.5" y="0.5"/>
+						  </SpriteRendererComponent>
+						  <BallPhysicsComponent/>
+						  <GhostComponent/>
+					  </components>
+				  </gameObject>
+			  </ObjectPickerButton>
+		  </components>
+	  </gameObject>
+  </uiElements>
 </scene>

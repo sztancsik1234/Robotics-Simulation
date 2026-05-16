@@ -43,7 +43,22 @@ void StaticBoxComponent::OnRemove()
 	PhysicsEngine.DestroyBody(BodyId);
 }
 
+void StaticBoxComponent::Disable()
+{
+	logger.Log("Disable called, but not implemented!", LogLevel::WARNING);
+}
+
+void StaticBoxComponent::Enable()
+{
+	logger.Log("Enable called, but not implemented!", LogLevel::WARNING);
+}
+
 std::string StaticBoxComponent::ToString() const
 {
 	return "<StaticBoxComponent>";
+}
+
+std::unique_ptr<Component> StaticBoxComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<StaticBoxComponent>(newOwner, logger, PhysicsEngine);
 }

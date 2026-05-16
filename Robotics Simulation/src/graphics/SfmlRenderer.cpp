@@ -104,6 +104,12 @@ TextureId SfmlRenderer::LoadTexture()
 	return emplacedID;
 }
 
+/// <summary>
+/// Draws a sprite on screen
+/// </summary>
+/// <param name="transform">The position, rotation and scale of the sprite</param>
+/// <param name="textureId">The ID of the texture to use</param>
+/// <param name="SpriteAnchor">The anchor point of the sprite. It should be a normalized vector2, where (0, 0) is the top-left corner and (1, 1) is the bottom-right corner.</param>
 void SfmlRenderer::DrawSprite(const Transform& transform, TextureId textureId, const Vector2 SpriteAnchor)
 {
     try
