@@ -2,16 +2,20 @@
 #include "ButtonComponent.h"
 #include "core/GameObject.h"
 #include <core/Scene.h>
+#include "core/MessageDispatcher.h"
+#include <events/GhostCreatedEvent.h>
+#include <events/GhostPlacedEvent.h>
 
-class ObjectPickerButton : public ButtonComponent
+class ObjectPickerButton : public ButtonComponent, public IObserver<GhostCreatedEvent>, public IObserver<GhostPlacedEvent>
 {
 public:
     ObjectPickerButton(GameObject* owner, 
                        ILogger& Logger,
                        IInputService& inputService,
+                       CentralMessageDispatcher& messageDispatcher,
                        std::unique_ptr<Scene>* currentScene,
                        GameObject&& targetObject)
-        : ButtonComponent(owner, inputService), Logger(Logger), currentScene(currentScene), targetObject(std::move(targetObject))
+        : ButtonComponent(owner, inputService), Logger(Logger), messageDispatcher(messageDispatcher), currentScene(currentScene), targetObject(std::move(targetObject))
     {
         Logger.Log("ObjectPicker constructed! TargetObject: " + this->targetObject.ToString(), LogLevel::INFO);
         this->targetObject.LogComponents();
@@ -19,6 +23,8 @@ public:
 
     GameObject* GetTargetObject();
 
+    void onNotify(GhostCreatedEvent* e) override;
+    void onNotify(GhostPlacedEvent* e) override;
 protected:
     void onClick() override;
     void onHovered() override {}
@@ -28,9 +34,15 @@ protected:
 
 private:
     ILogger& Logger;
+    CentralMessageDispatcher& messageDispatcher;
 
     std::unique_ptr<Scene>* currentScene;
     GameObject targetObject;
+
+    GameObject* currentlyPickedGhostPtr = nullptr;
+
+    void onAdded() override;
+    void onRemoved() override;
 
 };
 

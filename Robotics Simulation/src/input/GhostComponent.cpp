@@ -35,9 +35,6 @@ void GhostComponent::OnAdd()
 	// Subscribe to click events
 	inputService.mouseClickBroadcast.subscribe(this);
 
-	// Broadcast GhostCreatedEvent
-	GhostCreatedEvent createdEvt;
-	dispatcher.ghostCreatedEventBroadcast.broadcast(&createdEvt);
 }
 
 void GhostComponent::Update()
@@ -73,6 +70,8 @@ void GhostComponent::OnRemove()
 	{
 		logger.Log("[GhostComponent] could not re-enable BallPhysicsComponent. No ballPhysicsComponent was found!");
 	}
+	GhostPlacedEvent event;
+	dispatcher.ghostPlacedEventBroadcast.broadcast(&event);
 }
 
 void GhostComponent::Disable()

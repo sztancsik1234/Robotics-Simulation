@@ -26,6 +26,7 @@ public:
 		id(id), name(name), transform(transform), anchor(anchor), Logger(logger)
 	{}
 	~GameObject();
+	void OnRemove();
 	GameObject(const GameObject& other);
 	GameObject(GameObject&& other) noexcept;
 

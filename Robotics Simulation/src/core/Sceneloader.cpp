@@ -37,7 +37,7 @@ void SceneLoader::RegisterDefaultComponents()
 			std::string logString = "placing ObjectPickerComponent fomr XML";
 			mainGame.Logger.Log(logString, LogLevel::TRACE);
 			const tx2::XMLElement* goElement = xmlElem->FirstChildElement("gameObject");
-			ObjectPickerButton* compPtr = object.PrepareComponent<ObjectPickerButton>(mainGame.Logger, mainGame.InputService, &mainGame.activeScene, CreateGameObjectFromXML(goElement));
+			ObjectPickerButton* compPtr = object.PrepareComponent<ObjectPickerButton>(mainGame.Logger, mainGame.InputService, mainGame.messageDispatcher, &mainGame.activeScene, CreateGameObjectFromXML(goElement));
 			compPtr->OnAdd();
 		});
 

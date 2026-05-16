@@ -177,22 +177,7 @@ void Game::HandleInput()
 
 void Game::UpdateGameObjects()
 {
-	//iterate through game objects and update them
-	// TODO: Investigate if this is a copy or not. Concider using references if it is.
-	auto& gameobjects = activeScene->GetGameObjects();
-	auto& uiElements = activeScene->GetUiGameObjects();
-	for (auto& gameObject : gameobjects)
-	{
-		Logger.Log(std::format("[Game] Updating '{}'", gameObject.ToString()), LogLevel::TRACE);
-		gameObject.Update();
-	}
-
-	for (auto& uiGameObject : uiElements)
-	{
-		Logger.Log(std::format("[Game] Updating UI '{}'", uiGameObject.ToString()), LogLevel::TRACE);
-		uiGameObject.Update();
-	}
-
+	activeScene->UpdateGameObjects();
 }
 
 void Game::UpdatePhysics()

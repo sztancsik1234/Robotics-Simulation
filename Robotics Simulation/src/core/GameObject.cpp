@@ -17,15 +17,18 @@
 
 GameObject::~GameObject()
 {
-	// iterate through the component list and call OnRemove for each component
+	// clear the component list
+	componentList.clear();
+	Logger.Log("[GameObject] GameObject with ID " + std::to_string(id) + " destroyed.");
+}
+
+// iterate through the component list and call OnRemove for each component
+void GameObject::OnRemove()
+{
 	for (auto const& component : componentList)
 	{
 		component->OnRemove();
 	}
-
-	// clear the component list
-	componentList.clear();
-	Logger.Log("[GameObject] GameObject with ID " + std::to_string(id) + " destroyed.");
 }
 
 GameObject::GameObject(const GameObject& other) :

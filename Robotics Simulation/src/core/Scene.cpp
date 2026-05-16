@@ -57,24 +57,77 @@ void Scene::Unload()
 	gameObjects.clear();
 }
 
-void Scene::MoveGameObject(GameObject&& gameObject)
+GameObject* Scene::MoveGameObject(GameObject&& gameObject)
 {
-    gameObjects.push_front(std::move(gameObject));
+    gameObjects.push_back(std::move(gameObject));
+    return &gameObjects.back();
 }
 
 GameObject* Scene::AddGameObject(const GameObject& gameObject)
 {
-    gameObjects.push_front(gameObject);
-    return &gameObjects.front();
+    gameObjects.push_back(gameObject);
+    return &gameObjects.back();
 }
 
-void Scene::AddUiGameObject(GameObject&& uiGameObject)
+GameObject* Scene::AddUiGameObject(GameObject&& uiGameObject)
 {
-	uiGameObjects.push_front(std::move(uiGameObject));
+	uiGameObjects.push_back(std::move(uiGameObject));
+    return &uiGameObjects.back();
 }
 
 void Scene::ClearGameObjects()
 {
 	uiGameObjects.clear();
     gameObjects.clear();
+}
+
+void Scene::UpdateGameObjects()
+{
+    for (auto& gameObject : gameObjects)
+    {
+        gameObject.Update();
+    }
+    for (auto& uiElements : uiGameObjects)
+    {
+        uiElements.Update();
+    }
+    DestroyDeletedGameObjects();
+}
+
+void Scene::RemoveGameObject(GameObject* goPtr)
+{
+    for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+    {
+        if (std::to_address(it) == goPtr)
+        {
+            it->OnRemove();
+            markedForDelete.push_back(it);
+            return;
+        }
+    }
+    for (auto it = uiGameObjects.begin(); it != uiGameObjects.end(); ++it)
+    {
+        if (std::to_address(it) == goPtr)
+        {
+            it->OnRemove();
+            uiMarkedForDelete.push_back(it);
+            return;
+        }
+    }
+}
+
+void Scene::DestroyDeletedGameObjects()
+{
+    for (auto go : markedForDelete)
+    {
+        gameObjects.erase(go);
+    }
+
+    markedForDelete.clear();
+    for (auto go : markedForDelete)
+    {
+        uiGameObjects.erase(go);
+    }
+
+    uiMarkedForDelete.clear();
 }

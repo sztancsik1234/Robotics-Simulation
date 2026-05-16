@@ -21,11 +21,13 @@ public:
 	void Unload();
 
 	// GameObject management.
-	void MoveGameObject(GameObject&& gameObject);
+	GameObject* MoveGameObject(GameObject&& gameObject);
 	GameObject* AddGameObject(const GameObject& gameObject);
-	void AddUiGameObject(GameObject&& uiGameObject);
+	GameObject* AddUiGameObject(GameObject&& uiGameObject);
 	void ClearGameObjects();
+	void UpdateGameObjects();
 
+	void RemoveGameObject(GameObject* gameObject);
 	
 
 	// Access to the underlying container if needed.
@@ -43,6 +45,10 @@ private:
 	std::string SceneFilePath;
 	std::list<GameObject> gameObjects;
 	std::list<GameObject> uiGameObjects;
+
+	std::vector<std::list<GameObject>::iterator> markedForDelete;
+	std::vector<std::list<GameObject>::iterator> uiMarkedForDelete;
+	void DestroyDeletedGameObjects();
 
 	void OnLoad();
 	void OnUnload();

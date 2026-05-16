@@ -37,6 +37,7 @@ void ButtonComponent::Reenable()
 void ButtonComponent::OnAdd()
 {
     inputService.mouseClickBroadcast.subscribe(this);
+    onAdded();
     enabled = true;
 }
 
@@ -52,6 +53,7 @@ void ButtonComponent::Update()
 
 void ButtonComponent::OnRemove()
 {
+    onRemoved();
     inputService.mouseClickBroadcast.unsubscribe(this);
     enabled = false;
 }

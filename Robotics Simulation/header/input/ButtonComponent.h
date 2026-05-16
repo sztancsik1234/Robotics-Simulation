@@ -41,6 +41,8 @@ protected:
 
 	bool IsHovered() const { return isHovered; }
 
+    virtual void onAdded() {}
+    virtual void onRemoved() {}
 
 private:
     IInputService& inputService;
