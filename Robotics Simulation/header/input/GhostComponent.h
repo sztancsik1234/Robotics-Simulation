@@ -29,14 +29,14 @@ public:
 	~GhostComponent() override = default;
 
 	void OnAdd() override;
-	void Update() override {}
+	void Update() override;
 	void OnRemove() override;
-	void Disable() override {}
-	void Enable() override {}
+	void Disable() override;
+	void Enable() override;
 	std::string ToString() const override;
-
-	// IObserver<ClickEvent>
 	void onNotify(ClickEvent* event) override;
+
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
 
 private:
 	ILogger& logger;

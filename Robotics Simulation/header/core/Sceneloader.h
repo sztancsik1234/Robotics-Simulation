@@ -37,7 +37,7 @@ public:
 
 private:
     Game& mainGame;
-    using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement&)>;
+    using ComponentAddFn = std::function<void(GameObject&, const tinyxml2::XMLElement*)>;
 
     void EmplaceGhostComponent(GameObject* owner, const tinyxml2::XMLElement* xmlElem);
     void RegisterDefaultComponents();
@@ -50,7 +50,7 @@ private:
                                        std::optional<Transform> overrideTransform = std::nullopt);
 	inline Transform ParseTransformXML(const tinyxml2::XMLElement* xmlNode) const;
 
-    void ParseSpriteRendererXML(const tinyxml2::XMLElement& elem,
+    void ParseSpriteRendererXML(const tinyxml2::XMLElement* elem,
                                 SpriteRenderComponentDTO& dto);
     const void SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, bool isUi = false);
 	const void ThirdPass(tinyxml2::XMLElement* uiNode, Scene* scene);

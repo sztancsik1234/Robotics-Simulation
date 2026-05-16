@@ -37,6 +37,7 @@ void ButtonComponent::Reenable()
 void ButtonComponent::OnAdd()
 {
     inputService.mouseClickBroadcast.subscribe(this);
+    enabled = true;
 }
 
 void ButtonComponent::Update()
@@ -52,14 +53,18 @@ void ButtonComponent::Update()
 void ButtonComponent::OnRemove()
 {
     inputService.mouseClickBroadcast.unsubscribe(this);
+    enabled = false;
 }
 
 void ButtonComponent::Disable()
 {
+    enabled = false;
 }
 
 void ButtonComponent::Enable()
-{}
+{
+    enabled = true;
+}
 
 std::string ButtonComponent::ToString() const
 {

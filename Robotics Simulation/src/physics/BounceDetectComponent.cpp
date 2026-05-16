@@ -47,3 +47,9 @@ std::string BounceDetectComponent::ToString() const
 {
 	return "BounceDetectComponent";
 }
+
+std::unique_ptr<Component> BounceDetectComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<BounceDetectComponent>(newOwner, logger, tresholdAcceleration);
+
+}

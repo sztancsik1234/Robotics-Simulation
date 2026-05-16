@@ -254,7 +254,7 @@ void Game::UpdateDeltaTime()
 
 void Game::AddGameObject(GameObject&& gameObject)
 {
-	activeScene->AddGameObject(std::move(gameObject));
+	activeScene->MoveGameObject(std::move(gameObject));
 	Logger.Log("[Game] GameObject added with move semantics.");
 }
 

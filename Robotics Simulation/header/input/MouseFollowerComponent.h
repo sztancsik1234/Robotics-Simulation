@@ -21,6 +21,8 @@ public:
 	void Enable() override;
 	std::string ToString() const override;
 
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
+
 private:
 	const IViewport& viewPort;
 	IInputService& InputService;

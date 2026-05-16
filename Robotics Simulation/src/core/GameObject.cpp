@@ -28,6 +28,21 @@ GameObject::~GameObject()
 	Logger.Log("[GameObject] GameObject with ID " + std::to_string(id) + " destroyed.");
 }
 
+GameObject::GameObject(const GameObject& other) :
+	id(other.id),
+	name(other.name),
+	transform(other.transform),
+	anchor(other.anchor),
+	Logger(other.Logger)
+{
+	for (const auto& component : other.componentList)
+	{
+		auto cloned = component->Clone(this);
+		cloned->OnAdd();
+		componentList.push_back(std::move(cloned));
+	}
+}
+
 GameObject::GameObject(GameObject&& other) noexcept
 	: id(other.id),
 	name(std::move(other.name)),
@@ -81,16 +96,15 @@ void GameObject::AddComponent(std::unique_ptr<Component> component)
 	Logger.Log("[GameObject] Component added without emplace.", LogLevel::WARNING);
 }
 
-// TODO: implement
-void GameObject::RemoveComponent(Component* component)
+void GameObject::RemoveComponent(Component const* component)
 {
 	for (auto it = componentList.begin(); it != componentList.end(); ++it)
 	{
 		if (it->get() == component)
 		{
 			(*it)->OnRemove();
-			componentList.erase(it);
 			Logger.Log("Component removed.", LogLevel::INFO);
+			componentsMarkedForRemoval.push_back(it);
 			return;
 		}
 	}
@@ -109,6 +123,22 @@ void GameObject::Update()
 	{
 		component->Update();
 	}
+
+	DeleteComponents();
+}
+
+/// <summary>
+/// Frees removed component memory
+/// </summary>
+void GameObject::DeleteComponents()
+{
+	for (auto compIt : componentsMarkedForRemoval)
+	{
+		Logger.Log(compIt->get()->ToString() + " freed!", LogLevel::INFO);
+		componentList.erase(compIt);
+	}
+
+	componentsMarkedForRemoval.clear();
 }
 
 std::string GameObject::ToString(bool components) const

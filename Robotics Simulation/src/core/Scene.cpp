@@ -57,14 +57,15 @@ void Scene::Unload()
 	gameObjects.clear();
 }
 
-void Scene::AddGameObject(GameObject&& gameObject)
+void Scene::MoveGameObject(GameObject&& gameObject)
 {
     gameObjects.push_front(std::move(gameObject));
 }
 
-void Scene::AddGameObject(GameObject gameObject)
+GameObject* Scene::AddGameObject(const GameObject& gameObject)
 {
     gameObjects.push_front(gameObject);
+    return &gameObjects.front();
 }
 
 void Scene::AddUiGameObject(GameObject&& uiGameObject)

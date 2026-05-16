@@ -41,3 +41,8 @@ std::string MouseFollowerComponent::ToString() const
 {
 	return std::format("<MouseFollowerComponent>");
 }
+
+std::unique_ptr<Component> MouseFollowerComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<MouseFollowerComponent>(newOwner, viewPort, InputService);
+}

@@ -11,6 +11,7 @@ class LoggerButton final :
 protected:
     void onClick() override;
     void onHovered() override;
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
 private:
     ILogger& logger;
 };

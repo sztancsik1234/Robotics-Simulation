@@ -27,10 +27,23 @@ public:
         // No specific action needed for this mock
     }
 
+    void Disable() override {
+        // No specific action needed for this mock
+    }
+
+    void Enable() override {
+        // No specific action needed for this mock
+    }
+
     std::string ToString() const override {
         return "MockComponent";
 	}
     
+    std::unique_ptr<Component> Clone(GameObject* newOwner) const override
+    {
+        return std::make_unique<MockComponent>(newOwner);
+    }
+
     ~MockComponent() override {
         destructorCallCount++;
     }

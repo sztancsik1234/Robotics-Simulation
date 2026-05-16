@@ -42,6 +42,8 @@ public:
 	std::string GetTexturePath() const { return TexturePath; }
 	TextureId GetTextureId() const { return TextureId; }
 
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
+
 private:
 	ISpriteRenderer& Renderer;
 	TextureId TextureId = 0;

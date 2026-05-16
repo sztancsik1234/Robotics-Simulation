@@ -31,22 +31,26 @@ namespace tx2 = tinyxml2;
 void SceneLoader::RegisterDefaultComponents()
 {
 	componentFactories.try_emplace("ObjectPickerButton",
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
 			// Get the gameObject tag from inside this component tag
-			object.EmplaceComponent<ObjectPickerButton>(mainGame.InputService, *mainGame.activeScene, CreateGameObjectFromXML(&xmlElem));
+			std::string logString = "placing ObjectPickerComponent fomr XML";
+			mainGame.Logger.Log(logString, LogLevel::TRACE);
+			const tx2::XMLElement* goElement = xmlElem->FirstChildElement("gameObject");
+			ObjectPickerButton* compPtr = object.PrepareComponent<ObjectPickerButton>(mainGame.Logger, mainGame.InputService, &mainGame.activeScene, CreateGameObjectFromXML(goElement));
+			compPtr->OnAdd();
 		});
 
 	componentFactories.try_emplace("LoggerButton",
 	// ObjectPickerButton
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
-			EmplaceGhostComponent(&object, &xmlElem);
+			EmplaceGhostComponent(&object, xmlElem);
 		});
 
 	// LoggerButton
 	componentFactories.try_emplace("LoggerButton",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding LoggerButton to {}", object.ToString()), LogLevel::TRACE);
@@ -55,7 +59,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// MouseClickLoggerComponent
 	componentFactories.try_emplace("MouseClickObserverComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 			// cast mainGame.InputService to IInputService& 
 			auto* inputService = &mainGame.InputService;
@@ -65,7 +69,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// UiRenderComponent
 	componentFactories.try_emplace("UiRendererComponent",
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
 			auto* spriteIface = dynamic_cast<ISpriteRenderer*>(&mainGame.Renderer);
 
@@ -82,7 +86,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// SpriteRenderComponent
 	componentFactories.try_emplace("SpriteRendererComponent",
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
 			auto* spriteIface = dynamic_cast<ISpriteRenderer*>(&mainGame.Renderer);
 			if (!spriteIface)
@@ -103,7 +107,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// CircleRendererComponent (tag chosen as CircleRendererComponent for consistency)
 	componentFactories.try_emplace("CircleRendererComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 			auto* primitiveIface = dynamic_cast<IPrimitiveRenderer*>(&mainGame.Renderer);
 			if (!primitiveIface)
@@ -117,7 +121,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// MouseFollowerComponent
 	componentFactories.try_emplace("MouseFollowerComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding MouseFollowerComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<MouseFollowerComponent>(mainGame.GetCamera().GetViewport(), mainGame.InputService);
@@ -125,7 +129,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// StaticBoxComponent
 	componentFactories.try_emplace("StaticBoxComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 
 			// TODO: how are the dimentions and positions extracted from this? looked up from the gameobject?
@@ -137,7 +141,7 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// BallPhysicsComponent
 	componentFactories.try_emplace("BallPhysicsComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding BallPhysicsComponent to {}", object.ToString()), LogLevel::TRACE);
 			object.EmplaceComponent<BallPhysicsComponent>(mainGame.Logger, mainGame.PhysicsEngine);
@@ -146,20 +150,20 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// BounceDetectComponent
 	componentFactories.try_emplace("BounceDetectComponent",
-		[this](GameObject& object, const tx2::XMLElement& xmlElem)
+		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
 			ILogger& logger = mainGame.Logger;
 
 			logger.Log(std::format("[SceneLoader] Adding BounceDetectComponent to {}", object.ToString()), LogLevel::TRACE);
 			float threshold = 0.1f; // default
 			// check if name is BounceDetectComponent
-			if (std::string(xmlElem.Name()) != "BounceDetectComponent")
+			if (std::string(xmlElem->Name()) != "BounceDetectComponent")
 			{
 				logger.Log("[Sceneloader] BounceDetectComponent cannot be constructed from a non-BounceDetectComponent element. Skipping component", LogLevel::WARNING);
 				return;
 			}
 
-			if (auto* threshNode = xmlElem.FirstChildElement("tresholdAcceleration"))
+			if (auto threshNode = xmlElem->FirstChildElement("tresholdAcceleration"))
 			{
 				if (threshNode->QueryFloatText(&threshold) != tx2::XML_SUCCESS)
 				{
@@ -177,10 +181,10 @@ void SceneLoader::RegisterDefaultComponents()
 
 	// GhostComponent
 	componentFactories.try_emplace("GhostComponent",
-		[this](GameObject& object, const tx2::XMLElement& /*xmlElem*/)
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
 		{
 			mainGame.Logger.Log(std::format("[SceneLoader] Adding GhostComponent to {}", object.ToString()), LogLevel::TRACE);
-			object.EmplaceComponent<GhostComponent>(
+			object.PrepareComponent<GhostComponent>(
 				mainGame.Logger,
 				mainGame.GetCamera().GetViewport(),
 				mainGame.InputService,
@@ -188,15 +192,15 @@ void SceneLoader::RegisterDefaultComponents()
 		});
 }
 
-void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement& elem,
+void SceneLoader::ParseSpriteRendererXML(const tx2::XMLElement* elem,
 										 SpriteRenderComponentDTO& dto)
 {
-	if (auto* texNode = elem.FirstChildElement("texturePath"); texNode && texNode->GetText())
+	if (auto texNode = elem->FirstChildElement("texturePath"); texNode && texNode->GetText())
 		dto.texturePath = texNode->GetText();
 	else
 		mainGame.Logger.Log("[Sceneloader] SpriteRendererComponent missing <texturePath>, using empty path (will load default).", LogLevel::WARNING);
 
-	if (auto* anchorNode = elem.FirstChildElement("anchor"))
+	if (auto anchorNode = elem->FirstChildElement("anchor"))
 	{
 
 		float ax = dto.anchor.x;
@@ -243,7 +247,7 @@ void SceneLoader::AddComponentsFromXML(GameObject& go, const tx2::XMLElement* co
 		}
 		try
 		{
-			it->second(go, *compElem);
+			it->second(go, compElem);
 		}
 		catch (const DuplicateComponentException&)
 		{
@@ -491,7 +495,7 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, 
 			if (isUi)
 				scene->AddUiGameObject(std::move(instance));
 			else
-				scene->AddGameObject(std::move(instance));
+				scene->MoveGameObject(std::move(instance));
 		}
 		else if (nodeTag == "gameObject")
 		{
@@ -500,7 +504,7 @@ const void SceneLoader::SecondPass(tinyxml2::XMLElement* gosNode, Scene* scene, 
 			if (isUi)
 				scene->AddUiGameObject(std::move(object));
 			else
-				scene->AddGameObject(std::move(object));
+				scene->MoveGameObject(std::move(object));
 		}
 		else
 		{

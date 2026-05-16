@@ -9,7 +9,7 @@
 class Scene
 {
 public:
-	Scene(std::string path);
+	explicit Scene(std::string path);
 
 	// Move-only type.
 	Scene(Scene&& other) noexcept;
@@ -21,8 +21,8 @@ public:
 	void Unload();
 
 	// GameObject management.
-	void AddGameObject(GameObject&& gameObject);
-	void AddGameObject(GameObject gameObject);
+	void MoveGameObject(GameObject&& gameObject);
+	GameObject* AddGameObject(const GameObject& gameObject);
 	void AddUiGameObject(GameObject&& uiGameObject);
 	void ClearGameObjects();
 

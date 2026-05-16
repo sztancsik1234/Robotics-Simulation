@@ -57,3 +57,8 @@ std::string StaticBoxComponent::ToString() const
 {
 	return "<StaticBoxComponent>";
 }
+
+std::unique_ptr<Component> StaticBoxComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<StaticBoxComponent>(newOwner, logger, PhysicsEngine);
+}

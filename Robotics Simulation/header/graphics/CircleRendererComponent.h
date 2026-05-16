@@ -17,4 +17,6 @@ public:
 	void Update() override;
 	void Disable() override {}
 	void Enable() override {}
+
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
 };

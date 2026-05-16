@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 
 class GameObject;
@@ -53,11 +54,22 @@ public:
 
 	virtual std::string ToString() const = 0;
 
+	/// <summary>
+	/// Creates a deep copy of this component, associating it with a new owner.
+	/// Derived classes must implement this using their own copy constructor.
+	/// </summary>
+	/// <param name="newOwner">The GameObject that will own the cloned component.</param>
+	/// <returns>A unique_ptr to the newly cloned component.</returns>
+	virtual std::unique_ptr<Component> Clone(GameObject* newOwner) const = 0;
+
 	GameObject* GetOwner() const { return Owner; }
 	void SetOwner(GameObject* newOwner) { Owner = newOwner; }
+
+	bool isEnabled() const { return enabled; }
+	bool isDisabled() const { return !enabled; }
+protected:
+	bool enabled = false;
 private:
 	GameObject* Owner;
-
-
 };
 

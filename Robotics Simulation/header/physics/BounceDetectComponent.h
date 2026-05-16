@@ -24,6 +24,8 @@ public:
 	void Enable() override;
 	std::string ToString() const override;
 
+	std::unique_ptr<Component> Clone(GameObject* newOwner) const override;
+
 private:
 	ILogger& logger;
 	float tresholdAcceleration;

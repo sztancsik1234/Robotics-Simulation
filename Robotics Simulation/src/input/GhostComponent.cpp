@@ -15,19 +15,21 @@ GhostComponent::GhostComponent(GameObject* owner,
 
 void GhostComponent::OnAdd()
 {
-	auto* owner = GetOwner();
+	GameObject* owner = GetOwner();
 
 	try
 	{
-		// Restore the original components
+		logger.Log("[GhostComponent] Adding GhostComponent to gameObject: " + owner->ToString());
+		owner->LogComponents();
 		owner->GetComponent<BallPhysicsComponent>()->Disable();
 	}
 	catch (const ComponentNotFoundException&)
 	{
-		logger.Log("No BallPhysicsComponent found! Could not turn ghost", LogLevel::WARNING);
+		logger.Log("[GhostComponent] No BallPhysicsComponent found! Could not turn ghost", LogLevel::WARNING);
 	}
 
 	// Add MouseFollowerComponent so the ghost tracks the mouse
+	logger.Log("Emplacing mousefollower");
 	owner->EmplaceComponent<MouseFollowerComponent>(viewport, inputService);
 
 	// Subscribe to click events
@@ -38,40 +40,61 @@ void GhostComponent::OnAdd()
 	dispatcher.ghostCreatedEventBroadcast.broadcast(&createdEvt);
 }
 
-void GhostComponent::OnRemove()
+void GhostComponent::Update()
 {
-	inputService.mouseClickBroadcast.unsubscribe(this);
-}
+	if (!placed) return;
 
-void GhostComponent::onNotify(ClickEvent*)
-{
-	if (placed)
-		return;
-
-	placed = true;
+	logger.Log("[GhostComponent] Triggered!");
 
 	auto* owner = GetOwner();
 
 	// Remove the MouseFollowerComponent
-	owner->RemoveComponent<MouseFollowerComponent>();
+	owner->RemoveComponent(this);
+}
 
-	// Unsubscribe from click events before we potentially lose the component
+void GhostComponent::OnRemove()
+{
 	inputService.mouseClickBroadcast.unsubscribe(this);
 
 	try
 	{
-		// Restore the original components
-		owner->GetComponent<BallPhysicsComponent>()->Enable();
+		GetOwner()->RemoveComponent<MouseFollowerComponent>();
 	}
 	catch (const ComponentNotFoundException&)
 	{
-		logger.Log("No BallPhysicsComponent found! Physics could not be re-enabled", LogLevel::WARNING);
+		logger.Log("[GhostComponent] Could not remove MouseFollowerComponent while removing GhostComponent: GameObject has no MouseFollowerComponent.", LogLevel::ERROR);
 	}
 
+	try
+	{
+		GetOwner()->GetComponent<BallPhysicsComponent>()->Enable();
+	}
+	catch (const ComponentNotFoundException&)
+	{
+		logger.Log("[GhostComponent] could not re-enable BallPhysicsComponent. No ballPhysicsComponent was found!");
+	}
+}
 
-	// Broadcast GhostPlacedEvent
-	GhostPlacedEvent placedEvt;
-	dispatcher.ghostPlacedEventBroadcast.broadcast(&placedEvt);
+void GhostComponent::Disable()
+{
+	inputService.mouseClickBroadcast.unsubscribe(this);
+}
+
+void GhostComponent::Enable()
+{
+	inputService.mouseClickBroadcast.subscribe(this);
+}
+
+void GhostComponent::onNotify(ClickEvent*)
+{
+	placed = true;
+}
+
+std::unique_ptr<Component> GhostComponent::Clone(GameObject* newOwner) const
+{
+	auto compPtr = std::make_unique<GhostComponent>(newOwner, logger, viewport, inputService, dispatcher);
+
+	return compPtr;
 }
 
 

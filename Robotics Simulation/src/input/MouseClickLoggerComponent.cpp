@@ -22,3 +22,8 @@ std::string MouseClickLoggerComponent::ToString() const
 {
 	return "<MouseClickLoggerComponent>";
 }
+
+std::unique_ptr<Component> MouseClickLoggerComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<MouseClickLoggerComponent>(newOwner, logger, inputService);
+}

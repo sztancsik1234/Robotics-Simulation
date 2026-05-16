@@ -34,6 +34,7 @@ protected:
     ButtonComponent(GameObject* owner, IInputService& inputService)
         : Component(owner), inputService(inputService)
     {}
+    IInputService& GetInputService() const { return inputService; }
     bool isInBounds(Vector2& mousePos);
     virtual void onClick() = 0;
     virtual void onHovered() = 0;

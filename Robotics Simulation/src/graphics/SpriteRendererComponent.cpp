@@ -46,3 +46,8 @@ std::string SpriteRenderComponent::ToString() const
 {
 	return std::format("<SpriteRenderComponent> image={}", TexturePath);
 }
+
+std::unique_ptr<Component> SpriteRenderComponent::Clone(GameObject* newOwner) const
+{
+	return std::make_unique<SpriteRenderComponent>(newOwner, camera, Renderer, Logger, TexturePath);
+}
