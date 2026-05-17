@@ -17,10 +17,9 @@ const std::string ILogger::LogLevelToString(LogLevel level)
 std::string ILogger::GetTimestamp()
 {
 	auto now = std::chrono::system_clock::now();
-	auto time_t = std::chrono::system_clock::to_time_t(now);
+	auto seconds = std::chrono::floor<std::chrono::seconds>(now);
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(
 		now.time_since_epoch()) % 1000;
-	
-	return std::format("{:%H:%M:%S}", 
-		std::chrono::system_clock::from_time_t(time_t));
+
+	return std::format("{:%H:%M:%S}.{:03d}", seconds, ms.count());
 }
