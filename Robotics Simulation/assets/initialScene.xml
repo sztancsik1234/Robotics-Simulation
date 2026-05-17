@@ -12,28 +12,23 @@
 			<transform>
 				<position x="0" y="5"></position>
 				<!--<size x="2" y="2"></size>-->
-				<size x="1" y="1"></size>
+				<size x="0.23" y="0.23"></size>
 			</transform>
 			<components>
-				<CircleRendererComponent></CircleRendererComponent>
 				<SpriteRendererComponent>
 					<texturePath>assets/basketball.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
 				</SpriteRendererComponent>
 				<BallPhysicsComponent></BallPhysicsComponent>
-				<BounceDetectComponent>
-					<tresholdAcceleration>0.1</tresholdAcceleration>
-				</BounceDetectComponent>
 			</components>
 		</gameObject>
 		<gameObject name="ball" id="4">
 			<transform>
 				<position x="0" y="3"></position>
 				<!--<size x="2" y="2"></size>-->
-				<size x="1" y="1"></size>
+				<size x="0.23" y="0.23"></size>
 			</transform>
 			<components>
-				<CircleRendererComponent></CircleRendererComponent>
 				<SpriteRendererComponent>
 					<texturePath>assets/basketball.png</texturePath>
 					<anchor x="0.5" y="0.5"></anchor>
@@ -65,7 +60,7 @@
 		</prefab>
 		<prefab id="3">
 			<transform>
-				<position x="0" y="0"></position>
+				<position x="0" y="-1"></position>
 			</transform>
 		</prefab>
 		<prefab id="2">
@@ -103,9 +98,9 @@
 				  <anchor x="0.5" y="0.5"/>
 			  </UiRendererComponent>
 			  <ObjectPickerButton>
-				  <gameObject name="basketball">
+				  <gameObject name="spawnedBall">
 					  <transform>
-						  <size x="1" y="1"/>
+						  <size x="0.23" y="0.23"/>
 					  </transform>
 					  <components>
 						  <SpriteRendererComponent>
@@ -113,6 +108,7 @@
 							  <anchor x="0.5" y="0.5"/>
 						  </SpriteRendererComponent>
 						  <BallPhysicsComponent/>
+						  <DespawnComponent/>
 						  <GhostComponent/>
 					  </components>
 				  </gameObject>
