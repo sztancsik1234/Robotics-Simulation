@@ -34,6 +34,7 @@
     <ClCompile Include="src\core\MessageDispatcher.cpp" />
     <ClCompile Include="src\core\EventBroadcast.cpp" />
     <ClCompile Include="src\input\GhostComponent.cpp" />
+    <ClCompile Include="src\core\DespawnComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\core\Angle.h" />

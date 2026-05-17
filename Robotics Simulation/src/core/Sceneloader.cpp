@@ -9,6 +9,7 @@
 #include "physics/StaticBoxComponent.h"
 #include "physics/BallPhysicsComponent.h"
 #include "physics/BounceDetectComponent.h"
+#include "core/DespawnComponent.h"
 #include "graphics/IRenderer.h"
 #include "core/ComponentDTOs.h"
 #include "tinyxml/tinyxml2.h"
@@ -189,6 +190,14 @@ void SceneLoader::RegisterDefaultComponents()
 				mainGame.GetCamera().GetViewport(),
 				mainGame.InputService,
 				mainGame.messageDispatcher);
+		});
+
+	// DespawnComponent
+	componentFactories.try_emplace("DespawnComponent",
+		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
+		{
+			mainGame.Logger.Log(std::format("[SceneLoader] Adding DespawnComponent to {}", object.ToString()), LogLevel::TRACE);
+			object.EmplaceComponent<DespawnComponent>(mainGame.Logger, &mainGame.activeScene, -5.f);
 		});
 }
 
