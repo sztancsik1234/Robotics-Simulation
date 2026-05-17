@@ -39,9 +39,16 @@ void GhostComponent::OnAdd()
 
 void GhostComponent::Update()
 {
-	if (!placed) return;
+	if (!toBePlaced) return;
 
-	logger.Log("[GhostComponent] Triggered!");
+	if (!delayed)
+	{
+		logger.Log("[GhostComponent] Triggered! Delaying");
+		delayed = true;
+		return;
+	}
+	logger.Log("[GhostComponent] removing!");
+
 
 	auto* owner = GetOwner();
 
@@ -86,7 +93,7 @@ void GhostComponent::Enable()
 
 void GhostComponent::onNotify(ClickEvent*)
 {
-	placed = true;
+	toBePlaced = true;
 }
 
 std::unique_ptr<Component> GhostComponent::Clone(GameObject* newOwner) const
