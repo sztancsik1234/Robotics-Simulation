@@ -51,11 +51,11 @@ private:
 			{
 				returnId = freeIds.front();
 				freeIds.pop_front();
-				bodies[returnId] = id;
+				bodies[returnId - 1] = id;
 			}
 			else
 			{
-				returnId = static_cast<BodyId>(bodies.size());
+				returnId = static_cast<BodyId>(bodies.size()) + 1;
 				bodies.push_back(id);
 			}
 			return returnId;
@@ -63,13 +63,13 @@ private:
 
 		void _freeBody(BodyId id)
 		{
-			bodies[id] = b2BodyId { 0 };
+			bodies[id - 1] = b2BodyId { 0 };
 			freeIds.push_back(id);
 		}
 
 		const b2BodyId& operator[](BodyId id) const
 		{
-			return bodies.at(id);
+			return bodies.at(id - 1);
 		}
 	} bodyrepository;
 

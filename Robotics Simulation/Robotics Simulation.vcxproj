@@ -141,6 +141,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\DespawnComponent.cpp" />
     <ClCompile Include="src\core\EventBroadcast.cpp" />
     <ClCompile Include="src\core\MessageDispatcher.cpp" />
     <ClCompile Include="src\graphics\IdentityViewport.cpp" />

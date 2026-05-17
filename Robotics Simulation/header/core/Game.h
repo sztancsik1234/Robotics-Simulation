@@ -55,7 +55,7 @@ private:
 	// -- constants --
 	const std::string settingsPath = "assets/gameSettings.cfg";
 	const Vector2 DEFAULT_SCREEN_SIZE_PIXELS = { 800, 600 };
-	const float DEFAULT_CAMERA_FOV = 20;	// meters
+	const float DEFAULT_CAMERA_FOV = 5;	// meters
 
 	// -- Dependencies --
 	IPhysicsEngine& PhysicsEngine;

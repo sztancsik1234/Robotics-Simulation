@@ -13,11 +13,11 @@ void ObjectPickerButton::onClick()
 		return;
 	}
 	// BUG! When the button is clicked again, the clickEvent is processed first, always setting the currentlyPickedGhostPtr as nullptr first. 
-	// BUG! Even if the event is processed first, some texture loading error occurs because of the rapid unloading and reloading of the texture.
+	// FIXED: GhostComponent update is now delayed 1 frame
 	if (currentlyPickedGhostPtr != nullptr)
 	{
-		return;
-		//currentScene->get()->RemoveGameObject(currentlyPickedGhostPtr);
+		//return;
+		currentScene->get()->RemoveGameObject(currentlyPickedGhostPtr);
 	}
 
 	Logger.Log("Spawning object:", LogLevel::INFO);

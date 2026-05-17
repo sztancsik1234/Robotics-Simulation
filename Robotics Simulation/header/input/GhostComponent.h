@@ -44,5 +44,7 @@ private:
 	IInputService& inputService;
 	CentralMessageDispatcher& dispatcher;
 
-	bool placed = false;
+	bool toBePlaced = false;
+	// This component gets updated before the ObjectPuckerButtons process the click. It needs to be delayed a frame.
+	bool delayed = false;
 };
