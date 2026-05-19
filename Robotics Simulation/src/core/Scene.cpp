@@ -18,8 +18,10 @@ Scene& Scene::operator=(Scene&& other) noexcept
 {
     if (this == &other) return *this;
 
-    // TODO: test this.
     gameObjects = std::move(other.gameObjects);
+	uiGameObjects = std::move(other.uiGameObjects);
+	markedForDelete = std::move(other.markedForDelete);
+    uiMarkedForDelete = std::move(other.uiMarkedForDelete);
 
     return *this;
 }
@@ -54,7 +56,22 @@ void Scene::OnUnload()
 void Scene::Unload()
 {
 	OnUnload();
+    OnRemoveGameObjects();
 	gameObjects.clear();
+}
+
+// Call the OnRemove function for every game object
+void Scene::OnRemoveGameObjects()
+{
+    for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+    {
+        it->OnRemove();
+
+    }
+    for (auto it = uiGameObjects.begin(); it != uiGameObjects.end(); ++it)
+    {
+        it->OnRemove();
+    }
 }
 
 GameObject* Scene::MoveGameObject(GameObject&& gameObject)
@@ -118,13 +135,13 @@ void Scene::RemoveGameObject(GameObject* goPtr)
 
 void Scene::DestroyDeletedGameObjects()
 {
-    for (auto go : markedForDelete)
+    for (auto const& go : markedForDelete)
     {
         gameObjects.erase(go);
     }
 
     markedForDelete.clear();
-    for (auto go : markedForDelete)
+    for (auto const& go : uiMarkedForDelete)
     {
         uiGameObjects.erase(go);
     }

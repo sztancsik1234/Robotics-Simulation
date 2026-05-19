@@ -20,6 +20,8 @@ public:
 
 	void Unload();
 
+	void OnRemoveGameObjects();
+
 	// GameObject management.
 	GameObject* MoveGameObject(GameObject&& gameObject);
 	GameObject* AddGameObject(const GameObject& gameObject);

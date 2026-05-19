@@ -42,13 +42,6 @@ void SceneLoader::RegisterDefaultComponents()
 			compPtr->OnAdd();
 		});
 
-	componentFactories.try_emplace("LoggerButton",
-	// ObjectPickerButton
-		[this](GameObject& object, const tx2::XMLElement* xmlElem)
-		{
-			EmplaceGhostComponent(&object, xmlElem);
-		});
-
 	// LoggerButton
 	componentFactories.try_emplace("LoggerButton",
 		[this](GameObject& object, const tx2::XMLElement* /*xmlElem*/)
@@ -73,7 +66,13 @@ void SceneLoader::RegisterDefaultComponents()
 		[this](GameObject& object, const tx2::XMLElement* xmlElem)
 		{
 			auto* spriteIface = dynamic_cast<ISpriteRenderer*>(&mainGame.Renderer);
-
+#ifdef _DEBUG
+			if (spriteIface == nullptr)
+			{
+				mainGame.Logger.Log("[SceneLoader] Renderer does not implement ISpriteRenderer. Can't add UiRenderComponent!", LogLevel::ERROR);
+				return;
+			}
+#endif // _DEBUG
 
 			SpriteRenderComponentDTO dto;
 			ParseSpriteRendererXML(xmlElem, dto);
