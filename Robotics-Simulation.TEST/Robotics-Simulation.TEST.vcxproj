@@ -122,6 +122,7 @@
     <ClCompile Include="GameObject-TEST.cpp" />
     <ClCompile Include="Mocks.cpp" />
     <ClCompile Include="MouseFollowerComponent-TEST.cpp" />
+	<ClCompile Include="ObjectPickerButton-TEST.cpp" />
     <ClCompile Include="SfmlRendererer-TEST.cpp" />
     <ClCompile Include="SpriteRenderingComponent-TEST.cpp" />
     <ClCompile Include="StaticBoxComponent-TEST.cpp" />

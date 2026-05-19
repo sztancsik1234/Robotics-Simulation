@@ -46,15 +46,16 @@ protected:
 TEST_F(BallPhysicsComponentMockTest, CreateBodyAndDestroyBodyAreCalled)
 {
     // Arrange
-    {
-        GameObject gameObject(logger, 1, Transform{ .position = { 1.0f, 2.0f }, .size = { 2.0f, 2.0f } }, "Ball");
 
-        // Act
-        gameObject.EmplaceComponent<BallPhysicsComponent>(logger, physics);
+    GameObject gameObject(logger, 1, Transform{ .position = { 1.0f, 2.0f }, .size = { 2.0f, 2.0f } }, "Ball");
 
-        // Assert
-        EXPECT_TRUE(physics.createBodyCalled);
-    }
+    // Act
+    gameObject.EmplaceComponent<BallPhysicsComponent>(logger, physics);
+
+	gameObject.RemoveComponent<BallPhysicsComponent>();
+
+    // Assert
+    EXPECT_TRUE(physics.createBodyCalled);
 
     // Assert (after GameObject destruction triggers OnRemove)
     EXPECT_TRUE(physics.destroyBodyCalled);
