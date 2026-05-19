@@ -49,15 +49,13 @@ void Scene::OnLoad()
 void Scene::OnUnload()
 {
     // If OnSceneUnload is implemented for gameObjects, call it here for each component of each game object.
-
-	ClearGameObjects();
 }
 
 void Scene::Unload()
 {
 	OnUnload();
     OnRemoveGameObjects();
-	gameObjects.clear();
+	ClearGameObjects();
 }
 
 // Call the OnRemove function for every game object

@@ -18,19 +18,19 @@ public:
 	Scene(const Scene&) = delete;
 	Scene& operator=(const Scene&) = delete;
 
+	// Unload the scene, removing all game objects and calling their OnRemove functions.
 	void Unload();
 
-	void OnRemoveGameObjects();
 
 	// GameObject management.
 	GameObject* MoveGameObject(GameObject&& gameObject);
 	GameObject* AddGameObject(const GameObject& gameObject);
 	GameObject* AddUiGameObject(GameObject&& uiGameObject);
-	void ClearGameObjects();
+
+	// Called every frame to update game objects and remove those marked for deletion.
 	void UpdateGameObjects();
 
 	void RemoveGameObject(GameObject* gameObject);
-	
 
 	// Access to the underlying container if needed.
 	std::list<GameObject>& GetGameObjects() { return gameObjects; }
@@ -50,8 +50,18 @@ private:
 
 	std::vector<std::list<GameObject>::iterator> markedForDelete;
 	std::vector<std::list<GameObject>::iterator> uiMarkedForDelete;
+	
+
+	// Called before scene gets unloaded.
+	void OnRemoveGameObjects();
+
+	// deletes every gameobject. Call only after calling OnRemoveGameObjects to avoid memory leaks and dangling pointers.
+	void ClearGameObjects();
+
+	// Called after update, clears game objects marked for deletion.
 	void DestroyDeletedGameObjects();
 
+	// unused
 	void OnLoad();
 	void OnUnload();
 };
